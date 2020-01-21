@@ -1,0 +1,24 @@
+﻿<horizontal
+  pad-left='10'
+  pad-right='10'
+  horizontal-fit='PreferredSize'
+  vertical-fit='PreferredSize'>
+  <big-button
+    pref-width='40'
+    text='Beat Saber'
+    icon='AlternativePlay.Resources.BeatSaber.png'
+    on-click='BeatSaberClick'
+    hover-hint='Play regular Beat Saber with dual swords' />
+  <big-button
+    pref-width='40'
+    text='Darth Maul'
+    icon='AlternativePlay.Resources.DarthMaul.png'
+    on-click='DarthMaulClick'
+    hover-hint='Play with a double bladed staff!' />
+  <big-button
+    pref-width='40'
+    text='Beat Spear'
+    icon='AlternativePlay.Resources.BeatSpear.png'
+    on-click='BeatSpearClick'
+    hover-hint='Play with a one bladed spear' />
+</horizontal>
