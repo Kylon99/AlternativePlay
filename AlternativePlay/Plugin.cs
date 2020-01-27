@@ -1,6 +1,8 @@
 ﻿using AlternativePlay.UI;
 using BS_Utils.Utilities;
+using Harmony;
 using IPA;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -53,11 +55,12 @@ namespace AlternativePlay
         public void OnApplicationStart()
         {
             PersistentSingleton<ConfigOptions>.TouchInstance();
+
+            var harmonyInstance = HarmonyInstance.Create("com.kylon99.beatsaber.alternativeplay");
+            harmonyInstance.PatchAll(Assembly.GetExecutingAssembly());
+
             BSEvents.menuSceneLoadedFresh += this.OnMenuSceneLoadedFresh;
             BSEvents.gameSceneLoaded += this.OnGameSceneLoaded;
-
-            //var harmonyInstance = HarmonyInstance.Create("com.kylon99.beatsaber.alternativeplay");
-            //harmonyInstance.PatchAll(Assembly.GetExecutingAssembly());
         }
 
         public void OnSceneLoaded(Scene scene, LoadSceneMode sceneMode)

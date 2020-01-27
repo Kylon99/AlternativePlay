@@ -15,12 +15,21 @@ namespace AlternativePlay.UI
             ConfigOptions.instance.UseLeftSaber = value;
         }
 
-        [UIValue("ReverseSaberDirection")]
-        private bool reverseSaberDirection = ConfigOptions.instance.ReverseSaberDirection;
-        [UIAction("OnReverseSaberDirectionChanged")]
-        private void OnReverseSaberDirectionChanged(bool value)
+        [UIValue("ReverseLeftSaber")]
+        private bool reverseLeftSaber = ConfigOptions.instance.ReverseLeftSaber;
+        [UIAction("OnReverseLeftSaberChanged")]
+        private void OnReverseLeftSaberChanged(bool value)
         {
-            ConfigOptions.instance.ReverseSaberDirection = value;
+            ConfigOptions.instance.ReverseLeftSaber = value;
         }
+
+        [UIValue("ReverseRightSaber")]
+        private bool reverseRightSaber = ConfigOptions.instance.ReverseRightSaber;
+        [UIAction("OnReverseRightSaberChanged")]
+        private void OnReverseRightSaberChanged(bool value)
+        {
+            ConfigOptions.instance.ReverseRightSaber = value;
+        }
+
     }
 }

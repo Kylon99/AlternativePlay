@@ -74,7 +74,8 @@
     <Compile Include="BeatSaberBehavior.cs" />
     <Compile Include="DarthMaulBehavior.cs" />
     <Compile Include="GameModifiersBehavior.cs" />
-    <Compile Include="HarmonyPatches\StabNotes.cs" />
+    <Compile Include="HarmonyPatches\DarthMaulHapticPatch.cs" />
+    <Compile Include="HarmonyPatches\StabNotesPatch.cs" />
     <Compile Include="Logging.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -146,6 +147,7 @@
   <ItemGroup>
     <EmbeddedResource Include="UI\Views\GameModifiersView.bsml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetFileName)" "$(GameDirPath)Plugins"</PostBuildEvent>

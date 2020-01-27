@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.XR;
 
@@ -21,14 +22,21 @@ namespace AlternativePlay
             // Do nothing if we aren't playing Beat Spear
             if (ConfigOptions.instance.PlayMode != PlayMode.BeatSpear) { return; }
 
-            // Always hide the off color saber
-            Saber saberToHide = ConfigOptions.instance.UseLeftSpear ? this.playerController.rightSaber : this.playerController.leftSaber;
-            saberToHide.gameObject.SetActive(false);
-
             if (ConfigOptions.instance.SpearControllerCount == ControllerCountEnum.Two)
             {
                 this.previousForwardHand = ConfigOptions.instance.UseLeftSpear ? XRNode.RightHand : XRNode.LeftHand;
             }
+
+            SharedCoroutineStarter.instance.StartCoroutine(HideOffColorSaber());
+
+        }
+        private IEnumerator HideOffColorSaber()
+        {
+            yield return new WaitForSecondsRealtime(0.1f);
+
+            // Always hide the off color saber
+            Saber saberToHide = ConfigOptions.instance.UseLeftSpear ? this.playerController.rightSaber : this.playerController.leftSaber;
+            saberToHide.gameObject.SetActive(false);
         }
 
         private void Awake()

@@ -28,10 +28,16 @@
       on-change='OnUseLeftSaberChanged'
       hover-hint='Use the left saber when playing One Color' />
     <bool-setting
-      text='Reverse Saber Direction'
-      value='ReverseSaberDirection'
+      text='Reverse Left Saber'
+      value='ReverseLeftSaber'
       apply-on-change='true'
-      on-change='OnReverseSaberDirectionChanged'
-      hover-hint='Reverse the directions of the sabers' />
+      on-change='OnReverseLeftSaberChanged'
+      hover-hint='Reverse the direction of the left saber' />
+    <bool-setting
+      text='Reverse Right Saber'
+      value='ReverseRightSaber'
+      apply-on-change='true'
+      on-change='OnReverseRightSaberChanged'
+      hover-hint='Reverse the direction of the right saber' />
   </vertical>
 </vertical>

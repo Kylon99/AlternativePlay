@@ -27,9 +27,13 @@ namespace AlternativePlay
                 return;
             }
 
-            if (ConfigOptions.instance.ReverseSaberDirection)
+            if (ConfigOptions.instance.ReverseLeftSaber)
             {
                 playerController.leftSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
+            }
+
+            if (ConfigOptions.instance.ReverseRightSaber)
+            {
                 playerController.rightSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
             }
         }

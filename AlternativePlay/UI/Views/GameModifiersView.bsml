@@ -61,14 +61,11 @@
     <horizontal pad-top='1' pad-bottom='2'>
       <img pref-width='14' pref-height='8' source='AlternativePlay.Resources.StabNotes.png' />
       <horizontal pad-left='3'>
-        <!--<checkbox-setting
+        <checkbox-setting
           text='Stab Notes'
           value='StabNotes'
           apply-on-change='true'
           on-change='OnStabNotesChanged'
-          hover-hint='All notes no longer require direction or speed to cut. You can stab, shoot or just touch them.' />-->
-        <text
-          text='Stab Notes Coming Soon'
           hover-hint='All notes no longer require direction or speed to cut. You can stab, shoot or just touch them.' />
       </horizontal>
     </horizontal>

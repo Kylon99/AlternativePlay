@@ -32,12 +32,15 @@ namespace AlternativePlay
         #region Beat Saber
         private const string BeatSaberSection = "BeatSaber";
         private const string UseLeftSaberOption = "UseLeftSaber";
-        private const string ReverseSaberDirectionOption = "ReverseSaberDirection";
+        private const string ReverseLeftSaberOption = "ReverseLeftSaber";
+        private const string ReverseRightSaberOption = "ReverseRightSaber";
         private bool useLeftSaber;
-        private bool reverseSaberDirection;
+        private bool reverseLeftSaber;
+        private bool reverseRightSaber;
 
         public bool UseLeftSaber { get => this.useLeftSaber; set { this.useLeftSaber = value; this.config.SetBool(BeatSaberSection, UseLeftSaberOption, value); } }
-        public bool ReverseSaberDirection { get => this.reverseSaberDirection; set { this.reverseSaberDirection = value; this.config.SetBool(BeatSaberSection, ReverseSaberDirectionOption, value); } }
+        public bool ReverseLeftSaber { get => this.reverseLeftSaber; set { this.reverseLeftSaber = value; this.config.SetBool(BeatSaberSection, ReverseLeftSaberOption, value); } }
+        public bool ReverseRightSaber { get => this.reverseRightSaber; set { this.reverseRightSaber = value; this.config.SetBool(BeatSaberSection, ReverseRightSaberOption, value); } }
         #endregion
 
         #region DarthMaul
@@ -126,7 +129,8 @@ namespace AlternativePlay
 
             // Beat Saber
             this.UseLeftSaber = this.config.GetBool(BeatSaberSection, UseLeftSaberOption, false, true);
-            this.ReverseSaberDirection = this.config.GetBool(BeatSaberSection, ReverseSaberDirectionOption, false, true);
+            this.ReverseLeftSaber = this.config.GetBool(BeatSaberSection, ReverseLeftSaberOption, false, true);
+            this.ReverseRightSaber = this.config.GetBool(BeatSaberSection, ReverseRightSaberOption, false, true);
 
             // Darth Maul
             this.DarthMaulControllerCount = (ControllerCountEnum)this.config.GetInt(DarthMaulSection, DarthMaulControllerCountOption, (int)ControllerCountEnum.One, true);

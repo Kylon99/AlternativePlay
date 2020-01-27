@@ -29,7 +29,6 @@ namespace AlternativePlay
                 Logging.Info("Disabling submission on Game Modifier mode transformation");
                 BS_Utils.Gameplay.ScoreSubmission.DisableSubmission(Plugin.assemblyName);
 
-                InitialTransformSetup();
                 SharedCoroutineStarter.instance.StartCoroutine(TransformMap());
             }
         }
@@ -78,14 +77,6 @@ namespace AlternativePlay
             return true;
         }
 
-        private void InitialTransformSetup()
-        {
-
-        }
-
-        /// <summary>
-        /// Transforms the map 
-        /// </summary>
         private IEnumerator TransformMap()
         {
             yield return new WaitForSecondsRealtime(0.1f);
