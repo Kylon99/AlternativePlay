@@ -23,7 +23,7 @@ namespace AlternativePlay
             GameplayCoreSceneSetupData data = BS_Utils.Plugin.LevelData?.GameplayCoreSceneSetupData;
             this.currentBeatmap = data.difficultyBeatmap;
 
-            if (this.IsTransformNecessary() || ConfigOptions.instance.StabNotes)
+            if (this.IsTransformNecessary() || ConfigOptions.instance.TouchNotes)
             {
                 // Disable scoring due to transforms
                 Logging.Info("Disabling submission on Game Modifier mode transformation");
@@ -56,7 +56,7 @@ namespace AlternativePlay
                 return false;
             }
 
-            bool IsOnlyOneColorSelected() { return ConfigOptions.instance.OneColor && !ConfigOptions.instance.NoArrows && !ConfigOptions.instance.NoArrowsRandom && !ConfigOptions.instance.StabNotes; }
+            bool IsOnlyOneColorSelected() { return ConfigOptions.instance.OneColor && !ConfigOptions.instance.NoArrows && !ConfigOptions.instance.NoArrowsRandom && !ConfigOptions.instance.TouchNotes; }
             bool AreOnlyNoArrowsOptionsSelected() { return (ConfigOptions.instance.NoArrows || ConfigOptions.instance.NoArrowsRandom) && !ConfigOptions.instance.OneColor; }
 
             // Check for map modes that already reproduce our game mode
@@ -129,8 +129,8 @@ namespace AlternativePlay
             {
                 var note = beatmapObject as NoteData;
 
-                // Transform for NoArrows or StabNotes here but do not if NoArrowsRandom was already applied
-                if ((ConfigOptions.instance.NoArrows || ConfigOptions.instance.StabNotes) && !ConfigOptions.instance.NoArrowsRandom)
+                // Transform for NoArrows or TouchNotes here but do not if NoArrowsRandom was already applied
+                if ((ConfigOptions.instance.NoArrows || ConfigOptions.instance.TouchNotes) && !ConfigOptions.instance.NoArrowsRandom)
                 {
                     note.SetNoteToAnyCutDirection();
                 }
@@ -142,7 +142,7 @@ namespace AlternativePlay
                 }
             });
 
-            // Stab Notes speed detection is not handled here but in the HarmonyPatches
+            // Touch Notes speed detection is not handled here but in the HarmonyPatches
         }
     }
 }

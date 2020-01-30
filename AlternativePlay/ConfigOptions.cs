@@ -85,19 +85,19 @@ namespace AlternativePlay
         private const string OneColorOption = "OneColor";
         private const string RemoveOtherSaberOption = "RemoveOtherSaber";
         private const string NoArrowsOption = "NoArrows";
-        private const string StabNotesOption = "StabNotes";
+        private const string TouchNotesOption = "TouchNotes";
 
         private bool noArrowsRandom;
         private bool oneColor;
         private bool removeOtherSaber;
         private bool noArrows;
-        private bool stabNotes;
+        private bool touchNotes;
 
         public bool NoArrowsRandom { get => this.noArrowsRandom; set { this.noArrowsRandom = value; this.config.SetBool(GameplayChangesSection, NoArrowsRandomOption, value); } }
         public bool OneColor { get => this.oneColor; set { this.oneColor = value; this.config.SetBool(GameplayChangesSection, OneColorOption, value); } }
         public bool RemoveOtherSaber { get => this.removeOtherSaber; set { this.removeOtherSaber = value; this.config.SetBool(GameplayChangesSection, RemoveOtherSaberOption, value); } }
         public bool NoArrows { get => this.noArrows; set { this.noArrows = value; this.config.SetBool(GameplayChangesSection, NoArrowsOption, value); } }
-        public bool StabNotes { get => this.stabNotes; set { this.stabNotes = value; this.config.SetBool(GameplayChangesSection, StabNotesOption, value); } }
+        public bool TouchNotes { get => this.touchNotes; set { this.touchNotes = value; this.config.SetBool(GameplayChangesSection, TouchNotesOption, value); } }
 
         #endregion
 
@@ -106,7 +106,7 @@ namespace AlternativePlay
             this.NoArrowsRandom = false;
             this.OneColor = false;
             this.NoArrows = true;
-            this.StabNotes = false;
+            this.TouchNotes = false;
         }
 
         public void SetBeatSpearGameModifiers()
@@ -114,7 +114,7 @@ namespace AlternativePlay
             this.NoArrowsRandom = false;
             this.OneColor = true;
             this.NoArrows = false;
-            this.StabNotes = true;
+            this.TouchNotes = true;
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace AlternativePlay
             this.OneColor = this.config.GetBool(GameplayChangesSection, OneColorOption, false, true);
             this.RemoveOtherSaber = this.config.GetBool(GameplayChangesSection, RemoveOtherSaberOption, false, true);
             this.NoArrows = this.config.GetBool(GameplayChangesSection, NoArrowsOption, false, true);
-            this.StabNotes = this.config.GetBool(GameplayChangesSection, StabNotesOption, false, true);
+            this.TouchNotes = this.config.GetBool(GameplayChangesSection, TouchNotesOption, false, true);
         }
     }
 }
