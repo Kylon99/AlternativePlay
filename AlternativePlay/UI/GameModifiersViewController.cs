@@ -39,12 +39,12 @@ namespace AlternativePlay.UI
             ConfigOptions.instance.NoArrows = value;
         }
 
-        [UIValue("StabNotes")]
-        private bool stabNotes = ConfigOptions.instance.StabNotes;
-        [UIAction("OnStabNotesChanged")]
-        private void OnStabNotesChanged(bool value)
+        [UIValue("TouchNotes")]
+        private bool touchNotes = ConfigOptions.instance.TouchNotes;
+        [UIAction("OnTouchNotesChanged")]
+        private void OnTouchNotesChanged(bool value)
         {
-            ConfigOptions.instance.StabNotes = value;
+            ConfigOptions.instance.TouchNotes = value;
         }
     }
 }

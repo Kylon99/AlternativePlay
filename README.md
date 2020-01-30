@@ -17,10 +17,10 @@ Demonstration Video: https://youtu.be/1ZGCbvZor1c
 
 Play with one controller or tracker mounted on a stick for spear-like play.  Or use the Two Controller mode to play with a virtual spear drawn between both controllers.  Use the trigger to switch the controller to be the 'front' hand.
 
-### ![IMG](AlternativePlay/Resources/NoArrowsRandomColored64.png) No Arrows Random
-### ![IMG](AlternativePlay/Resources/OneColorColored64.png) One Color
-### ![IMG](AlternativePlay/Resources/NoArrows64.png) No Arrows
-### ![IMG](AlternativePlay/Resources/StabNotesColored64.png) Stab Notes Coming Soon!
+### ![IMG](AlternativePlay/Resources/NoArrowsRandomColor64.png) No Arrows Random
+### ![IMG](AlternativePlay/Resources/OneColorColor64.png) One Color
+### ![IMG](AlternativePlay/Resources/NoArrowsColor64.png) No Arrows
+### ![IMG](AlternativePlay/Resources/TouchNotesColor64.png) Touch Notes
 
 
 ## Requirements
@@ -35,6 +35,10 @@ This mod depends on the following mods.  Download them at [BeatMods](https://bea
 Drop the AlternativePlay.dll file into your Plugins folder under your BeatSaber folder.
 
 ## Changelog
+### 0.2.1
+- Renamed Stab Notes to Touch Notes
+- Updated manifest to support Beat Saber 1.7.0
+
 ### 0.2.0
 - Beat Saber: Split the options reverse sabers into one for each hand
 - Stab Notes: Now working, thanks to Kylemc1413's Simple Hit code
