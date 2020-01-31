@@ -1,6 +1,5 @@
 ﻿using BeatSaberMarkupLanguage;
 using HMUI;
-using IPA.Utilities;
 
 namespace AlternativePlay.UI
 {
@@ -13,19 +12,27 @@ namespace AlternativePlay.UI
         private DarthMaulViewController darthMaulSettingsView;
         private BeatSpearViewController beatSpearSettingsView;
 
+        public bool IsBusy { get; set; }
+
         public void ShowBeatSaber()
         {
+            IsBusy = true;
             this.SetLeftScreenViewController(beatSaberSettingsView);
+            IsBusy = false;
         }
 
         public void ShowDarthMaul()
         {
+            IsBusy = true;
             this.SetLeftScreenViewController(darthMaulSettingsView);
+            IsBusy = false;
         }
 
         public void ShowBeatSpear()
         {
+            IsBusy = true;
             this.SetLeftScreenViewController(beatSpearSettingsView);
+            IsBusy = false;
         }
 
         private void Awake()
@@ -64,14 +71,15 @@ namespace AlternativePlay.UI
                 title = "Alternative Play";
                 showBackButton = true;
             }
-
+            IsBusy = true;
             this.ProvideInitialViewControllers(alternativePlayView, viewToDisplay, gameModifiersView);
+            IsBusy = false;
         }
 
         protected override void BackButtonWasPressed(ViewController topViewController)
         {
-            MainFlowCoordinator mainFlow = BeatSaberUI.MainFlowCoordinator;
-            mainFlow.InvokePrivateMethod("DismissFlowCoordinator", this, null, false);
+            if (IsBusy) return;
+            BeatSaberUI.MainFlowCoordinator.DismissFlowCoordinator(this);
         }
     }
 }

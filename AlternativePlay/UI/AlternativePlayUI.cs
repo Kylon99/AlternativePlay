@@ -1,6 +1,5 @@
 ﻿using BeatSaberMarkupLanguage;
 using BeatSaberMarkupLanguage.MenuButtons;
-using BS_Utils.Utilities;
 using UnityEngine;
 
 namespace AlternativePlay.UI
@@ -11,11 +10,6 @@ namespace AlternativePlay.UI
 
         private void Awake()
         {
-            this.mainFlowCoordinator = BeatSaberUI.CreateFlowCoordinator<ModMainFlowCoordinator>();
-        }
-
-        public void CreateUI()
-        {
             MenuButton menuButton = new MenuButton(
                 "Alternative Play",
                 "Change to Darth Maul or Beat Spear here!", ShowModFlowCoordinator, true);
@@ -24,7 +18,12 @@ namespace AlternativePlay.UI
 
         public void ShowModFlowCoordinator()
         {
-            BeatSaberUI.MainFlowCoordinator.InvokeMethod("PresentFlowCoordinator", mainFlowCoordinator, null, false, false);
+            if (this.mainFlowCoordinator == null)
+                this.mainFlowCoordinator = BeatSaberUI.CreateFlowCoordinator<ModMainFlowCoordinator>();
+
+            if (mainFlowCoordinator.IsBusy) return;
+
+            BeatSaberUI.MainFlowCoordinator.PresentFlowCoordinator(mainFlowCoordinator);
         }
     }
 }

@@ -21,13 +21,6 @@ namespace AlternativePlay
         private BeatSpearBehavior beatSpearBehavior;
         private GameModifiersBehavior gameModifiersBehavior;
 
-        private void OnMenuSceneLoadedFresh()
-        {
-            if (alternativePlayUI == null) alternativePlayUI = new GameObject(nameof(AlternativePlayUI))
-                    .AddComponent<AlternativePlayUI>();
-            this.alternativePlayUI.CreateUI();
-        }
-
         private void OnGameSceneLoaded()
         {
             if (beatSaberBehavior == null) beatSaberBehavior = new GameObject(nameof(BeatSaberBehavior)).AddComponent<BeatSaberBehavior>();
@@ -59,7 +52,9 @@ namespace AlternativePlay
             var harmonyInstance = HarmonyInstance.Create("com.kylon99.beatsaber.alternativeplay");
             harmonyInstance.PatchAll(Assembly.GetExecutingAssembly());
 
-            BSEvents.menuSceneLoadedFresh += this.OnMenuSceneLoadedFresh;
+            if (alternativePlayUI == null) alternativePlayUI = new GameObject(nameof(AlternativePlayUI))
+                    .AddComponent<AlternativePlayUI>();
+
             BSEvents.gameSceneLoaded += this.OnGameSceneLoaded;
         }
 
