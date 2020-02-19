@@ -8,7 +8,8 @@ namespace AlternativePlay
         private const KeyCode rightTrigger = KeyCode.JoystickButton15;
 
         private PlayerController playerController;
-        private bool split = false;
+
+        public static bool Split { get; set; }
 
         /// <summary>
         /// To be invoked every time when starting the GameCore scene.
@@ -44,11 +45,11 @@ namespace AlternativePlay
                 if ((ConfigOptions.instance.DarthMaulControllerCount == ControllerCountEnum.One && oneTriggerPressed) ||
                     (ConfigOptions.instance.DarthMaulControllerCount == ControllerCountEnum.Two && bothTriggersPressed))
                 {
-                    split = !split;
+                    Split = !Split;
                 }
             }
 
-            if (split) return;  // When you split Darth Maul it's just regular two sabers so do nothing
+            if (Split) return;  // When you split Darth Maul it's just regular two sabers so do nothing
 
             float sep = 1.0f * ConfigOptions.instance.SeparationAmount / 100.0f;
             switch (ConfigOptions.instance.DarthMaulControllerCount)

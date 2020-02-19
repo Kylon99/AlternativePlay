@@ -35,6 +35,9 @@ This mod depends on the following mods.  Download them at [BeatMods](https://bea
 Drop the AlternativePlay.dll file into your Plugins folder under your BeatSaber folder.
 
 ## Changelog
+### 0.2.3
+- Fixed issue when splitting Darth Maul not restoring haptic feed back on off hand
+
 ### 0.2.2
 - Fixed issue with causing Versus or Downloader mod settings buttons to stay disabled
 - Fixed issue with clicking through menus too quickly causing UI to become unresponsive
