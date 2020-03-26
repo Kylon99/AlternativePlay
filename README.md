@@ -35,6 +35,11 @@ This mod depends on the following mods.  Download them at [BeatMods](https://bea
 Drop the AlternativePlay.dll file into your Plugins folder under your BeatSaber folder.
 
 ## Changelog
+
+### 0.2.4
+- Rotated other saber in two controller Darth Maul to face opposite direction
+- Reversed haptic when using two controller Darth Maul and Reverse Maul Direction
+
 ### 0.2.3
 - Fixed issue when splitting Darth Maul not restoring haptic feed back on off hand
 

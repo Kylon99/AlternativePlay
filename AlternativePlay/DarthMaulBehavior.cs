@@ -78,7 +78,7 @@ namespace AlternativePlay
                     forwardSaber.transform.position = middlePos + forward * sep;
                     backwardSaber.transform.position = middlePos + -forward * sep;
                     forwardSaber.transform.rotation = Quaternion.LookRotation(forward, backwardSaber.transform.up);
-                    backwardSaber.transform.rotation = Quaternion.LookRotation(-forward, backwardSaber.transform.up);
+                    backwardSaber.transform.rotation = Quaternion.LookRotation(-forward, -backwardSaber.transform.up);
                     break;
 
                 case ControllerCountEnum.None:

@@ -10,21 +10,41 @@ namespace AlternativePlay.HarmonyPatches
         private static void Prefix(HapticFeedbackController __instance, ref XRNode node)
         {
             if (ConfigOptions.instance.PlayMode != PlayMode.DarthMaul ||
-                ConfigOptions.instance.DarthMaulControllerCount != ControllerCountEnum.One ||
                 DarthMaulBehavior.Split)
             {
                 // Let the original function handle the haptic feedback
                 return;
             }
 
-            if (!ConfigOptions.instance.UseLeftController && node == XRNode.LeftHand)
+            if (ConfigOptions.instance.DarthMaulControllerCount == ControllerCountEnum.One)
             {
-                node = XRNode.RightHand;
+                if (!ConfigOptions.instance.UseLeftController && node == XRNode.LeftHand)
+                {
+                    // Using right controller, move left hits to right hand
+                    node = XRNode.RightHand;
+                }
+
+                if (ConfigOptions.instance.UseLeftController && node == XRNode.RightHand)
+                {
+                    // Using left controller, move right hits to left hand
+                    node = XRNode.LeftHand;
+                }
+
+                return;
             }
 
-            if (ConfigOptions.instance.UseLeftController && node == XRNode.RightHand)
+            if (ConfigOptions.instance.DarthMaulControllerCount == ControllerCountEnum.Two && ConfigOptions.instance.ReverseMaulDirection)
             {
-                node = XRNode.LeftHand;
+                // If reversing direction with two controller then always swap hands
+                if (node == XRNode.LeftHand)
+                {
+                    node = XRNode.RightHand;
+                }
+
+                if (node == XRNode.RightHand)
+                {
+                    node = XRNode.LeftHand;
+                }
             }
         }
     }
