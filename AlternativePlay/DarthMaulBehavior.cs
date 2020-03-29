@@ -4,19 +4,17 @@ namespace AlternativePlay
 {
     public class DarthMaulBehavior : MonoBehaviour
     {
-        private const KeyCode leftTrigger = KeyCode.JoystickButton14;
-        private const KeyCode rightTrigger = KeyCode.JoystickButton15;
-
         private PlayerController playerController;
+        private InputManager inputManager;
 
         public static bool Split { get; set; }
 
         /// <summary>
         /// To be invoked every time when starting the GameCore scene.
         /// </summary>
-        public void BeginGameCoreScene()
+        public void BeginGameCoreScene(InputManager inputManager)
         {
-            // Currently nothing needs to be done on GameCore start
+            this.inputManager = inputManager;
         }
 
         private void Awake()
@@ -35,21 +33,16 @@ namespace AlternativePlay
             if (ConfigOptions.instance.UseTriggerToSeparate)
             {
                 // Check to see if the trigger has been pressed
-                bool isLeftTriggerPressed = Input.GetKey(leftTrigger);
-                bool isRightTriggerPressed = Input.GetKey(rightTrigger);
-                bool leftTriggerPressed = Input.GetKeyDown(leftTrigger);
-                bool rightTriggerPressed = Input.GetKeyDown(rightTrigger);
-                bool oneTriggerPressed = Input.GetKeyDown(leftTrigger) || Input.GetKeyDown(rightTrigger);
-                bool bothTriggersPressed = (isLeftTriggerPressed && rightTriggerPressed) || (leftTriggerPressed && isRightTriggerPressed);
+                bool leftTriggerPressed = inputManager.GetLeftTriggerClicked();
+                bool rightTriggerPressed = inputManager.GetRightTriggerClicked();
 
-                if ((ConfigOptions.instance.DarthMaulControllerCount == ControllerCountEnum.One && oneTriggerPressed) ||
-                    (ConfigOptions.instance.DarthMaulControllerCount == ControllerCountEnum.Two && bothTriggersPressed))
+                if (leftTriggerPressed || rightTriggerPressed)
                 {
                     Split = !Split;
                 }
-            }
 
-            if (Split) return;  // When you split Darth Maul it's just regular two sabers so do nothing
+                if (Split) return;  // When you split Darth Maul it's just regular two sabers so do nothing
+            }
 
             float sep = 1.0f * ConfigOptions.instance.SeparationAmount / 100.0f;
             switch (ConfigOptions.instance.DarthMaulControllerCount)

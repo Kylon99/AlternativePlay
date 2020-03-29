@@ -5,7 +5,7 @@ namespace AlternativePlay.UI
 {
     public class AlternativePlayViewController : BSMLResourceViewController
     {
-        public override string ResourceName => Plugin.assemblyName + ".UI.Views.AlternativePlayView.bsml";
+        public override string ResourceName => AlternativePlay.assemblyName + ".UI.Views.AlternativePlayView.bsml";
         public ModMainFlowCoordinator MainFlowCoordinator { get; set; }
 
         [UIAction("BeatSaberClick")]

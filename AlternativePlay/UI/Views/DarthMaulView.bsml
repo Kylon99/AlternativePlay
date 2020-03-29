@@ -45,7 +45,7 @@
       value='UseTriggerToSeparate'
       apply-on-change='true'
       on-change='OnUseTriggerToSeparateChanged'
-      hover-hint='Use two triggers to separate in two controller mode or one trigger for one controller' />
+      hover-hint='Press any trigger to separate split the sabers' />
     <increment-setting
       text='Separation Amount'
       value='SeparationAmount'

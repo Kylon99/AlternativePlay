@@ -122,7 +122,7 @@ namespace AlternativePlay
         /// </summary>
         private void Awake()
         {
-            this.config = new Config(Plugin.assemblyName);
+            this.config = new Config(AlternativePlay.assemblyName);
 
             // Common
             this.PlayMode = (PlayMode)this.config.GetInt(MainSection, PlayModeOption, (int)PlayMode.BeatSaber, true);

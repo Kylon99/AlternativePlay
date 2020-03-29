@@ -5,7 +5,7 @@ namespace AlternativePlay.UI
 {
     public class BeatSaberViewController : BSMLResourceViewController
     {
-        public override string ResourceName => Plugin.assemblyName + ".UI.Views.BeatSaberView.bsml";
+        public override string ResourceName => AlternativePlay.assemblyName + ".UI.Views.BeatSaberView.bsml";
 
         [UIValue("UseLeftSaber")]
         private bool useLeftSaber = ConfigOptions.instance.UseLeftSaber;

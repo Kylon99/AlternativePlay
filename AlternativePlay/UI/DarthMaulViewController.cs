@@ -7,7 +7,7 @@ namespace AlternativePlay.UI
 {
     public class DarthMaulViewController : BSMLResourceViewController
     {
-        public override string ResourceName => Plugin.assemblyName + ".UI.Views.DarthMaulView.bsml";
+        public override string ResourceName => AlternativePlay.assemblyName + ".UI.Views.DarthMaulView.bsml";
 
         [UIValue("ControllerChoice")]
         private string controllerChoice = ConfigOptions.instance.DarthMaulControllerCount.ToString();

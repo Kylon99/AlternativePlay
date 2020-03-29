@@ -27,7 +27,7 @@ namespace AlternativePlay
             {
                 // Disable scoring due to transforms
                 Logging.Info("Disabling submission on Game Modifier mode transformation");
-                BS_Utils.Gameplay.ScoreSubmission.DisableSubmission(Plugin.assemblyName);
+                BS_Utils.Gameplay.ScoreSubmission.DisableSubmission(AlternativePlay.assemblyName);
 
                 SharedCoroutineStarter.instance.StartCoroutine(TransformMap());
             }
@@ -92,7 +92,7 @@ namespace AlternativePlay
                 this.undesiredNoteType = this.useLeft ? NoteType.NoteB : NoteType.NoteA;
 
                 // Change the other saber to desired type
-                Saber.SaberType desiredSaberType = this.useLeft ? Saber.SaberType.SaberA : Saber.SaberType.SaberB;
+                SaberType desiredSaberType = this.useLeft ? SaberType.SaberA : SaberType.SaberB;
                 var saberObject = new GameObject("SaberTypeObject").AddComponent<SaberTypeObject>();
                 saberObject.SetField("_saberType", desiredSaberType);
 

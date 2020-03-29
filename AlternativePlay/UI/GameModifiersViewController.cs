@@ -5,7 +5,7 @@ namespace AlternativePlay.UI
 {
     public class GameModifiersViewController : BSMLResourceViewController
     {
-        public override string ResourceName => Plugin.assemblyName + ".UI.Views.GameModifiersView.bsml";
+        public override string ResourceName => AlternativePlay.assemblyName + ".UI.Views.GameModifiersView.bsml";
 
         [UIValue("NoArrowsRandom")]
         private bool noArrowsRandom = ConfigOptions.instance.NoArrowsRandom;

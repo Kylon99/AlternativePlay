@@ -36,6 +36,12 @@ Drop the AlternativePlay.dll file into your Plugins folder under your BeatSaber 
 
 ## Changelog
 
+### 0.3.0
+- Updated manifest to support Beat Saber 1.8.0
+- Updated for BSIPA4 and Harmony2
+- Rewrote controller input to support the new Unity XR System
+- Changed two controller Darth Maul to separate with only one trigger
+
 ### 0.2.4
 - Rotated other saber in two controller Darth Maul to face opposite direction
 - Reversed haptic when using two controller Darth Maul and Reverse Maul Direction

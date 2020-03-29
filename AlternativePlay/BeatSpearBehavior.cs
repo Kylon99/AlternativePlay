@@ -7,24 +7,30 @@ namespace AlternativePlay
 {
     public class BeatSpearBehavior : MonoBehaviour
     {
-        private const KeyCode leftTrigger = KeyCode.JoystickButton14;
-        private const KeyCode rightTrigger = KeyCode.JoystickButton15;
-
+        private InputManager inputManager;
         private PlayerController playerController;
+        private InputDevice leftController;
+        private InputDevice rightController;
+
         private MainSettingsModelSO mainSettingsModel;
-        private XRNode previousForwardHand;
+        private InputDevice previousForwardHand;
 
         /// <summary>
         /// To be invoked every time when starting the GameCore scene.
         /// </summary>
-        public void BeginGameCoreScene()
+        public void BeginGameCoreScene(InputManager inputManager)
         {
+            this.inputManager = inputManager;
+
             // Do nothing if we aren't playing Beat Spear
             if (ConfigOptions.instance.PlayMode != PlayMode.BeatSpear) { return; }
 
+            this.leftController = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
+            this.rightController = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
+
             if (ConfigOptions.instance.SpearControllerCount == ControllerCountEnum.Two)
             {
-                this.previousForwardHand = ConfigOptions.instance.UseLeftSpear ? XRNode.RightHand : XRNode.LeftHand;
+                this.previousForwardHand = ConfigOptions.instance.UseLeftSpear ? this.rightController : this.leftController;
             }
 
             SharedCoroutineStarter.instance.StartCoroutine(HideOffColorSaber());
@@ -43,7 +49,7 @@ namespace AlternativePlay
         {
             this.playerController = FindObjectOfType<PlayerController>();
             this.mainSettingsModel = Resources.FindObjectsOfTypeAll<MainSettingsModelSO>().FirstOrDefault();
-            this.previousForwardHand = ConfigOptions.instance.UseLeftSpear ? XRNode.RightHand : XRNode.LeftHand;
+            this.previousForwardHand = ConfigOptions.instance.UseLeftSpear ? this.rightController : this.leftController;
 
             var pauseAnimationController = Object.FindObjectOfType<PauseAnimationController>();
             if (pauseAnimationController != null) pauseAnimationController.resumeFromPauseAnimationDidFinishEvent += this.ResumeFromPauseAnimationDidFinishEvent;
@@ -72,15 +78,15 @@ namespace AlternativePlay
                     break;
                 case ControllerCountEnum.Two:
                     // Determine the forward hand
-                    if (Input.GetKeyDown(leftTrigger)) { this.previousForwardHand = XRNode.LeftHand; }
-                    if (Input.GetKeyDown(rightTrigger)) { this.previousForwardHand = XRNode.RightHand; }
+                    if (this.inputManager.GetLeftTriggerClicked()) { this.previousForwardHand = this.leftController; }
+                    if (this.inputManager.GetRightTriggerClicked()) { this.previousForwardHand = this.rightController; }
 
-                    XRNode forwardHandNode = this.previousForwardHand;
-                    XRNode rearHandNode = forwardHandNode == XRNode.RightHand ? XRNode.LeftHand : XRNode.RightHand;
+                    InputDevice forwardHandDevice = this.previousForwardHand;
+                    InputDevice rearHandDevice = (forwardHandDevice == this.rightController ? this.leftController : this.rightController);
 
                     // Get positions and rotations of hands
-                    (Vector3 position, Quaternion rotation) forwardHand = this.GetXRNodePosRos(forwardHandNode);
-                    (Vector3 position, Quaternion rotation) rearHand = this.GetXRNodePosRos(rearHandNode);
+                    (Vector3 position, Quaternion rotation) forwardHand = this.GetXRNodePosRos(forwardHandDevice);
+                    (Vector3 position, Quaternion rotation) rearHand = this.GetXRNodePosRos(rearHandDevice);
                     Vector3 forward = (forwardHand.position - rearHand.position).normalized;
                     Vector3 up = forwardHand.rotation * Vector3.one;
 
@@ -124,10 +130,10 @@ namespace AlternativePlay
             }
         }
 
-        private (Vector3, Quaternion) GetXRNodePosRos(XRNode node)
+        private (Vector3, Quaternion) GetXRNodePosRos(InputDevice hand)
         {
-            var pos = InputTracking.GetLocalPosition(node);
-            var rot = InputTracking.GetLocalRotation(node);
+            hand.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 pos);
+            hand.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion rot);
 
             var roomCenter = this.mainSettingsModel.roomCenter;
             var roomRotation = Quaternion.Euler(0, this.mainSettingsModel.roomRotation, 0);

@@ -31,8 +31,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony.1.2.0.1">
-      <HintPath>$(GameDirPath)Libs\0Harmony.1.2.0.1.dll</HintPath>
+    <Reference Include="0Harmony">
+      <HintPath>$(GameDirPath)Libs\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="BSML">
       <HintPath>$(GameDirPath)Plugins\BSML.dll</HintPath>
@@ -49,8 +49,8 @@
     <Reference Include="IPA.Loader">
       <HintPath>$(GameDirPath)Beat Saber_Data\Managed\IPA.Loader.dll</HintPath>
     </Reference>
-    <Reference Include="MainAssembly">
-      <HintPath>$(GameDirPath)Beat Saber_Data\Managed\MainAssembly.dll</HintPath>
+    <Reference Include="Main">
+      <HintPath>$(GameDirPath)Beat Saber_Data\Managed\Main.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -65,7 +65,7 @@
     </Reference>
     <Reference Include="UnityEngine.XRModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(GameDirPath)\Beat Saber_Data\Managed\UnityEngine.XRModule.dll</HintPath>
+      <HintPath>$(GameDirPath)Beat Saber_Data\Managed\UnityEngine.XRModule.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -76,8 +76,9 @@
     <Compile Include="GameModifiersBehavior.cs" />
     <Compile Include="HarmonyPatches\DarthMaulHapticPatch.cs" />
     <Compile Include="HarmonyPatches\TouchNotesPatch.cs" />
+    <Compile Include="InputManager.cs" />
     <Compile Include="Logging.cs" />
-    <Compile Include="Plugin.cs" />
+    <Compile Include="AlternativePlay.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\AlternativePlayUI.cs" />
     <Compile Include="UI\BeatSpearViewController.cs" />

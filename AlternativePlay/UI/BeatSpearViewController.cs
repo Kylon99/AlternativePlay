@@ -7,7 +7,7 @@ namespace AlternativePlay.UI
 {
     public class BeatSpearViewController : BSMLResourceViewController
     {
-        public override string ResourceName => Plugin.assemblyName + ".UI.Views.BeatSpearView.bsml";
+        public override string ResourceName => AlternativePlay.assemblyName + ".UI.Views.BeatSpearView.bsml";
 
         [UIValue("ControllerChoice")]
         private string controllerChoice = ConfigOptions.instance.SpearControllerCount.ToString();
