@@ -77,7 +77,6 @@
     <Compile Include="HarmonyPatches\DarthMaulHapticPatch.cs" />
     <Compile Include="HarmonyPatches\TouchNotesPatch.cs" />
     <Compile Include="InputManager.cs" />
-    <Compile Include="Logging.cs" />
     <Compile Include="AlternativePlay.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\AlternativePlayUI.cs" />

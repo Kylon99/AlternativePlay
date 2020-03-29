@@ -26,7 +26,7 @@ namespace AlternativePlay
             if (this.IsTransformNecessary() || ConfigOptions.instance.TouchNotes)
             {
                 // Disable scoring due to transforms
-                Logging.Info("Disabling submission on Game Modifier mode transformation");
+                AlternativePlay.Logger.Info("Disabling submission on Game Modifier mode transformation");
                 BS_Utils.Gameplay.ScoreSubmission.DisableSubmission(AlternativePlay.assemblyName);
 
                 SharedCoroutineStarter.instance.StartCoroutine(TransformMap());
@@ -64,13 +64,13 @@ namespace AlternativePlay
 
             if (serializedName == OneSaberModeName && IsOnlyOneColorSelected())
             {
-                Logging.Info($"No need to transform: {this.currentBeatmap.level.songName} for One Color as it is already a One Saber map");
+                AlternativePlay.Logger.Info($"No need to transform: {this.currentBeatmap.level.songName} for One Color as it is already a One Saber map");
                 return false;
             }
 
             if (serializedName == NoArrowsModeName && AreOnlyNoArrowsOptionsSelected())
             {
-                Logging.Info($"No need to transform: {this.currentBeatmap.level.songName} to No Arrows as it's already a No Arrows map");
+                AlternativePlay.Logger.Info($"No need to transform: {this.currentBeatmap.level.songName} to No Arrows as it's already a No Arrows map");
                 return false;
             }
 
@@ -115,7 +115,7 @@ namespace AlternativePlay
             if (ConfigOptions.instance.NoArrowsRandom)
             {
                 // Transform the map to No Arrows Random using the ingame algorithm first
-                Logging.Info($"Transforming NoArrowsRandom for song: {this.currentBeatmap.level.songName}");
+                AlternativePlay.Logger.Info($"Transforming NoArrowsRandom for song: {this.currentBeatmap.level.songName}");
                 var transformedBeatmap = BeatmapDataNoArrowsTransform.CreateTransformedData(beatmapData, true);
                 callbackController.SetNewBeatmapData(transformedBeatmap);
             }

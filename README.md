@@ -36,6 +36,10 @@ Drop the AlternativePlay.dll file into your Plugins folder under your BeatSaber 
 
 ## Changelog
 
+### 0.3.1
+- Updated logging to use the new BSIPA4 logger
+- Bumped version requirement of BS_Utils to 1.4.6
+
 ### 0.3.0
 - Updated manifest to support Beat Saber 1.8.0
 - Updated for BSIPA4 and Harmony2

@@ -7,11 +7,11 @@
   "icon": "AlternativePlay.Resources.DarthMaulColored.png",
   "id": "AlternativePlay",
   "name": "AlternativePlay",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "dependsOn": {
     "BSIPA": "^4.0.2",
     "BeatSaberMarkupLanguage": "^1.2.2",
-    "BS Utils": "^1.4.4"
+    "BS Utils": "^1.4.6"
   },
   "links": {
     "project-home": "https://github.com/Kylon99/AlternativePlay",

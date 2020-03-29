@@ -27,7 +27,6 @@ namespace AlternativePlay
         public AlternativePlay(IPA.Logging.Logger logger)
         {
             AlternativePlay.Logger = logger;
-            AlternativePlay.Logger.Debug("***** AlternativePlay init!");
         }
 
         [OnStart]
