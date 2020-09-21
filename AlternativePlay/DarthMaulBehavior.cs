@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using AlternativePlay.Models;
+using UnityEngine;
 
 namespace AlternativePlay
 {
@@ -24,13 +25,13 @@ namespace AlternativePlay
 
         private void Update()
         {
-            if (ConfigOptions.instance.PlayMode != PlayMode.DarthMaul || playerController == null)
+            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.DarthMaul || playerController == null)
             {
                 // Do nothing if we aren't playing Darth Maul
                 return;
             }
 
-            if (ConfigOptions.instance.UseTriggerToSeparate)
+            if (Configuration.instance.ConfigurationData.UseTriggerToSeparate)
             {
                 // Check to see if the trigger has been pressed
                 bool leftTriggerPressed = inputManager.GetLeftTriggerClicked();
@@ -44,13 +45,13 @@ namespace AlternativePlay
                 if (Split) return;  // When you split Darth Maul it's just regular two sabers so do nothing
             }
 
-            float sep = 1.0f * ConfigOptions.instance.SeparationAmount / 100.0f;
-            switch (ConfigOptions.instance.DarthMaulControllerCount)
+            float sep = 1.0f * Configuration.instance.ConfigurationData.MaulDistance / 100.0f;
+            switch (Configuration.instance.ConfigurationData.DarthMaulControllerCount)
             {
                 case ControllerCountEnum.One:
-                    var baseSaber = ConfigOptions.instance.UseLeftController ? playerController.leftSaber : playerController.rightSaber;
-                    var otherSaber = ConfigOptions.instance.UseLeftController ? playerController.rightSaber : playerController.leftSaber;
-                    var rotateSaber = ConfigOptions.instance.ReverseMaulDirection ? baseSaber : otherSaber;
+                    var baseSaber = Configuration.instance.ConfigurationData.UseLeftController ? playerController.leftSaber : playerController.rightSaber;
+                    var otherSaber = Configuration.instance.ConfigurationData.UseLeftController ? playerController.rightSaber : playerController.leftSaber;
+                    var rotateSaber = Configuration.instance.ConfigurationData.ReverseMaulDirection ? baseSaber : otherSaber;
 
                     otherSaber.transform.localPosition = baseSaber.transform.localPosition;
                     otherSaber.transform.localRotation = baseSaber.transform.localRotation;
@@ -65,8 +66,8 @@ namespace AlternativePlay
                     Vector3 middlePos = (rightHandPos + leftHandPos) * 0.5f;
                     Vector3 forward = (rightHandPos - leftHandPos).normalized;
 
-                    var forwardSaber = ConfigOptions.instance.ReverseMaulDirection ? playerController.leftSaber : playerController.rightSaber;
-                    var backwardSaber = ConfigOptions.instance.ReverseMaulDirection ? playerController.rightSaber : playerController.leftSaber;
+                    var forwardSaber = Configuration.instance.ConfigurationData.ReverseMaulDirection ? playerController.leftSaber : playerController.rightSaber;
+                    var backwardSaber = Configuration.instance.ConfigurationData.ReverseMaulDirection ? playerController.rightSaber : playerController.leftSaber;
 
                     forwardSaber.transform.position = middlePos + forward * sep;
                     backwardSaber.transform.position = middlePos + -forward * sep;

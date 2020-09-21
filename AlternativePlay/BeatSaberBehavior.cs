@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using AlternativePlay.Models;
+using UnityEngine;
 
 namespace AlternativePlay
 {
@@ -21,18 +22,18 @@ namespace AlternativePlay
 
         private void Update()
         {
-            if (ConfigOptions.instance.PlayMode != PlayMode.BeatSaber || playerController == null)
+            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.BeatSaber || playerController == null)
             {
                 // Do nothing if we aren't playing Beat Saber
                 return;
             }
 
-            if (ConfigOptions.instance.ReverseLeftSaber)
+            if (Configuration.instance.ConfigurationData.ReverseLeftSaber)
             {
                 playerController.leftSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
             }
 
-            if (ConfigOptions.instance.ReverseRightSaber)
+            if (Configuration.instance.ConfigurationData.ReverseRightSaber)
             {
                 playerController.rightSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
             }

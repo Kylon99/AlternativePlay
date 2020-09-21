@@ -36,6 +36,16 @@ Drop the AlternativePlay.dll file into your Plugins folder under your BeatSaber 
 
 ## Changelog
 
+### 0.4.0
+- Added new options to use trackers for saber positions without the need for OpenVR Input Emulator
+- Added option to enable or disable hand switching in Beat Spear
+- Added button coloring on main view controller to indicate play mode
+- Changed configuration to use JSON serialization
+
+### 0.3.2
+- Fixed manifest to reference correct Darth Maul icon
+- Updated manifest to support Beat Saber 1.11.0
+
 ### 0.3.1
 - Updated logging to use the new BSIPA4 logger
 - Bumped version requirement of BS_Utils to 1.4.6

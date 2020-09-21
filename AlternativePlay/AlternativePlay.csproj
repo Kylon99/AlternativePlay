@@ -52,6 +52,10 @@
     <Reference Include="Main">
       <HintPath>$(GameDirPath)Beat Saber_Data\Managed\Main.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(GameDirPath)Libs\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -70,7 +74,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BeatSpearBehavior.cs" />
-    <Compile Include="ConfigOptions.cs" />
     <Compile Include="BeatSaberBehavior.cs" />
     <Compile Include="DarthMaulBehavior.cs" />
     <Compile Include="GameModifiersBehavior.cs" />
@@ -78,19 +81,25 @@
     <Compile Include="HarmonyPatches\TouchNotesPatch.cs" />
     <Compile Include="InputManager.cs" />
     <Compile Include="AlternativePlay.cs" />
+    <Compile Include="Models\Configuration.cs" />
+    <Compile Include="Models\ConfigurationData.cs" />
+    <Compile Include="Models\TrackedDeviceManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\AlternativePlayUI.cs" />
-    <Compile Include="UI\BeatSpearViewController.cs" />
-    <Compile Include="UI\BeatSaberViewController.cs" />
-    <Compile Include="UI\GameModifiersViewController.cs" />
-    <Compile Include="UI\DarthMaulViewController.cs" />
-    <Compile Include="UI\AlternativePlayViewController.cs" />
+    <Compile Include="UI\BeatSpearView.cs" />
+    <Compile Include="UI\BeatSaberView.cs" />
+    <Compile Include="UI\GameModifiersView.cs" />
+    <Compile Include="UI\DarthMaulView.cs" />
+    <Compile Include="UI\AlternativePlayView.cs" />
     <Compile Include="UI\ModMainFlowCoordinator.cs" />
+    <Compile Include="UI\TrackerDisplayText.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="manifest.json" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\XIcon.png" />
+    <EmbeddedResource Include="Resources\ViveTracker.png" />
     <EmbeddedResource Include="Resources\TouchNotes.png" />
     <Content Include="Resources\BeatSaberColor.png" />
     <Content Include="Resources\BeatSaberColor.svg" />
@@ -98,7 +107,7 @@
     <Content Include="Resources\BeatSpearColor.png" />
     <Content Include="Resources\BeatSpearColor.svg" />
     <Content Include="Resources\BeatSpearColor64.png" />
-    <Content Include="Resources\DarthMaulColor.png" />
+    <EmbeddedResource Include="Resources\DarthMaulColor.png" />
     <Content Include="Resources\DarthMaulColor.svg" />
     <Content Include="Resources\DarthMaulColor64.png" />
     <Content Include="Resources\NoArrowsColor.png" />
@@ -136,19 +145,19 @@
     <Content Include="Resources\OneColor64.png" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="UI\Views\AlternativePlayView.bsml" />
+    <EmbeddedResource Include="UI\AlternativePlayView.bsml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="UI\Views\DarthMaulView.bsml" />
+    <EmbeddedResource Include="UI\DarthMaulView.bsml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="UI\Views\BeatSpearView.bsml" />
+    <EmbeddedResource Include="UI\BeatSpearView.bsml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="UI\Views\BeatSaberView.bsml" />
+    <EmbeddedResource Include="UI\BeatSaberView.bsml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="UI\Views\GameModifiersView.bsml" />
+    <EmbeddedResource Include="UI\GameModifiersView.bsml" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

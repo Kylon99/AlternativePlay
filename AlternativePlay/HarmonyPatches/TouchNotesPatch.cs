@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using AlternativePlay.Models;
+using HarmonyLib;
 
 namespace AlternativePlay.HarmonyPatches
 {
@@ -8,7 +9,7 @@ namespace AlternativePlay.HarmonyPatches
     {
         private static void Prefix(ref float saberBladeSpeed)
         {
-            if (ConfigOptions.instance.TouchNotes)
+            if (Configuration.instance.ConfigurationData.TouchNotes)
             {
                 // Set the saber speed artificially to 3.0f, which is greater than the minimum 2.0f 
                 // constant in the NoteBasicCutInfo class.

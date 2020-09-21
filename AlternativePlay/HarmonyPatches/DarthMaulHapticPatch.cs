@@ -1,4 +1,5 @@
-﻿using HarmonyLib;
+﻿using AlternativePlay.Models;
+using HarmonyLib;
 using UnityEngine.XR;
 
 namespace AlternativePlay.HarmonyPatches
@@ -9,22 +10,22 @@ namespace AlternativePlay.HarmonyPatches
     {
         private static void Prefix(HapticFeedbackController __instance, ref XRNode node)
         {
-            if (ConfigOptions.instance.PlayMode != PlayMode.DarthMaul ||
+            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.DarthMaul ||
                 DarthMaulBehavior.Split)
             {
                 // Let the original function handle the haptic feedback
                 return;
             }
 
-            if (ConfigOptions.instance.DarthMaulControllerCount == ControllerCountEnum.One)
+            if (Configuration.instance.ConfigurationData.DarthMaulControllerCount == ControllerCountEnum.One)
             {
-                if (!ConfigOptions.instance.UseLeftController && node == XRNode.LeftHand)
+                if (!Configuration.instance.ConfigurationData.UseLeftController && node == XRNode.LeftHand)
                 {
                     // Using right controller, move left hits to right hand
                     node = XRNode.RightHand;
                 }
 
-                if (ConfigOptions.instance.UseLeftController && node == XRNode.RightHand)
+                if (Configuration.instance.ConfigurationData.UseLeftController && node == XRNode.RightHand)
                 {
                     // Using left controller, move right hits to left hand
                     node = XRNode.LeftHand;
@@ -33,7 +34,7 @@ namespace AlternativePlay.HarmonyPatches
                 return;
             }
 
-            if (ConfigOptions.instance.DarthMaulControllerCount == ControllerCountEnum.Two && ConfigOptions.instance.ReverseMaulDirection)
+            if (Configuration.instance.ConfigurationData.DarthMaulControllerCount == ControllerCountEnum.Two && Configuration.instance.ConfigurationData.ReverseMaulDirection)
             {
                 // If reversing direction with two controller then always swap hands
                 if (node == XRNode.LeftHand)

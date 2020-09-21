@@ -1,16 +1,17 @@
-﻿using BeatSaberMarkupLanguage;
+﻿using AlternativePlay.Models;
+using BeatSaberMarkupLanguage;
 using HMUI;
 
 namespace AlternativePlay.UI
 {
     public class ModMainFlowCoordinator : FlowCoordinator
     {
-        private AlternativePlayViewController alternativePlayView;
-        private GameModifiersViewController gameModifiersView;
+        private AlternativePlayView alternativePlayView;
+        private GameModifiersView gameModifiersView;
 
-        private BeatSaberViewController beatSaberSettingsView;
-        private DarthMaulViewController darthMaulSettingsView;
-        private BeatSpearViewController beatSpearSettingsView;
+        private BeatSaberView beatSaberSettingsView;
+        private DarthMaulView darthMaulSettingsView;
+        private BeatSpearView beatSpearSettingsView;
 
         public bool IsBusy { get; set; }
 
@@ -37,20 +38,20 @@ namespace AlternativePlay.UI
 
         private void Awake()
         {
-            alternativePlayView = BeatSaberUI.CreateViewController<AlternativePlayViewController>();
+            alternativePlayView = BeatSaberUI.CreateViewController<AlternativePlayView>();
             alternativePlayView.MainFlowCoordinator = this;
-            gameModifiersView = BeatSaberUI.CreateViewController<GameModifiersViewController>();
+            gameModifiersView = BeatSaberUI.CreateViewController<GameModifiersView>();
 
-            beatSaberSettingsView = BeatSaberUI.CreateViewController<BeatSaberViewController>();
-            darthMaulSettingsView = BeatSaberUI.CreateViewController<DarthMaulViewController>();
-            beatSpearSettingsView = BeatSaberUI.CreateViewController<BeatSpearViewController>();
+            beatSaberSettingsView = BeatSaberUI.CreateViewController<BeatSaberView>();
+            darthMaulSettingsView = BeatSaberUI.CreateViewController<DarthMaulView>();
+            beatSpearSettingsView = BeatSaberUI.CreateViewController<BeatSpearView>();
         }
 
         protected override void DidActivate(bool firstActivation, ActivationType activationType)
         {
             ViewController viewToDisplay;
 
-            switch (ConfigOptions.instance.PlayMode)
+            switch (Configuration.instance.ConfigurationData.PlayMode)
             {
                 case PlayMode.DarthMaul:
                     viewToDisplay = darthMaulSettingsView;

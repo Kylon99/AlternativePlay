@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using AlternativePlay.Models;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.XR;
@@ -23,14 +24,14 @@ namespace AlternativePlay
             this.inputManager = inputManager;
 
             // Do nothing if we aren't playing Beat Spear
-            if (ConfigOptions.instance.PlayMode != PlayMode.BeatSpear) { return; }
+            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.BeatSpear) { return; }
 
             this.leftController = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
             this.rightController = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
 
-            if (ConfigOptions.instance.SpearControllerCount == ControllerCountEnum.Two)
+            if (Configuration.instance.ConfigurationData.SpearControllerCount == ControllerCountEnum.Two)
             {
-                this.previousForwardHand = ConfigOptions.instance.UseLeftSpear ? this.rightController : this.leftController;
+                this.previousForwardHand = Configuration.instance.ConfigurationData.UseLeftSpear ? this.rightController : this.leftController;
             }
 
             SharedCoroutineStarter.instance.StartCoroutine(HideOffColorSaber());
@@ -41,7 +42,7 @@ namespace AlternativePlay
             yield return new WaitForSecondsRealtime(0.1f);
 
             // Always hide the off color saber
-            Saber saberToHide = ConfigOptions.instance.UseLeftSpear ? this.playerController.rightSaber : this.playerController.leftSaber;
+            Saber saberToHide = Configuration.instance.ConfigurationData.UseLeftSpear ? this.playerController.rightSaber : this.playerController.leftSaber;
             saberToHide.gameObject.SetActive(false);
         }
 
@@ -49,7 +50,7 @@ namespace AlternativePlay
         {
             this.playerController = FindObjectOfType<PlayerController>();
             this.mainSettingsModel = Resources.FindObjectsOfTypeAll<MainSettingsModelSO>().FirstOrDefault();
-            this.previousForwardHand = ConfigOptions.instance.UseLeftSpear ? this.rightController : this.leftController;
+            this.previousForwardHand = Configuration.instance.ConfigurationData.UseLeftSpear ? this.rightController : this.leftController;
 
             var pauseAnimationController = Object.FindObjectOfType<PauseAnimationController>();
             if (pauseAnimationController != null) pauseAnimationController.resumeFromPauseAnimationDidFinishEvent += this.ResumeFromPauseAnimationDidFinishEvent;
@@ -60,16 +61,16 @@ namespace AlternativePlay
             const float handleLength = 0.75f;
             const float handleLengthSquared = 0.5625f;
 
-            if (ConfigOptions.instance.PlayMode != PlayMode.BeatSpear || playerController == null)
+            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.BeatSpear || playerController == null)
             {
                 // Do nothing if we aren't playing Beat Spear or if we aren't using two controllers
                 return;
             }
 
-            switch (ConfigOptions.instance.SpearControllerCount)
+            switch (Configuration.instance.ConfigurationData.SpearControllerCount)
             {
                 case ControllerCountEnum.One:
-                    if (ConfigOptions.instance.ReverseSpearDirection)
+                    if (Configuration.instance.ConfigurationData.ReverseSpearDirection)
                     {
                         playerController.leftSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
                         playerController.rightSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
@@ -104,13 +105,13 @@ namespace AlternativePlay
                         saberPosition = rearHand.position + (forward * handleLength);
                     }
 
-                    if (ConfigOptions.instance.ReverseSpearDirection)
+                    if (Configuration.instance.ConfigurationData.ReverseSpearDirection)
                     {
                         forward = -forward;
                     }
 
                     // Apply transforms to saber
-                    Saber saberToTransform = ConfigOptions.instance.UseLeftSpear ? this.playerController.leftSaber : this.playerController.rightSaber;
+                    Saber saberToTransform = Configuration.instance.ConfigurationData.UseLeftSpear ? this.playerController.leftSaber : this.playerController.rightSaber;
                     saberToTransform.transform.position = saberPosition;
                     saberToTransform.transform.rotation = Quaternion.LookRotation(forward, up);
                     break;
@@ -123,9 +124,9 @@ namespace AlternativePlay
 
         private void ResumeFromPauseAnimationDidFinishEvent()
         {
-            if (ConfigOptions.instance.PlayMode == PlayMode.BeatSpear)
+            if (Configuration.instance.ConfigurationData.PlayMode == PlayMode.BeatSpear)
             {
-                Saber saberToHide = ConfigOptions.instance.UseLeftSpear ? this.playerController.rightSaber : this.playerController.leftSaber;
+                Saber saberToHide = Configuration.instance.ConfigurationData.UseLeftSpear ? this.playerController.rightSaber : this.playerController.leftSaber;
                 saberToHide.gameObject.SetActive(false);
             }
         }

@@ -1,4 +1,5 @@
-﻿using BS_Utils.Utilities;
+﻿using AlternativePlay.Models;
+using BS_Utils.Utilities;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -23,7 +24,7 @@ namespace AlternativePlay
             GameplayCoreSceneSetupData data = BS_Utils.Plugin.LevelData?.GameplayCoreSceneSetupData;
             this.currentBeatmap = data.difficultyBeatmap;
 
-            if (this.IsTransformNecessary() || ConfigOptions.instance.TouchNotes)
+            if (this.IsTransformNecessary() || Configuration.instance.ConfigurationData.TouchNotes)
             {
                 // Disable scoring due to transforms
                 AlternativePlay.Logger.Info("Disabling submission on Game Modifier mode transformation");
@@ -48,16 +49,16 @@ namespace AlternativePlay
             const string OneSaberModeName = "OneSaber";
 
             // No transform if nothing is selected
-            if (!ConfigOptions.instance.NoArrows &&
-                !ConfigOptions.instance.OneColor &&
-                !ConfigOptions.instance.RemoveOtherSaber &&
-                !ConfigOptions.instance.NoArrowsRandom)
+            if (!Configuration.instance.ConfigurationData.NoArrows &&
+                !Configuration.instance.ConfigurationData.OneColor &&
+                !Configuration.instance.ConfigurationData.RemoveOtherSaber &&
+                !Configuration.instance.ConfigurationData.NoArrowsRandom)
             {
                 return false;
             }
 
-            bool IsOnlyOneColorSelected() { return ConfigOptions.instance.OneColor && !ConfigOptions.instance.NoArrows && !ConfigOptions.instance.NoArrowsRandom && !ConfigOptions.instance.TouchNotes; }
-            bool AreOnlyNoArrowsOptionsSelected() { return (ConfigOptions.instance.NoArrows || ConfigOptions.instance.NoArrowsRandom) && !ConfigOptions.instance.OneColor; }
+            bool IsOnlyOneColorSelected() { return Configuration.instance.ConfigurationData.OneColor && !Configuration.instance.ConfigurationData.NoArrows && !Configuration.instance.ConfigurationData.NoArrowsRandom && !Configuration.instance.ConfigurationData.TouchNotes; }
+            bool AreOnlyNoArrowsOptionsSelected() { return (Configuration.instance.ConfigurationData.NoArrows || Configuration.instance.ConfigurationData.NoArrowsRandom) && !Configuration.instance.ConfigurationData.OneColor; }
 
             // Check for map modes that already reproduce our game mode
             string serializedName = this.currentBeatmap.parentDifficultyBeatmapSet.beatmapCharacteristic.serializedName;
@@ -82,12 +83,12 @@ namespace AlternativePlay
             yield return new WaitForSecondsRealtime(0.1f);
 
             // Set up for One Color
-            if (ConfigOptions.instance.OneColor && !ConfigOptions.instance.NoArrowsRandom)
+            if (Configuration.instance.ConfigurationData.OneColor && !Configuration.instance.ConfigurationData.NoArrowsRandom)
             {
                 this.useLeft =
-                    (ConfigOptions.instance.PlayMode == PlayMode.BeatSaber && ConfigOptions.instance.UseLeftSaber) ||
-                    (ConfigOptions.instance.PlayMode == PlayMode.DarthMaul && ConfigOptions.instance.UseLeftController) ||
-                    (ConfigOptions.instance.PlayMode == PlayMode.BeatSpear && ConfigOptions.instance.UseLeftSpear);
+                    (Configuration.instance.ConfigurationData.PlayMode == PlayMode.BeatSaber && Configuration.instance.ConfigurationData.UseLeftSaber) ||
+                    (Configuration.instance.ConfigurationData.PlayMode == PlayMode.DarthMaul && Configuration.instance.ConfigurationData.UseLeftController) ||
+                    (Configuration.instance.ConfigurationData.PlayMode == PlayMode.BeatSpear && Configuration.instance.ConfigurationData.UseLeftSpear);
 
                 this.undesiredNoteType = this.useLeft ? NoteType.NoteB : NoteType.NoteA;
 
@@ -100,10 +101,10 @@ namespace AlternativePlay
                 Saber saberToSwap = this.useLeft ? player.rightSaber : player.leftSaber;
                 saberToSwap.SetField("_saberType", saberObject);
 
-                if (ConfigOptions.instance.RemoveOtherSaber && ConfigOptions.instance.PlayMode == PlayMode.BeatSaber)
+                if (Configuration.instance.ConfigurationData.RemoveOtherSaber && Configuration.instance.ConfigurationData.PlayMode == PlayMode.BeatSaber)
                 {
                     // Hide the off color saber
-                    Saber saberToHide = ConfigOptions.instance.UseLeftSaber ? this.playerController.rightSaber : this.playerController.leftSaber;
+                    Saber saberToHide = Configuration.instance.ConfigurationData.UseLeftSaber ? this.playerController.rightSaber : this.playerController.leftSaber;
                     saberToHide.gameObject.SetActive(false);
                 }
             }
@@ -112,7 +113,7 @@ namespace AlternativePlay
             BeatmapObjectCallbackController callbackController = Resources.FindObjectsOfTypeAll<BeatmapObjectCallbackController>().First();
             BeatmapData beatmapData = callbackController.GetField<BeatmapData>("_beatmapData");
 
-            if (ConfigOptions.instance.NoArrowsRandom)
+            if (Configuration.instance.ConfigurationData.NoArrowsRandom)
             {
                 // Transform the map to No Arrows Random using the ingame algorithm first
                 AlternativePlay.Logger.Info($"Transforming NoArrowsRandom for song: {this.currentBeatmap.level.songName}");
@@ -130,13 +131,13 @@ namespace AlternativePlay
                 var note = beatmapObject as NoteData;
 
                 // Transform for NoArrows or TouchNotes here but do not if NoArrowsRandom was already applied
-                if ((ConfigOptions.instance.NoArrows || ConfigOptions.instance.TouchNotes) && !ConfigOptions.instance.NoArrowsRandom)
+                if ((Configuration.instance.ConfigurationData.NoArrows || Configuration.instance.ConfigurationData.TouchNotes) && !Configuration.instance.ConfigurationData.NoArrowsRandom)
                 {
                     note.SetNoteToAnyCutDirection();
                 }
 
                 // Transform for One Color if this is the other note type
-                if (ConfigOptions.instance.OneColor && note.noteType == undesiredNoteType)
+                if (Configuration.instance.ConfigurationData.OneColor && note.noteType == undesiredNoteType)
                 {
                     note.SwitchNoteType();
                 }

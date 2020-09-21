@@ -1,4 +1,5 @@
-﻿using AlternativePlay.UI;
+﻿using AlternativePlay.Models;
+using AlternativePlay.UI;
 using BS_Utils.Utilities;
 using HarmonyLib;
 using IPA;
@@ -32,7 +33,8 @@ namespace AlternativePlay
         [OnStart]
         public void Start()
         {
-            PersistentSingleton<ConfigOptions>.TouchInstance();
+            PersistentSingleton<Configuration>.TouchInstance();
+            Configuration.instance.LoadConfiguration();
 
             var harmonyInstance = new Harmony("com.kylon99.beatsaber.alternativeplay");
             harmonyInstance.PatchAll(Assembly.GetExecutingAssembly());

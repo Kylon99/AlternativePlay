@@ -1,0 +1,90 @@
+﻿<bg xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
+  <vertical child-control-height='false'>
+
+    <!-- View Header -->
+    <horizontal
+      pad-left='15'
+      pad-right='15'
+      bg='panel-top'
+      pref-height='16'
+      horizontal-fit='PreferredSize'>
+      <vertical pad='1'>
+        <img preserve-aspect='true' pref-width='12' source='AlternativePlay.Resources.BeatSpear.png' />
+      </vertical>
+      <vertical
+        pad-left='1'
+        pref-height='12'
+        vertical-fit='PreferredSize'>
+        <text text='Beat Spear' font-size='6'/>
+        <text text='Play using a one bladed spear' font-size='4' />
+      </vertical>
+    </horizontal>
+
+    <!-- Main View -->
+    <vertical preferred-width='90' vertical-fit='PreferredSize'>
+      <dropdown-list-setting
+        text='Controllers'
+        value='ControllerChoice'
+        choices='ControllerChoiceList'
+        apply-on-change='true'
+        on-change='OnControllersChanged'
+        hover-hint='Use two controllers to control the spear or one controller or tracker for the spear'/>
+      <bool-setting
+        text='Use Left Spear'
+        value='UseLeftSpear'
+        apply-on-change='true'
+        on-change='OnUseLeftSpearChanged'
+        hover-hint='Move the spear to the left controller or tracker' />
+      <bool-setting
+        text='Use Trigger To Switch Hands'
+        value='UseTriggerToSwitchHands'
+        apply-on-change='true'
+        on-change='OnUseTriggerToSwitchHands'
+        hover-hint='Use the trigger of the forward hand to switch the spear direction' />
+      <bool-setting
+        text='Reverse Spear Direction'
+        value='ReverseSpearDirection'
+        apply-on-change='true'
+        on-change='OnReverseSpearDirectionChanged'
+        hover-hint='Reverse the spear direction' />
+      <horizontal>
+        <horizontal pad-right='2'>
+          <clickable-text font-size='5' text='Left Tracker' highlight-color='#FFFFFF' hover-hint='Use a tracker for the left hand instead of the default controller'/>
+        </horizontal>
+        <button font-size='5' preferred-width='50' preferred-height='6'
+                text='~LeftSpearTrackerSerial' hover-hint='~LeftSpearTrackerHoverHint'
+                click-event='showSelectTrackerModal' on-click='OnShowSelectLeftTracker'/>
+        <button-with-icon icon='AlternativePlay.Resources.XIcon.png' preferred-width='1' preferred-height='7' on-click='OnClearLeftTracker'/>
+      </horizontal>
+      <horizontal>
+        <clickable-text font-size='5' text='Right Tracker' highlight-color='#FFFFFF' hover-hint='Use a tracker for the right hand instead of the default controller'/>
+        <button font-size='5' preferred-width='50' preferred-height='6'
+                text='~RightSpearTrackerSerial' hover-hint='~RightSpearTrackerHoverHint'
+                click-event='showSelectTrackerModal' on-click='OnShowSelectRightTracker'/>
+        <button-with-icon icon='AlternativePlay.Resources.XIcon.png' preferred-width='1' preferred-height='7' on-click='OnClearRightTracker'/>
+      </horizontal>
+    </vertical>
+  </vertical>
+
+  <!-- Select Tracker Modal -->
+  <modal show-event="showSelectTrackerModal" hide-event="closeSelectTrackerModal"
+         move-to-center="true" click-off-closes="true" size-delta-x="120" size-delta-y="100" >
+
+    <!-- Select Tracker List -->
+    <vertical pad-top="3" pad-bottom="11" preferred-width="110">
+      <horizontal pad-top="2" child-align="UpperLeft">
+        <text font-size='4' text='Current' />
+        <text font-size='4' text='~CurrentTrackerText' />
+      </horizontal>
+      <pg-button pref-width='60' dir='Up' click-event='SelectTrackerList#PageUp'/>
+      <list id='SelectTrackerList' list-style='Simple' expand-cell='true' select-cell='OnTrackerListCellSelected' />
+      <pg-button pref-width='60' dir='Down' click-event='SelectTrackerList#PageDown'/>
+    </vertical>
+
+    <!-- Modal Dialog Bottom Buttons -->
+    <bottom-button-panel>
+      <button click-event="closeSelectTrackerModal" text="Select" on-click="OnTrackerSelected" />
+      <button click-event="closeSelectTrackerModal" text="Cancel" />
+    </bottom-button-panel>
+  </modal>
+</bg>
