@@ -48,6 +48,38 @@ namespace AlternativePlay.Models
         }
 
         /// <summary>
+        /// Gets the <see cref="InputDevice"/> from the saved list of devices given the serial
+        /// </summary>
+        /// <param name="serial">The serial number of the tracked device</param>
+        /// <returns>A <see cref="InputDevice"/> if found or otherwise null</returns>
+        public InputDevice GetInputDeviceFromSerial(string serial)
+        {
+            return TrackedDevices.FirstOrDefault(i => i.serialNumber == serial);
+        }
+
+        /// <summary>
+        /// Gets the position in a <see cref="Vector3"/> of a tracked device given the serial string
+        /// </summary>
+        /// <param name="serial">The serial number of the tracked device</param>
+        /// <returns>A <see cref="Vector3"/> containing the position the tracked device</returns>
+        public Vector3? GetPositionFromSerial(string serial)
+        {
+            var device = TrackedDevices.FirstOrDefault(i => i.serialNumber == serial);
+            if (device == null) { return null; }
+
+            bool positionSuccess = device.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position);
+
+            if (positionSuccess)
+            {
+                return position;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
         /// Gets the Pose of a tracked device given the serial string
         /// </summary>
         /// <param name="serial">The serial number of the tracked device</param>

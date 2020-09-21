@@ -68,7 +68,7 @@ namespace AlternativePlay.UI
 
         #region SelectTracker Modal Members
 
-        private const string NoTrackerText = "None";
+        private const string NoTrackerText = "Default";
         private const string NoTrackerHoverHint = "Not using any tracked devices";
 
         // Internal tracker selection members

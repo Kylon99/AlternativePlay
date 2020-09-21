@@ -46,7 +46,7 @@
         hover-hint='Reverse the direction of the right saber' />
       <horizontal>
         <horizontal pad-right='2'>
-          <clickable-text font-size='5' text='Left Tracker' highlight-color='#FFFFFF' hover-hint='Use a tracker for the left hand instead of the default controller'/>
+          <clickable-text font-size='5' text='Left Hand' highlight-color='#FFFFFF' hover-hint='Use a tracker for the left hand instead of the default controller'/>
         </horizontal>
         <button font-size='5' preferred-width='50' preferred-height='7'
                 text='~LeftSaberTrackerSerial' hover-hint='~LeftSaberTrackerHoverHint'
@@ -54,7 +54,7 @@
         <button-with-icon icon='AlternativePlay.Resources.XIcon.png' preferred-width='1' preferred-height='7' on-click='OnClearLeftTracker'/>
       </horizontal>
       <horizontal>
-        <clickable-text font-size='5' text='Right Tracker' highlight-color='#FFFFFF' hover-hint='Use a tracker for the right hand instead of the default controller'/>
+        <clickable-text font-size='5' text='Right Hand' highlight-color='#FFFFFF' hover-hint='Use a tracker for the right hand instead of the default controller'/>
         <button font-size='5' preferred-width='50' preferred-height='7'
                 text='~RightSaberTrackerSerial' hover-hint='~RightSaberTrackerHoverHint'
                 click-event='showSelectTrackerModal' on-click='OnShowSelectRightTracker'/>

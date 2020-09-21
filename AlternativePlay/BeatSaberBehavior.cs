@@ -1,4 +1,5 @@
 ﻿using AlternativePlay.Models;
+using System;
 using UnityEngine;
 
 namespace AlternativePlay
@@ -26,6 +27,32 @@ namespace AlternativePlay
             {
                 // Do nothing if we aren't playing Beat Saber
                 return;
+            }
+
+            var config = Configuration.instance.ConfigurationData;
+
+            // Check for left tracker
+            if (!String.IsNullOrWhiteSpace(config.LeftSaberTracker))
+            {
+                Pose? trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.LeftSaberTracker);
+                if (trackerPose != null)
+                {
+                    // Set the left saber based on the tracker
+                    playerController.leftSaber.transform.position = trackerPose.Value.position;
+                    playerController.leftSaber.transform.rotation = trackerPose.Value.rotation;
+                }
+            }
+
+            // Check for right tracker
+            if (!String.IsNullOrWhiteSpace(config.RightSaberTracker))
+            {
+                Pose? trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.RightSaberTracker);
+                if (trackerPose != null)
+                {
+                    // Set the left saber based on the tracker
+                    playerController.rightSaber.transform.position = trackerPose.Value.position;
+                    playerController.rightSaber.transform.rotation = trackerPose.Value.rotation;
+                }
             }
 
             if (Configuration.instance.ConfigurationData.ReverseLeftSaber)
