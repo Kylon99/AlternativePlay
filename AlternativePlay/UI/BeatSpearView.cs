@@ -129,7 +129,7 @@ namespace AlternativePlay.UI
         [UIAction("OnTrackerSelected")]
         public void OnTrackerSelected()
         {
-            var configData = PersistentSingleton<Configuration>.instance.ConfigurationData;
+            var configData = Configuration.instance.ConfigurationData;
 
             if (selectingLeft)
             {
@@ -153,8 +153,8 @@ namespace AlternativePlay.UI
         [UIAction("OnClearLeftTracker")]
         private void OnClearLeftTracker()
         {
-            PersistentSingleton<Configuration>.instance.ConfigurationData.LeftSpearTracker = null;
-            PersistentSingleton<Configuration>.instance.ConfigurationData.LeftSpearTrackerFullName = null;
+            Configuration.instance.ConfigurationData.LeftSpearTracker = null;
+            Configuration.instance.ConfigurationData.LeftSpearTrackerFullName = null;
             Configuration.instance.SaveConfiguration();
             this.LeftSpearTrackerSerial = NoTrackerText;
             this.LeftSpearTrackerHoverHint = NoTrackerHoverHint;
@@ -163,8 +163,8 @@ namespace AlternativePlay.UI
         [UIAction("OnClearRightTracker")]
         private void OnClearRightTracker()
         {
-            PersistentSingleton<Configuration>.instance.ConfigurationData.RightSpearTracker = null;
-            PersistentSingleton<Configuration>.instance.ConfigurationData.RightSpearTrackerFullName = null;
+            Configuration.instance.ConfigurationData.RightSpearTracker = null;
+            Configuration.instance.ConfigurationData.RightSpearTrackerFullName = null;
             Configuration.instance.SaveConfiguration();
             this.RightSpearTrackerSerial = NoTrackerText;
             this.RightSpearTrackerHoverHint = NoTrackerHoverHint;
@@ -175,7 +175,7 @@ namespace AlternativePlay.UI
         /// </summary>
         private void SetTrackerText()
         {
-            var config = PersistentSingleton<Configuration>.instance.ConfigurationData;
+            var config = Configuration.instance.ConfigurationData;
             if (String.IsNullOrWhiteSpace(config.LeftSpearTracker))
             {
                 this.LeftSpearTrackerSerial = NoTrackerText;
@@ -207,8 +207,7 @@ namespace AlternativePlay.UI
         private void InitializeTrackerModal(bool selectingLeft)
         {
             this.selectingLeft = selectingLeft;
-            var trackedDeviceManager = PersistentSingleton<TrackedDeviceManager>.instance;
-            var configData = PersistentSingleton<Configuration>.instance.ConfigurationData;
+            var configData = Configuration.instance.ConfigurationData;
 
             this.trackerList.tableView.ClearSelection();
             this.trackerList.data.Clear();
@@ -228,15 +227,15 @@ namespace AlternativePlay.UI
             this.trackerList.data.Add(noneTrackerCell);
 
             // Load the currently found trackers
-            trackedDeviceManager.LoadTrackedDevices();
-            trackedDeviceManager.TrackedDevices.ForEach(t =>
+            TrackedDeviceManager.instance.LoadTrackedDevices();
+            TrackedDeviceManager.instance.TrackedDevices.ForEach(t =>
             {
                 var customCellInfo = new CustomListTableData.CustomCellInfo(FormatTrackerHoverHint(t));
                 this.trackerList.data.Add(customCellInfo);
             });
 
             // Save the list of serials for later reference
-            this.LoadedTrackers = trackedDeviceManager.TrackedDevices
+            this.LoadedTrackers = TrackedDeviceManager.instance.TrackedDevices
                 .Select(t => new TrackerDisplayText
                 {
                     Serial = t.serialNumber,
