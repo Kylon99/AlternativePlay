@@ -9,15 +9,18 @@ namespace AlternativePlay.UI
     {
         public ModMainFlowCoordinator MainFlowCoordinator { get; set; }
 
-        private string beatSaberColor = null;
+        private const string Grey = "#4F4F4F";
+        private const string White = "#FFFFFF";
+
+        private string beatSaberColor = White;
         [UIValue("BeatSaberColor")]
         public string BeatSaberColor { get => this.beatSaberColor; set { this.beatSaberColor = value; this.NotifyPropertyChanged(nameof(this.BeatSaberColor)); } }
 
-        private string darthMaulColor = null;
+        private string darthMaulColor = Grey;
         [UIValue("DarthMaulColor")]
         public string DarthMaulColor { get => this.darthMaulColor; set { this.darthMaulColor = value; this.NotifyPropertyChanged(nameof(this.DarthMaulColor)); } }
 
-        private string beatSpearColor = null;
+        private string beatSpearColor = Grey;
         [UIValue("BeatSpearColor")]
         public string BeatSpearColor { get => this.beatSpearColor; set { this.beatSpearColor = value; this.NotifyPropertyChanged(nameof(this.BeatSpearColor)); } }
 
@@ -63,22 +66,22 @@ namespace AlternativePlay.UI
             switch (playMode)
             {
                 case PlayMode.DarthMaul:
-                    this.BeatSaberColor = "#4F4F4F";
-                    this.DarthMaulColor = "#FFFFFF";
-                    this.BeatSpearColor = "#4F4F4F";
+                    this.BeatSaberColor = Grey;
+                    this.DarthMaulColor = White;
+                    this.BeatSpearColor = Grey;
                     break;
 
                 case PlayMode.BeatSpear:
-                    this.BeatSaberColor = "#4F4F4F";
-                    this.DarthMaulColor = "#4F4F4F";
-                    this.BeatSpearColor = "#FFFFFF";
+                    this.BeatSaberColor = Grey;
+                    this.DarthMaulColor = Grey;
+                    this.BeatSpearColor = White;
                     break;
 
                 case PlayMode.BeatSaber:
                 default:
-                    this.BeatSaberColor = "#FFFFFF";
-                    this.DarthMaulColor = "#4F4F4F";
-                    this.BeatSpearColor = "#4F4F4F";
+                    this.BeatSaberColor = White;
+                    this.DarthMaulColor = Grey;
+                    this.BeatSpearColor = Grey;
                     break;
             }
         }
