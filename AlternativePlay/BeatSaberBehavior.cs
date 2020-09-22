@@ -43,6 +43,7 @@ namespace AlternativePlay
                 }
             }
 
+
             // Check for right tracker
             if (!String.IsNullOrWhiteSpace(config.RightSaberTracker))
             {

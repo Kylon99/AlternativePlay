@@ -65,7 +65,6 @@ namespace AlternativePlay
                     TransformTwoControllerMaul();
                     break;
 
-                case ControllerCountEnum.None:
                 default:
                     // Do nothing
                     break;
