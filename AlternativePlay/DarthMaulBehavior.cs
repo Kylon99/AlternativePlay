@@ -35,10 +35,46 @@ namespace AlternativePlay
                     Split = !Split;
                 }
 
-                if (Split) return;  // When you split Darth Maul it's just regular two sabers so do nothing
+                if (Split)
+                {
+                    TransformForSplitDarthMaul();
+                    return;
+                }
             }
 
             TransformForMaul();
+        }
+
+        /// <summary>
+        /// Tracks the sabers for when Darth Maul mode is split into two swords
+        /// </summary>
+        private void TransformForSplitDarthMaul()
+        {
+            var config = Configuration.instance.ConfigurationData;
+
+            // Check for left tracker
+            if (!String.IsNullOrWhiteSpace(config.LeftMaulTracker))
+            {
+                Pose? trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.LeftMaulTracker);
+                if (trackerPose != null)
+                {
+                    // Set the left saber based on the tracker
+                    playerController.leftSaber.transform.position = trackerPose.Value.position;
+                    playerController.leftSaber.transform.rotation = trackerPose.Value.rotation;
+                }
+            }
+
+            // Check for right tracker
+            if (!String.IsNullOrWhiteSpace(config.RightMaulTracker))
+            {
+                Pose? trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.RightMaulTracker);
+                if (trackerPose != null)
+                {
+                    // Set the left saber based on the tracker
+                    playerController.rightSaber.transform.position = trackerPose.Value.position;
+                    playerController.rightSaber.transform.rotation = trackerPose.Value.rotation;
+                }
+            }
         }
 
         /// <summary>
