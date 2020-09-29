@@ -81,7 +81,7 @@
     <!-- Modal Dialog Bottom Buttons -->
     <bottom-button-panel>
       <button click-event="closeSelectTrackerModal" text="Select" on-click="OnTrackerSelected" />
-      <button click-event="closeSelectTrackerModal" text="Cancel" />
+      <button click-event="closeSelectTrackerModal" text="Cancel" on-click="OnTrackerSelectCancelled" />
     </bottom-button-panel>
   </modal>
 </bg>

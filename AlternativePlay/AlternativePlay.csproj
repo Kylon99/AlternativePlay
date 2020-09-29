@@ -64,6 +64,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine.AssetBundleModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(GameDirPath)Beat Saber_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(GameDirPath)Beat Saber_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
@@ -75,7 +79,9 @@
   <ItemGroup>
     <Compile Include="BeatSpearBehavior.cs" />
     <Compile Include="BeatSaberBehavior.cs" />
+    <Compile Include="BehaviorCatalog.cs" />
     <Compile Include="DarthMaulBehavior.cs" />
+    <Compile Include="ShowTrackersBehavior.cs" />
     <Compile Include="GameModifiersBehavior.cs" />
     <Compile Include="HarmonyPatches\DarthMaulHapticPatch.cs" />
     <Compile Include="HarmonyPatches\TouchNotesPatch.cs" />
@@ -159,7 +165,9 @@
   <ItemGroup>
     <EmbeddedResource Include="UI\GameModifiersView.bsml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\alternativeplaymodels" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetFileName)" "$(GameDirPath)Plugins"</PostBuildEvent>

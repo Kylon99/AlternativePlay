@@ -7,17 +7,8 @@ namespace AlternativePlay
     public class DarthMaulBehavior : MonoBehaviour
     {
         private PlayerController playerController;
-        private InputManager inputManager;
 
         public static bool Split { get; set; }
-
-        /// <summary>
-        /// To be invoked every time when starting the GameCore scene.
-        /// </summary>
-        public void BeginGameCoreScene(InputManager inputManager)
-        {
-            this.inputManager = inputManager;
-        }
 
         private void Awake()
         {
@@ -36,8 +27,8 @@ namespace AlternativePlay
             if (Configuration.instance.ConfigurationData.UseTriggerToSeparate)
             {
                 // Check to see if the trigger has been pressed
-                bool leftTriggerPressed = inputManager.GetLeftTriggerClicked();
-                bool rightTriggerPressed = inputManager.GetRightTriggerClicked();
+                bool leftTriggerPressed = BehaviorCatalog.instance.InputManager.GetLeftTriggerClicked();
+                bool rightTriggerPressed = BehaviorCatalog.instance.InputManager.GetRightTriggerClicked();
 
                 if (leftTriggerPressed || rightTriggerPressed)
                 {

@@ -9,7 +9,6 @@ namespace AlternativePlay
 {
     public class BeatSpearBehavior : MonoBehaviour
     {
-        private InputManager inputManager;
         private PlayerController playerController;
         private InputDevice leftController;
         private InputDevice rightController;
@@ -20,10 +19,8 @@ namespace AlternativePlay
         /// <summary>
         /// To be invoked every time when starting the GameCore scene.
         /// </summary>
-        public void BeginGameCoreScene(InputManager inputManager)
+        public void BeginGameCoreScene()
         {
-            this.inputManager = inputManager;
-
             // Do nothing if we aren't playing Beat Spear
             if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.BeatSpear) { return; }
 
@@ -123,8 +120,8 @@ namespace AlternativePlay
             // Determine the forward hand
             if (Configuration.instance.ConfigurationData.UseTriggerToSwitchHands)
             {
-                if (this.inputManager.GetLeftTriggerClicked()) { this.previousForwardHand = this.leftController; }
-                if (this.inputManager.GetRightTriggerClicked()) { this.previousForwardHand = this.rightController; }
+                if (BehaviorCatalog.instance.InputManager.GetLeftTriggerClicked()) { this.previousForwardHand = this.leftController; }
+                if (BehaviorCatalog.instance.InputManager.GetRightTriggerClicked()) { this.previousForwardHand = this.rightController; }
             }
 
             InputDevice forwardHandDevice = this.previousForwardHand;

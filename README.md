@@ -36,6 +36,9 @@ Drop the AlternativePlay.dll file into your Plugins folder under your BeatSaber 
 
 ## Changelog
 
+### 0.4.1
+- Added behavior to show tracker positions when selecting
+
 ### 0.4.0
 - Added new options to use trackers for saber positions without the need for OpenVR Input Emulator
 - Added option to enable or disable hand switching in Beat Spear

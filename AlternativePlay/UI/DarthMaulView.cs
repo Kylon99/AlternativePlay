@@ -124,6 +124,7 @@ namespace AlternativePlay.UI
             {
                 // The "None" entry was selected
                 this.selectedTracker = null;
+                BehaviorCatalog.instance.ShowTrackersBehavior.SetSelectedSerial(null);
                 return;
             }
 
@@ -133,6 +134,8 @@ namespace AlternativePlay.UI
                 Serial = tracker.Serial,
                 HoverHint = tracker.HoverHint
             };
+
+            BehaviorCatalog.instance.ShowTrackersBehavior.SetSelectedSerial(this.selectedTracker.Serial);
         }
 
         [UIAction("OnTrackerSelected")]
@@ -157,6 +160,14 @@ namespace AlternativePlay.UI
                 this.RightMaulTrackerHoverHint = this.selectedTracker == null ? NoTrackerHoverHint : this.selectedTracker.HoverHint;
             }
             Configuration.instance.SaveConfiguration();
+
+            BehaviorCatalog.instance.ShowTrackersBehavior.HideTrackers();
+        }
+
+        [UIAction("OnTrackerSelectCancelled")]
+        public void OnTrackerSelectCancelled()
+        {
+            BehaviorCatalog.instance.ShowTrackersBehavior.HideTrackers();
         }
 
         [UIAction("OnClearLeftTracker")]
@@ -265,6 +276,10 @@ namespace AlternativePlay.UI
                 this.selectedTracker = this.LoadedTrackers.Find(t => t.Serial == serialToFind);
             }
             this.trackerList.tableView.SelectCellWithIdx(index);
+
+            // Set the Tracker Renderer to show trackers
+            BehaviorCatalog.instance.ShowTrackersBehavior.ShowTrackers();
+            BehaviorCatalog.instance.ShowTrackersBehavior.SetSelectedSerial(serialToFind);
         }
 
         /// <summary>
