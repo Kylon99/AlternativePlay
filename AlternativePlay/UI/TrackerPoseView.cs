@@ -32,9 +32,9 @@ namespace AlternativePlay.UI
             this.originalScale = this.trackerData.Scale;
         }
 
-        protected override void DidActivate(bool firstActivation, ActivationType activationType)
+        protected override void DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling)
         {
-            base.DidActivate(firstActivation, activationType);
+            base.DidActivate(firstActivation, addedToHierarchy, screenSystemEnabling);
             RefreshAllValues();
         }
 

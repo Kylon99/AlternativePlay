@@ -47,20 +47,6 @@
         apply-on-change='true'
         on-change='OnReverseSpearDirectionChanged'
         hover-hint='Reverse the spear direction' />
-      <horizontal>
-        <horizontal pad-right='2'>
-          <clickable-text font-size='5' text='Left Hand' highlight-color='#FFFFFF' hover-hint='Use a tracker for the left hand instead of the default controller'/>
-        </horizontal>
-        <button font-size='5' preferred-width='50' preferred-height='6' text='~LeftSpearTrackerSerial'
-                hover-hint='~LeftSpearTrackerHoverHint' on-click='OnShowSelectLeftTracker'/>
-        <button-with-icon icon='AlternativePlay.Resources.XIcon.png' preferred-width='1' preferred-height='7' on-click='OnClearLeftTracker'/>
-      </horizontal>
-      <horizontal>
-        <clickable-text font-size='5' text='Right Hand' highlight-color='#FFFFFF' hover-hint='Use a tracker for the right hand instead of the default controller'/>
-        <button font-size='5' preferred-width='50' preferred-height='6' text='~RightSpearTrackerSerial'
-                hover-hint='~RightSpearTrackerHoverHint' on-click='OnShowSelectRightTracker'/>
-        <button-with-icon icon='AlternativePlay.Resources.XIcon.png' preferred-width='1' preferred-height='7' on-click='OnClearRightTracker'/>
-      </horizontal>
     </vertical>
   </vertical>
 </bg>

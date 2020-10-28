@@ -54,9 +54,9 @@ namespace AlternativePlay.UI
             MainFlowCoordinator.ShowBeatSpear();
         }
 
-        protected override void DidActivate(bool firstActivation, ActivationType activationType)
+        protected override void DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling)
         {
-            base.DidActivate(firstActivation, activationType);
+            base.DidActivate(firstActivation, addedToHierarchy, screenSystemEnabling);
             SetPlayModeColor(Configuration.instance.ConfigurationData.PlayMode);
         }
 

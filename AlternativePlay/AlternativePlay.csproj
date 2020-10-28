@@ -37,20 +37,20 @@
     </Reference>
     <Reference Include="BeatmapCore, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Programs\SteamLibrary\steamapps\common\Beat Saber\Beat Saber_Data\Managed\BeatmapCore.dll</HintPath>
+      <HintPath>&gt;$(GameDirPath)Beat Saber_Data\Managed\BeatmapCore.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="BSML">
-      <HintPath>$(GameDirPath)Plugins\BSML.dll</HintPath>
+      <HintPath>D:\Programs\SteamLibrary\steamapps\common\Beat Saber\Plugins\BSML.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="BS_Utils">
-      <HintPath>$(GameDirPath)Plugins\BS_Utils.dll</HintPath>
+      <HintPath>D:\Programs\SteamLibrary\steamapps\common\Beat Saber\Plugins\BS_Utils.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="GameplayCore, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>D:\Programs\SteamLibrary\steamapps\common\Beat Saber\Beat Saber_Data\Managed\GameplayCore.dll</HintPath>
+      <HintPath>&gt;$(GameDirPath)Beat Saber_Data\Managed\GameplayCore.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="HMLib">

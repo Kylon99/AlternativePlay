@@ -59,20 +59,6 @@
         max='50' increment='1'
         on-change='OnSeparationAmountChanged'
         hover-hint='The distance between sabers' />
-      <horizontal>
-        <horizontal pad-right='2'>
-          <clickable-text font-size='5' text='Left Hand' highlight-color='#FFFFFF' hover-hint='Use a tracker for the left hand instead of the default controller'/>
-        </horizontal>
-        <button font-size='5' preferred-width='50' preferred-height='6' text='~LeftMaulTrackerSerial'
-                hover-hint='~LeftMaulTrackerHoverHint' on-click='OnShowSelectLeftTracker'/>
-        <button-with-icon icon='AlternativePlay.Resources.XIcon.png' preferred-width='1' preferred-height='7' on-click='OnClearLeftTracker'/>
-      </horizontal>
-      <horizontal>
-        <clickable-text font-size='5' text='Right Hand' highlight-color='#FFFFFF' hover-hint='Use a tracker for the right hand instead of the default controller'/>
-        <button font-size='5' preferred-width='50' preferred-height='6' text='~RightMaulTrackerSerial'
-                hover-hint='~RightMaulTrackerHoverHint' on-click='OnShowSelectRightTracker'/>
-        <button-with-icon icon='AlternativePlay.Resources.XIcon.png' preferred-width='1' preferred-height='7' on-click='OnClearRightTracker'/>
-      </horizontal>
     </vertical>
 
   </vertical>

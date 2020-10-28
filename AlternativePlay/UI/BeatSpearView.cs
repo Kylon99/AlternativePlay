@@ -16,10 +16,10 @@ namespace AlternativePlay.UI
             this.mainFlowCoordinator = mainFlowCoordinator;
         }
 
-        protected override void DidActivate(bool firstActivation, ActivationType activationType)
+        protected override void DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling)
         {
-            base.DidActivate(firstActivation, activationType);
-            SetTrackerText();
+            base.DidActivate(firstActivation, addedToHierarchy, screenSystemEnabling);
+            //SetTrackerText();
         }
 
         [UIValue("ControllerChoice")]
@@ -59,7 +59,7 @@ namespace AlternativePlay.UI
             Configuration.instance.ConfigurationData.ReverseSpearDirection = value;
             Configuration.instance.SaveConfiguration();
         }
-
+        /*
         #region SelectTracker Modal Members
 
         // Text Displays for the Main View
@@ -145,6 +145,6 @@ namespace AlternativePlay.UI
         }
 
         #endregion
-
+        */
     }
 }

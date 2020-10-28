@@ -9,7 +9,7 @@ namespace AlternativePlay
 {
     public class BeatSpearBehavior : MonoBehaviour
     {
-        private PlayerController playerController;
+        private SaberManager saberManager;
         private InputDevice leftController;
         private InputDevice rightController;
 
@@ -40,7 +40,7 @@ namespace AlternativePlay
 
         private void Awake()
         {
-            this.playerController = FindObjectOfType<PlayerController>();
+            this.saberManager = FindObjectOfType<SaberManager>();
             this.mainSettingsModel = Resources.FindObjectsOfTypeAll<MainSettingsModelSO>().FirstOrDefault();
             this.previousForwardHand = Configuration.instance.ConfigurationData.UseLeftSpear ? this.rightController : this.leftController;
 
@@ -50,7 +50,7 @@ namespace AlternativePlay
 
         private void Update()
         {
-            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.BeatSpear || playerController == null)
+            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.BeatSpear || saberManager == null)
             {
                 // Do nothing if we aren't playing Beat Spear or if we can't find the player controller
                 return;
@@ -84,7 +84,7 @@ namespace AlternativePlay
                 Pose? trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.LeftSpearTracker.Serial);
                 if (trackerPose != null)
                 {
-                    Utilities.TransformSaberFromTrackerData(playerController.leftSaber.transform, config.LeftSpearTracker,
+                    Utilities.TransformSaberFromTrackerData(saberManager.leftSaber.transform, config.LeftSpearTracker,
                         trackerPose.Value.rotation, trackerPose.Value.position);
                 }
             }
@@ -95,7 +95,7 @@ namespace AlternativePlay
                 Pose? trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.RightSpearTracker.Serial);
                 if (trackerPose != null)
                 {
-                    Utilities.TransformSaberFromTrackerData(playerController.rightSaber.transform, config.RightSpearTracker,
+                    Utilities.TransformSaberFromTrackerData(saberManager.rightSaber.transform, config.RightSpearTracker,
                         trackerPose.Value.rotation, trackerPose.Value.position);
                 }
             }
@@ -103,8 +103,8 @@ namespace AlternativePlay
             // Handle reversed spear directions
             if (config.ReverseSpearDirection)
             {
-                playerController.leftSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
-                playerController.rightSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
+                saberManager.leftSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
+                saberManager.rightSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
             }
         }
 
@@ -152,7 +152,7 @@ namespace AlternativePlay
             }
 
             // Apply transforms to saber
-            Saber saberToTransform = Configuration.instance.ConfigurationData.UseLeftSpear ? this.playerController.leftSaber : this.playerController.rightSaber;
+            Saber saberToTransform = Configuration.instance.ConfigurationData.UseLeftSpear ? this.saberManager.leftSaber : this.saberManager.rightSaber;
             saberToTransform.transform.position = saberPosition;
             saberToTransform.transform.rotation = Quaternion.LookRotation(forward, up);
         }
@@ -202,7 +202,7 @@ namespace AlternativePlay
             yield return new WaitForSecondsRealtime(0.1f);
 
             // Always hide the off color saber
-            Saber saberToHide = Configuration.instance.ConfigurationData.UseLeftSpear ? this.playerController.rightSaber : this.playerController.leftSaber;
+            Saber saberToHide = Configuration.instance.ConfigurationData.UseLeftSpear ? this.saberManager.rightSaber : this.saberManager.leftSaber;
             saberToHide.gameObject.SetActive(false);
         }
 
@@ -210,7 +210,7 @@ namespace AlternativePlay
         {
             if (Configuration.instance.ConfigurationData.PlayMode == PlayMode.BeatSpear)
             {
-                Saber saberToHide = Configuration.instance.ConfigurationData.UseLeftSpear ? this.playerController.rightSaber : this.playerController.leftSaber;
+                Saber saberToHide = Configuration.instance.ConfigurationData.UseLeftSpear ? this.saberManager.rightSaber : this.saberManager.leftSaber;
                 saberToHide.gameObject.SetActive(false);
             }
         }

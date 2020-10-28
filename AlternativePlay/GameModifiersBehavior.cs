@@ -10,9 +10,8 @@ namespace AlternativePlay
     {
         private IDifficultyBeatmap currentBeatmap;
         private bool useLeft;
-        private NoteType undesiredNoteType;
-
-        private PlayerController playerController;
+        private ColorType undesiredNoteType;
+        private SaberManager saberManager;
 
 
         /// <summary>
@@ -36,7 +35,7 @@ namespace AlternativePlay
 
         private void Awake()
         {
-            this.playerController = FindObjectOfType<PlayerController>();
+            this.saberManager = FindObjectOfType<SaberManager>();
         }
 
         /// <summary>
@@ -90,21 +89,21 @@ namespace AlternativePlay
                     (Configuration.instance.ConfigurationData.PlayMode == PlayMode.DarthMaul && Configuration.instance.ConfigurationData.UseLeftController) ||
                     (Configuration.instance.ConfigurationData.PlayMode == PlayMode.BeatSpear && Configuration.instance.ConfigurationData.UseLeftSpear);
 
-                this.undesiredNoteType = this.useLeft ? NoteType.NoteB : NoteType.NoteA;
+                this.undesiredNoteType = this.useLeft ? ColorType.ColorB : ColorType.ColorA;
 
                 // Change the other saber to desired type
                 SaberType desiredSaberType = this.useLeft ? SaberType.SaberA : SaberType.SaberB;
                 var saberObject = new GameObject("SaberTypeObject").AddComponent<SaberTypeObject>();
                 saberObject.SetField("_saberType", desiredSaberType);
 
-                var player = Resources.FindObjectsOfTypeAll<PlayerController>().FirstOrDefault();
+                var player = Resources.FindObjectsOfTypeAll<SaberManager>().FirstOrDefault();
                 Saber saberToSwap = this.useLeft ? player.rightSaber : player.leftSaber;
                 saberToSwap.SetField("_saberType", saberObject);
 
                 if (Configuration.instance.ConfigurationData.RemoveOtherSaber && Configuration.instance.ConfigurationData.PlayMode == PlayMode.BeatSaber)
                 {
                     // Hide the off color saber
-                    Saber saberToHide = Configuration.instance.ConfigurationData.UseLeftSaber ? this.playerController.rightSaber : this.playerController.leftSaber;
+                    Saber saberToHide = Configuration.instance.ConfigurationData.UseLeftSaber ? this.saberManager.rightSaber : this.saberManager.leftSaber;
                     saberToHide.gameObject.SetActive(false);
                 }
             }
@@ -117,7 +116,7 @@ namespace AlternativePlay
             {
                 // Transform the map to No Arrows Random using the ingame algorithm first
                 AlternativePlay.Logger.Info($"Transforming NoArrowsRandom for song: {this.currentBeatmap.level.songName}");
-                var transformedBeatmap = BeatmapDataNoArrowsTransform.CreateTransformedData(beatmapData, true);
+                var transformedBeatmap = BeatmapDataNoArrowsTransform.CreateTransformedData(beatmapData);
                 callbackController.SetNewBeatmapData(transformedBeatmap);
             }
 
@@ -137,9 +136,9 @@ namespace AlternativePlay
                 }
 
                 // Transform for One Color if this is the other note type
-                if (Configuration.instance.ConfigurationData.OneColor && note.noteType == undesiredNoteType)
+                if (Configuration.instance.ConfigurationData.OneColor && note.colorType == undesiredNoteType)
                 {
-                    note.SwitchNoteType();
+                    note.SwitchNoteColorType();
                 }
             });
 
