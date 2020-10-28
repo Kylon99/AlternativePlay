@@ -36,6 +36,9 @@ Drop the AlternativePlay.dll file into your Plugins folder under your BeatSaber 
 
 ## Changelog
 
+### 0.4.2
+- Added ability to rotate and change positions of the saber when using trackers
+
 ### 0.4.1
 - Added behavior to show tracker positions when selecting
 

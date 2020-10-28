@@ -13,7 +13,11 @@ namespace AlternativePlay
         /// </summary>
         public void BeginGameCoreScene()
         {
-            // Currently nothing needs to be done on GameCore start
+            // Do nothing if we aren't playing Beat Saber
+            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.BeatSaber) { return; }
+
+            Utilities.CheckAndDisableForTrackerTransforms(Configuration.instance.ConfigurationData.LeftSaberTracker);
+            Utilities.CheckAndDisableForTrackerTransforms(Configuration.instance.ConfigurationData.RightSaberTracker);
         }
 
         private void Awake()
@@ -31,27 +35,25 @@ namespace AlternativePlay
 
             var config = Configuration.instance.ConfigurationData;
 
-            // Check for left tracker
-            if (!String.IsNullOrWhiteSpace(config.LeftSaberTracker))
+            // Check and set the left tracker
+            if (!String.IsNullOrWhiteSpace(config.LeftSaberTracker?.Serial))
             {
-                Pose? trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.LeftSaberTracker);
+                Pose? trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.LeftSaberTracker.Serial);
                 if (trackerPose != null)
                 {
-                    // Set the left saber based on the tracker
-                    playerController.leftSaber.transform.position = trackerPose.Value.position;
-                    playerController.leftSaber.transform.rotation = trackerPose.Value.rotation;
+                    Utilities.TransformSaberFromTrackerData(playerController.leftSaber.transform, config.LeftSaberTracker,
+                        trackerPose.Value.rotation, trackerPose.Value.position);
                 }
             }
 
             // Check for right tracker
-            if (!String.IsNullOrWhiteSpace(config.RightSaberTracker))
+            if (!String.IsNullOrWhiteSpace(config.RightSaberTracker?.Serial))
             {
-                Pose? trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.RightSaberTracker);
+                Pose? trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.RightSaberTracker.Serial);
                 if (trackerPose != null)
                 {
-                    // Set the left saber based on the tracker
-                    playerController.rightSaber.transform.position = trackerPose.Value.position;
-                    playerController.rightSaber.transform.rotation = trackerPose.Value.rotation;
+                    Utilities.TransformSaberFromTrackerData(playerController.rightSaber.transform, config.RightSaberTracker,
+                        trackerPose.Value.rotation, trackerPose.Value.position);
                 }
             }
 

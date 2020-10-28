@@ -63,40 +63,17 @@
         <horizontal pad-right='2'>
           <clickable-text font-size='5' text='Left Hand' highlight-color='#FFFFFF' hover-hint='Use a tracker for the left hand instead of the default controller'/>
         </horizontal>
-        <button font-size='5' preferred-width='50' preferred-height='6'
-                text='~LeftMaulTrackerSerial' hover-hint='~LeftMaulTrackerHoverHint'
-                click-event='showSelectTrackerModal' on-click='OnShowSelectLeftTracker'/>
+        <button font-size='5' preferred-width='50' preferred-height='6' text='~LeftMaulTrackerSerial'
+                hover-hint='~LeftMaulTrackerHoverHint' on-click='OnShowSelectLeftTracker'/>
         <button-with-icon icon='AlternativePlay.Resources.XIcon.png' preferred-width='1' preferred-height='7' on-click='OnClearLeftTracker'/>
       </horizontal>
       <horizontal>
         <clickable-text font-size='5' text='Right Hand' highlight-color='#FFFFFF' hover-hint='Use a tracker for the right hand instead of the default controller'/>
-        <button font-size='5' preferred-width='50' preferred-height='6'
-                text='~RightMaulTrackerSerial' hover-hint='~RightMaulTrackerHoverHint'
-                click-event='showSelectTrackerModal' on-click='OnShowSelectRightTracker'/>
+        <button font-size='5' preferred-width='50' preferred-height='6' text='~RightMaulTrackerSerial'
+                hover-hint='~RightMaulTrackerHoverHint' on-click='OnShowSelectRightTracker'/>
         <button-with-icon icon='AlternativePlay.Resources.XIcon.png' preferred-width='1' preferred-height='7' on-click='OnClearRightTracker'/>
       </horizontal>
     </vertical>
 
-    <!-- Select Tracker Modal -->
-    <modal show-event="showSelectTrackerModal" hide-event="closeSelectTrackerModal"
-           move-to-center="true" click-off-closes="true" size-delta-x="120" size-delta-y="100" >
-
-      <!-- Select Tracker List -->
-      <vertical pad-top="3" pad-bottom="11" preferred-width="110">
-        <horizontal pad-top="2" child-align="UpperLeft">
-          <text font-size='4' text='Current' />
-          <text font-size='4' text='~CurrentTrackerText' />
-        </horizontal>
-        <pg-button pref-width='60' dir='Up' click-event='SelectTrackerList#PageUp'/>
-        <list id='SelectTrackerList' list-style='Simple' expand-cell='true' select-cell='OnTrackerListCellSelected' />
-        <pg-button pref-width='60' dir='Down' click-event='SelectTrackerList#PageDown'/>
-      </vertical>
-
-      <!-- Modal Dialog Bottom Buttons -->
-      <bottom-button-panel>
-        <button click-event="closeSelectTrackerModal" text="Select" on-click="OnTrackerSelected" />
-        <button click-event="closeSelectTrackerModal" text="Cancel" />
-      </bottom-button-panel>
-    </modal>
   </vertical>
 </bg>

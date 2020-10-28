@@ -24,7 +24,6 @@ namespace AlternativePlay.UI
         [UIValue("BeatSpearColor")]
         public string BeatSpearColor { get => this.beatSpearColor; set { this.beatSpearColor = value; this.NotifyPropertyChanged(nameof(this.BeatSpearColor)); } }
 
-
         [UIAction("BeatSaberClick")]
         private void OnBeatSaberClick()
         {

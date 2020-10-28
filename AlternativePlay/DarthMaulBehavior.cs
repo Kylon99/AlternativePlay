@@ -10,6 +10,19 @@ namespace AlternativePlay
 
         public static bool Split { get; set; }
 
+
+        /// <summary>
+        /// To be invoked every time when starting the GameCore scene.
+        /// </summary>
+        public void BeginGameCoreScene()
+        {
+            // Do nothing if we aren't playing Darth Maul
+            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.DarthMaul) { return; }
+
+            Utilities.CheckAndDisableForTrackerTransforms(Configuration.instance.ConfigurationData.LeftMaulTracker);
+            Utilities.CheckAndDisableForTrackerTransforms(Configuration.instance.ConfigurationData.RightMaulTracker);
+        }
+
         private void Awake()
         {
             this.playerController = FindObjectOfType<PlayerController>();
@@ -53,9 +66,9 @@ namespace AlternativePlay
             var config = Configuration.instance.ConfigurationData;
 
             // Check for left tracker
-            if (!String.IsNullOrWhiteSpace(config.LeftMaulTracker))
+            if (!String.IsNullOrWhiteSpace(config.LeftMaulTracker?.Serial))
             {
-                Pose? trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.LeftMaulTracker);
+                Pose? trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.LeftMaulTracker.Serial);
                 if (trackerPose != null)
                 {
                     // Set the left saber based on the tracker
@@ -65,9 +78,9 @@ namespace AlternativePlay
             }
 
             // Check for right tracker
-            if (!String.IsNullOrWhiteSpace(config.RightMaulTracker))
+            if (!String.IsNullOrWhiteSpace(config.RightMaulTracker?.Serial))
             {
-                Pose? trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.RightMaulTracker);
+                Pose? trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.RightMaulTracker.Serial);
                 if (trackerPose != null)
                 {
                     // Set the left saber based on the tracker
@@ -110,8 +123,10 @@ namespace AlternativePlay
             var otherSaber = config.UseLeftController ? playerController.rightSaber : playerController.leftSaber;
             var rotateSaber = config.ReverseMaulDirection ? baseSaber : otherSaber;
 
-            string trackerPosition = config.UseLeftController ? config.LeftMaulTracker : config.RightMaulTracker;
-            if (String.IsNullOrWhiteSpace(trackerPosition))
+            string trackerSerial = config.UseLeftController ? config.LeftMaulTracker?.Serial : config.RightMaulTracker?.Serial;
+            TrackerConfigData trackerData = config.UseLeftController ? config.LeftMaulTracker : config.RightMaulTracker;
+
+            if (String.IsNullOrWhiteSpace(trackerSerial))
             {
                 // Move saber using Beat Saber saber positions
                 otherSaber.transform.localPosition = baseSaber.transform.localPosition;
@@ -119,7 +134,7 @@ namespace AlternativePlay
             }
             else
             {
-                Pose? trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(trackerPosition);
+                Pose? trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(trackerSerial);
                 if (trackerPose == null)
                 {
                     // Fall back to move saber using Beat Saber saber positions
@@ -128,10 +143,10 @@ namespace AlternativePlay
                 }
 
                 // Move both sabers to tracker pose
-                baseSaber.transform.localPosition = trackerPose.Value.position;
-                baseSaber.transform.localRotation = trackerPose.Value.rotation;
-                otherSaber.transform.localPosition = trackerPose.Value.position;
-                otherSaber.transform.localRotation = trackerPose.Value.rotation;
+                Utilities.TransformSaberFromTrackerData(baseSaber.transform, trackerData,
+                    trackerPose.Value.rotation, trackerPose.Value.position);
+                Utilities.TransformSaberFromTrackerData(otherSaber.transform, trackerData,
+                    trackerPose.Value.rotation, trackerPose.Value.position);
             }
 
             rotateSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
@@ -148,38 +163,30 @@ namespace AlternativePlay
 
             // Determine Left Hand position
             Vector3 leftHandPos;
-            if (String.IsNullOrWhiteSpace(config.LeftMaulTracker))
+            if (String.IsNullOrWhiteSpace(config.LeftMaulTracker?.Serial))
             {
                 leftHandPos = playerController.leftSaber.transform.position;
             }
             else
             {
-                Vector3? trackerPosition = TrackedDeviceManager.instance.GetPositionFromSerial(config.LeftMaulTracker);
-                if (trackerPosition == null)
-                {
-                    // Fall back to the Beat Saber saber position
-                    leftHandPos = playerController.leftSaber.transform.position;
-                }
-
-                leftHandPos = trackerPosition.Value;
+                Vector3? trackerPosition = TrackedDeviceManager.instance.GetPositionFromSerial(config.LeftMaulTracker.Serial);
+                leftHandPos = trackerPosition == null
+                    ? playerController.leftSaber.transform.position // Fall back to the Beat Saber saber position
+                    : trackerPosition.Value;
             }
 
             // Determine Right Hand position
             Vector3 rightHandPos;
-            if (String.IsNullOrWhiteSpace(config.RightMaulTracker))
+            if (String.IsNullOrWhiteSpace(config.RightMaulTracker?.Serial))
             {
                 rightHandPos = playerController.rightSaber.transform.position;
             }
             else
             {
-                Vector3? trackerPosition = TrackedDeviceManager.instance.GetPositionFromSerial(config.RightMaulTracker);
-                if (trackerPosition == null)
-                {
-                    // Fall back to the Beat Saber saber position
-                    rightHandPos = playerController.rightSaber.transform.position;
-                }
-
-                rightHandPos = trackerPosition.Value;
+                Vector3? trackerPosition = TrackedDeviceManager.instance.GetPositionFromSerial(config.RightMaulTracker.Serial);
+                rightHandPos = trackerPosition == null
+                    ? rightHandPos = playerController.rightSaber.transform.position // Fall back to the Beat Saber saber position
+                    : trackerPosition.Value;
             }
 
             Vector3 middlePos = (rightHandPos + leftHandPos) * 0.5f;
