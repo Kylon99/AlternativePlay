@@ -81,6 +81,8 @@
     <Compile Include="BeatSaberBehavior.cs" />
     <Compile Include="BehaviorCatalog.cs" />
     <Compile Include="DarthMaulBehavior.cs" />
+    <Compile Include="Models\Vector3Converter.cs" />
+    <Compile Include="Models\TrackerConfigData.cs" />
     <Compile Include="ShowTrackersBehavior.cs" />
     <Compile Include="GameModifiersBehavior.cs" />
     <Compile Include="HarmonyPatches\DarthMaulHapticPatch.cs" />
@@ -99,6 +101,10 @@
     <Compile Include="UI\AlternativePlayView.cs" />
     <Compile Include="UI\ModMainFlowCoordinator.cs" />
     <Compile Include="UI\TrackerDisplayText.cs" />
+    <Compile Include="UI\TrackerPoseView.cs" />
+    <Compile Include="UI\TrackerOptionsView.cs" />
+    <Compile Include="UI\TrackerSelectView.cs" />
+    <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="manifest.json" />
@@ -107,15 +113,16 @@
     <EmbeddedResource Include="Resources\XIcon.png" />
     <EmbeddedResource Include="Resources\ViveTracker.png" />
     <EmbeddedResource Include="Resources\TouchNotes.png" />
-    <Content Include="Resources\BeatSaberColor.png" />
     <Content Include="Resources\BeatSaberColor.svg" />
     <Content Include="Resources\BeatSaberColor64.png" />
-    <Content Include="Resources\BeatSpearColor.png" />
+    <EmbeddedResource Include="Resources\BeatSaberGrey.png" />
     <Content Include="Resources\BeatSpearColor.svg" />
     <Content Include="Resources\BeatSpearColor64.png" />
     <EmbeddedResource Include="Resources\DarthMaulColor.png" />
+    <EmbeddedResource Include="Resources\BeatSpearGrey.png" />
     <Content Include="Resources\DarthMaulColor.svg" />
     <Content Include="Resources\DarthMaulColor64.png" />
+    <EmbeddedResource Include="Resources\DarthMaulGrey.png" />
     <Content Include="Resources\NoArrowsColor.png" />
     <Content Include="Resources\NoArrowsColor.svg" />
     <Content Include="Resources\NoArrowsColor64.png" />
@@ -126,29 +133,22 @@
     <Content Include="Resources\OneColorColor.svg" />
     <Content Include="Resources\OneColorColor64.png" />
     <Content Include="Resources\TouchNotes.svg" />
-    <Content Include="Resources\TouchNotes64.png" />
     <Content Include="Resources\TouchNotesColor.png" />
     <Content Include="Resources\TouchNotesColor.svg" />
     <Content Include="Resources\TouchNotesColor64.png" />
     <EmbeddedResource Include="Resources\BeatSaber.png" />
     <Content Include="AlternativePlay.csproj.user" />
     <Content Include="Resources\BeatSaber.svg" />
-    <Content Include="Resources\BeatSaber64.png" />
     <EmbeddedResource Include="Resources\BeatSpear.png" />
     <Content Include="Resources\BeatSpear.svg" />
-    <Content Include="Resources\BeatSpear64.png" />
     <EmbeddedResource Include="Resources\DarthMaul.png" />
     <Content Include="Resources\DarthMaul.svg" />
-    <Content Include="Resources\DarthMaul64.png" />
     <EmbeddedResource Include="Resources\NoArrows.png" />
     <Content Include="Resources\NoArrows.svg" />
-    <Content Include="Resources\NoArrows64.png" />
     <EmbeddedResource Include="Resources\NoArrowsRandom.png" />
     <Content Include="Resources\NoArrowsRandom.svg" />
-    <Content Include="Resources\NoArrowsRandom64.png" />
     <EmbeddedResource Include="Resources\OneColor.png" />
     <Content Include="Resources\OneColor.svg" />
-    <Content Include="Resources\OneColor64.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="UI\AlternativePlayView.bsml" />
@@ -167,6 +167,15 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\alternativeplaymodels" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\TrackerSelectView.bsml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\TrackerOptionsView.bsml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\TrackerPoseView.bsml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

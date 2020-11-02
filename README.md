@@ -23,6 +23,10 @@ Play with one controller or tracker mounted on a stick for spear-like play.  Or 
 ### ![IMG](AlternativePlay/Resources/TouchNotesColor64.png) Touch Notes
 
 
+## Tracker Selection
+
+You can now choose which trackers to use for Beat Saber, Darth Maul and Beat Spear without the need for OpenVR Input Emulator.  You can also adjust the position and rotation of the saber for when using these trackers.
+
 ## Requirements
 This mod depends on the following mods.  Download them at [BeatMods](https://beatmods.com).
 
@@ -35,6 +39,9 @@ This mod depends on the following mods.  Download them at [BeatMods](https://bea
 Drop the AlternativePlay.dll file into your Plugins folder under your BeatSaber folder.
 
 ## Changelog
+
+### 0.4.2
+- Added ability to rotate and change positions of the saber when using trackers
 
 ### 0.4.1
 - Added behavior to show tracker positions when selecting

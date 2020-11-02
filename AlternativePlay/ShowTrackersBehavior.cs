@@ -10,87 +10,70 @@ namespace AlternativePlay
 {
     public class ShowTrackersBehavior : MonoBehaviour
     {
-        private const float trackerSize = 0.15f;
-        private readonly Color selectedColor = new Color(1.0f, 0.0f, 0.0f, 0.0f);
-        private readonly Color trackerColor = new Color(0.5f, 0.5f, 0.5f, 0.0f);
-
         private bool showTrackers;
-        private Material selectedMaterial;
-        private Material trackerMaterial;
-        private GameObject trackerSphere;
+        private TrackerConfigData selectedTracker;
+
+        private GameObject trackerPrefab;
+        private GameObject saberPrefab;
+
         private List<TrackerInstance> trackerInstances;
+        private GameObject saberInstance;
 
         /// <summary>
-        /// Sets the given serial of the tracker as the currently selected tracker.
-        /// The tracker will be drawn in a different color.  Send null or a non-existant
-        /// serial to set nothing to be selected.
+        /// Begins showing the tracked devices
         /// </summary>
-        /// <param name="serial">The serial of the tracker to set as selected</param>
-        public void SetSelectedSerial(string serial)
+        public void EnableShowTrackers()
         {
-            if (trackerInstances == null) return;
+            RemoveAllInstances();
 
-            foreach (var tracker in trackerInstances)
+            this.trackerInstances = TrackedDeviceManager.instance.TrackedDevices.Select((t) => new TrackerInstance
             {
-                Material setMaterial = tracker.Serial == serial ? this.selectedMaterial : this.trackerMaterial;
-                tracker.Instance.GetComponentsInChildren<Renderer>().ToList().ForEach(c => c.material = setMaterial);
-            }
+                Instance = GameObject.Instantiate(this.trackerPrefab),
+                InputDevice = t,
+                Serial = t.serialNumber,
+            }).ToList();
+
+            this.trackerInstances.ForEach(t => t.Instance.SetActive(true));
+            this.saberInstance = GameObject.Instantiate(this.saberPrefab);
+            this.showTrackers = true;
+            this.enabled = true;
         }
 
         /// <summary>
         /// Hides all trackers and prevents rendering
         /// </summary>
-        public void HideTrackers()
+        public void DisableShowTrackers()
         {
-            showTrackers = false;
+            this.showTrackers = false;
             RemoveAllInstances();
+
+            this.enabled = false;
         }
 
         /// <summary>
-        /// Begins showing the tracked devices
+        /// Sets the given serial of the tracker as the currently selected tracker.
+        /// The tracker will be drawn with a saber.  Send null or a non-existant
+        /// serial to set nothing to be selected.
         /// </summary>
-        public void ShowTrackers()
+        /// <param name="serial">The serial of the tracker to set as selected</param>
+        public void SetSelectedSerial(TrackerConfigData tracker)
         {
-            RemoveAllInstances();
-
-            trackerInstances = TrackedDeviceManager.instance.TrackedDevices.Select((t) => new TrackerInstance
-            {
-                Instance = GameObject.Instantiate(this.trackerSphere),
-                InputDevice = t,
-                Serial = t.serialNumber,
-            }).ToList();
-
-            trackerInstances.ForEach(t => t.Instance.SetActive(true));
-            showTrackers = true;
+            this.selectedTracker = tracker;
         }
 
         private void Awake()
         {
             AssetBundle assetBundle = AssetBundle.LoadFromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream("AlternativePlay.Resources.alternativeplaymodels"));
-            AlternativePlay.Logger.Info($"Asset Bundle Objects {String.Join(", ", assetBundle.GetAllAssetNames())}");
-            this.trackerSphere = assetBundle.LoadAsset<GameObject>("APTracker");
-            this.trackerMaterial = assetBundle.LoadAsset<Material>("APTrackerNotSelected");
-            this.selectedMaterial = assetBundle.LoadAsset<Material>("APTrackerSelected");
-
-            // Create the materials to be used later
-            //this.trackerMaterial = new Material(Shader.Find("Standard"));
-            //this.trackerMaterial.SetColor("_Color", this.trackerColor);
-
-            //this.selectedMaterial = new Material(Shader.Find("Standard"));
-            //this.selectedMaterial.SetColor("_Color", this.selectedColor);
-
-            //// Create the sphere and set to the tracker material
-            //this.trackerSphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            //this.trackerSphere.transform.localScale = new Vector3(trackerSize, trackerSize, trackerSize);
-            //this.trackerSphere.GetComponentsInChildren<Renderer>().ToList().ForEach(c => c.material = this.trackerMaterial);
-            //this.trackerSphere.SetActive(false);
+            this.trackerPrefab = assetBundle.LoadAsset<GameObject>("APTracker");
+            this.saberPrefab = assetBundle.LoadAsset<GameObject>("APSaber");
+            assetBundle.Unload(false);
         }
 
         private void Update()
         {
-            if (!showTrackers || trackerInstances == null || trackerInstances.Count == 0) return;
+            if (!this.showTrackers || this.trackerInstances == null || this.trackerInstances.Count == 0) return;
 
-            foreach (var tracker in trackerInstances)
+            foreach (var tracker in this.trackerInstances)
             {
                 // Update all the tracker poses
                 bool positionSuccess = tracker.InputDevice.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position);
@@ -98,17 +81,31 @@ namespace AlternativePlay
 
                 bool rotationSuccess = tracker.InputDevice.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion rotation);
                 if (rotationSuccess) tracker.Instance.transform.rotation = rotation;
-
             }
+
+            var selectedTrackerInstance = this.trackerInstances.Find(t => t.Serial == this.selectedTracker.Serial);
+            if (this.selectedTracker == null || String.IsNullOrWhiteSpace(this.selectedTracker.Serial))
+            {
+                // No tracker so disable the saber
+                this.saberInstance.SetActive(false);
+                return;
+            }
+
+            // Transform the Saber according to the Tracker Config Data
+            Utilities.TransformSaberFromTrackerData(this.saberInstance.transform, this.selectedTracker,
+                selectedTrackerInstance.Instance.transform.rotation, selectedTrackerInstance.Instance.transform.position);
+
+            this.saberInstance.SetActive(true);
         }
 
         // Deletes all the instances and all the locally stored tracker instances data
         private void RemoveAllInstances()
         {
-            if (trackerInstances == null) return;
+            if (this.trackerInstances != null) this.trackerInstances.ForEach(t => GameObject.Destroy(t.Instance));
+            this.trackerInstances = null;
 
-            trackerInstances.ForEach(t => GameObject.Destroy(t.Instance));
-            trackerInstances = null;
+            if (this.saberInstance != null) GameObject.Destroy(this.saberInstance);
+            this.saberInstance = null;
         }
 
         private class TrackerInstance

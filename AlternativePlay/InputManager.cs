@@ -56,7 +56,7 @@ namespace AlternativePlay
 
         #region MonoBehavior Methods
 
-        public void BeginGameCoreScene()
+        public void BeginPolling()
         {
             this.leftController = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
             this.rightController = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
@@ -66,7 +66,7 @@ namespace AlternativePlay
             isPolling = true;
         }
 
-        internal void DisableInput()
+        internal void EndPolling()
         {
             isPolling = false;
         }

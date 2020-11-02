@@ -28,6 +28,16 @@ namespace AlternativePlay.Models
 
             string configuration = File.ReadAllText(configurationFile);
             this.ConfigurationData = JsonConvert.DeserializeObject<ConfigurationData>(configuration);
+
+            // Sanitize Configuration Data
+            if (!ConfigurationData.PositionIncrementList.Contains(this.ConfigurationData.PositionIncrement))
+            {
+                this.ConfigurationData.PositionIncrement = ConfigurationData.DefaultPositionIncrement;
+            }
+            if (!ConfigurationData.RotationIncrementList.Contains(this.ConfigurationData.RotationIncrement))
+            {
+                this.ConfigurationData.RotationIncrement = ConfigurationData.DefaultRotationIncrement;
+            }
         }
 
         /// <summary>

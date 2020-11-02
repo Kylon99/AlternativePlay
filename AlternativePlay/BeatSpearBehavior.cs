@@ -25,13 +25,15 @@ namespace AlternativePlay
             if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.BeatSpear) { return; }
 
             TrackedDeviceManager.instance.LoadTrackedDevices();
-            GetHandDevices();
+            this.GetHandDevices();
 
             if (Configuration.instance.ConfigurationData.SpearControllerCount == ControllerCountEnum.Two)
             {
                 this.previousForwardHand = Configuration.instance.ConfigurationData.UseLeftSpear ? this.rightController : this.leftController;
             }
 
+            Utilities.CheckAndDisableForTrackerTransforms(Configuration.instance.ConfigurationData.LeftSpearTracker);
+            Utilities.CheckAndDisableForTrackerTransforms(Configuration.instance.ConfigurationData.RightSpearTracker);
             StartCoroutine(HideOffColorSaber());
         }
 
@@ -48,7 +50,6 @@ namespace AlternativePlay
 
         private void Update()
         {
-
             if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.BeatSpear || playerController == null)
             {
                 // Do nothing if we aren't playing Beat Spear or if we can't find the player controller
@@ -78,26 +79,24 @@ namespace AlternativePlay
             var config = Configuration.instance.ConfigurationData;
 
             // Check for left tracker
-            if (!String.IsNullOrWhiteSpace(config.LeftSpearTracker))
+            if (!String.IsNullOrWhiteSpace(config.LeftSpearTracker?.Serial))
             {
-                Pose? trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.LeftSpearTracker);
+                Pose? trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.LeftSpearTracker.Serial);
                 if (trackerPose != null)
                 {
-                    // Set the left saber based on the tracker
-                    playerController.leftSaber.transform.position = trackerPose.Value.position;
-                    playerController.leftSaber.transform.rotation = trackerPose.Value.rotation;
+                    Utilities.TransformSaberFromTrackerData(playerController.leftSaber.transform, config.LeftSpearTracker,
+                        trackerPose.Value.rotation, trackerPose.Value.position);
                 }
             }
 
             // Check for right tracker
-            if (!String.IsNullOrWhiteSpace(config.RightSpearTracker))
+            if (!String.IsNullOrWhiteSpace(config.RightSpearTracker?.Serial))
             {
-                Pose? trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.RightSpearTracker);
+                Pose? trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.RightSpearTracker.Serial);
                 if (trackerPose != null)
                 {
-                    // Set the left saber based on the tracker
-                    playerController.rightSaber.transform.position = trackerPose.Value.position;
-                    playerController.rightSaber.transform.rotation = trackerPose.Value.rotation;
+                    Utilities.TransformSaberFromTrackerData(playerController.rightSaber.transform, config.RightSpearTracker,
+                        trackerPose.Value.rotation, trackerPose.Value.position);
                 }
             }
 
@@ -166,13 +165,13 @@ namespace AlternativePlay
             var config = Configuration.instance.ConfigurationData;
 
             // Determine the left hand controller
-            if (String.IsNullOrWhiteSpace(config.LeftSpearTracker))
+            if (String.IsNullOrWhiteSpace(config.LeftSpearTracker?.Serial))
             {
                 this.leftController = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
             }
             else
             {
-                var device = TrackedDeviceManager.instance.GetInputDeviceFromSerial(config.LeftSpearTracker);
+                var device = TrackedDeviceManager.instance.GetInputDeviceFromSerial(config.LeftSpearTracker.Serial);
                 if (device == null)
                 {
                     this.leftController = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
@@ -182,13 +181,13 @@ namespace AlternativePlay
             }
 
             // Determine the right hand controller
-            if (String.IsNullOrWhiteSpace(config.RightSpearTracker))
+            if (String.IsNullOrWhiteSpace(config.RightSpearTracker?.Serial))
             {
                 this.rightController = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
             }
             else
             {
-                var device = TrackedDeviceManager.instance.GetInputDeviceFromSerial(config.RightSpearTracker);
+                var device = TrackedDeviceManager.instance.GetInputDeviceFromSerial(config.RightSpearTracker.Serial);
                 if (device == null)
                 {
                     this.rightController = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);

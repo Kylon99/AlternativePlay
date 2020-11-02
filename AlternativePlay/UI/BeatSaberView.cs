@@ -1,18 +1,26 @@
 ﻿using AlternativePlay.Models;
 using BeatSaberMarkupLanguage.Attributes;
-using BeatSaberMarkupLanguage.Components;
 using BeatSaberMarkupLanguage.ViewControllers;
-using HMUI;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine.XR;
 
 namespace AlternativePlay.UI
 {
     [HotReload]
     public class BeatSaberView : BSMLAutomaticViewController
     {
+        private ModMainFlowCoordinator mainFlowCoordinator;
+
+        public void SetMainFlowCoordinator(ModMainFlowCoordinator mainFlowCoordinator)
+        {
+            this.mainFlowCoordinator = mainFlowCoordinator;
+        }
+
+        protected override void DidActivate(bool firstActivation, ActivationType activationType)
+        {
+            base.DidActivate(firstActivation, activationType);
+            SetTrackerText();
+        }
+
         [UIValue("UseLeftSaber")]
         private bool useLeftSaber = Configuration.instance.ConfigurationData.UseLeftSaber;
         [UIAction("OnUseLeftSaberChanged")]
@@ -40,25 +48,7 @@ namespace AlternativePlay.UI
             Configuration.instance.SaveConfiguration();
         }
 
-        protected override void DidActivate(bool firstActivation, ActivationType activationType)
-        {
-            base.DidActivate(firstActivation, activationType);
-            SetTrackerText();
-        }
-
         #region SelectTracker Modal Members
-
-        private const string NoTrackerText = "Default";
-        private const string NoTrackerHoverHint = "Not using any tracked devices";
-
-        // Internal tracker selection members
-        private TrackerDisplayText selectedTracker;
-        private List<TrackerDisplayText> LoadedTrackers;
-        private bool selectingLeft = false;
-
-        // Components
-        [UIComponent("SelectTrackerList")]
-        public CustomListTableData trackerList;
 
         // Text Displays for the Main View
         private string leftSaberTrackerSerial;
@@ -87,87 +77,31 @@ namespace AlternativePlay.UI
         [UIAction("OnShowSelectLeftTracker")]
         private void OnShowSelectLeftTracker()
         {
-            InitializeTrackerModal(selectingLeft: true);
+            this.mainFlowCoordinator.ShowTrackerSelect(Configuration.instance.ConfigurationData.LeftSaberTracker);
         }
 
         [UIAction("OnShowSelectRightTracker")]
         private void OnShowSelectRightTracker()
         {
-            InitializeTrackerModal(selectingLeft: false);
-        }
-
-        [UIAction("OnTrackerListCellSelected")]
-        public void OnTrackerListCellSelected(TableView _, int row)
-        {
-            // Save the selected row for later when the select button may be pressed
-            if (row == 0)
-            {
-                // The "None" entry was selected
-                this.selectedTracker = null;
-                BehaviorCatalog.instance.ShowTrackersBehavior.SetSelectedSerial(null);
-                return;
-            }
-
-            var tracker = this.LoadedTrackers[row - 1];
-            this.selectedTracker = new TrackerDisplayText
-            {
-                Serial = tracker.Serial,
-                HoverHint = tracker.HoverHint
-            };
-
-            BehaviorCatalog.instance.ShowTrackersBehavior.SetSelectedSerial(this.selectedTracker.Serial);
-        }
-
-        [UIAction("OnTrackerSelected")]
-        public void OnTrackerSelected()
-        {
-            var configData = Configuration.instance.ConfigurationData;
-
-            if (selectingLeft)
-            {
-                configData.LeftSaberTracker = this.selectedTracker == null ? null : this.selectedTracker.Serial;
-                configData.LeftSaberTrackerFullName = this.selectedTracker == null ? null : this.selectedTracker.HoverHint;
-
-                this.LeftSaberTrackerSerial = this.selectedTracker == null ? NoTrackerText : this.selectedTracker.Serial;
-                this.LeftSaberTrackerHoverHint = this.selectedTracker == null ? NoTrackerHoverHint : this.selectedTracker.HoverHint;
-            }
-            else
-            {
-                configData.RightSaberTracker = this.selectedTracker == null ? null : this.selectedTracker.Serial;
-                configData.RightSaberTrackerFullName = this.selectedTracker == null ? null : this.selectedTracker.HoverHint;
-
-                this.RightSaberTrackerSerial = this.selectedTracker == null ? NoTrackerText : this.selectedTracker.Serial;
-                this.RightSaberTrackerHoverHint = this.selectedTracker == null ? NoTrackerHoverHint : this.selectedTracker.HoverHint;
-            }
-            Configuration.instance.SaveConfiguration();
-
-            BehaviorCatalog.instance.ShowTrackersBehavior.HideTrackers();
-        }
-
-        [UIAction("OnTrackerSelectCancelled")]
-        public void OnTrackerSelectCancelled()
-        {
-            BehaviorCatalog.instance.ShowTrackersBehavior.HideTrackers();
+            this.mainFlowCoordinator.ShowTrackerSelect(Configuration.instance.ConfigurationData.RightSaberTracker);
         }
 
         [UIAction("OnClearLeftTracker")]
         private void OnClearLeftTracker()
         {
-            Configuration.instance.ConfigurationData.LeftSaberTracker = null;
-            Configuration.instance.ConfigurationData.LeftSaberTrackerFullName = null;
+            Configuration.instance.ConfigurationData.LeftSaberTracker = new TrackerConfigData();
             Configuration.instance.SaveConfiguration();
-            this.LeftSaberTrackerSerial = NoTrackerText;
-            this.LeftSaberTrackerHoverHint = NoTrackerHoverHint;
+            this.LeftSaberTrackerSerial = TrackerConfigData.NoTrackerText;
+            this.LeftSaberTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
         }
 
         [UIAction("OnClearRightTracker")]
         private void OnClearRightTracker()
         {
-            Configuration.instance.ConfigurationData.RightSaberTracker = null;
-            Configuration.instance.ConfigurationData.RightSaberTrackerFullName = null;
+            Configuration.instance.ConfigurationData.RightSaberTracker = new TrackerConfigData();
             Configuration.instance.SaveConfiguration();
-            this.RightSaberTrackerSerial = NoTrackerText;
-            this.RightSaberTrackerHoverHint = NoTrackerHoverHint;
+            this.RightSaberTrackerSerial = TrackerConfigData.NoTrackerText;
+            this.RightSaberTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
         }
 
         /// <summary>
@@ -176,100 +110,27 @@ namespace AlternativePlay.UI
         private void SetTrackerText()
         {
             var config = Configuration.instance.ConfigurationData;
-            if (String.IsNullOrWhiteSpace(config.LeftSaberTracker))
+            if (String.IsNullOrWhiteSpace(config.LeftSaberTracker.Serial))
             {
-                this.LeftSaberTrackerSerial = NoTrackerText;
-                this.LeftSaberTrackerHoverHint = NoTrackerHoverHint;
+                this.LeftSaberTrackerSerial = TrackerConfigData.NoTrackerText;
+                this.LeftSaberTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
             }
             else
             {
-                this.LeftSaberTrackerSerial = config.LeftSaberTracker;
-                this.LeftSaberTrackerHoverHint = config.LeftSaberTrackerFullName;
+                this.LeftSaberTrackerSerial = config.LeftSaberTracker.Serial;
+                this.LeftSaberTrackerHoverHint = config.LeftSaberTracker.FullName;
             }
 
-            if (String.IsNullOrWhiteSpace(config.RightSaberTracker))
+            if (String.IsNullOrWhiteSpace(config.RightSaberTracker.Serial))
             {
-                this.RightSaberTrackerSerial = NoTrackerText;
-                this.RightSaberTrackerHoverHint = NoTrackerHoverHint;
-            }
-            else
-            {
-                this.RightSaberTrackerSerial = config.RightSaberTracker;
-                this.RightSaberTrackerHoverHint = config.RightSaberTrackerFullName;
-            }
-        }
-
-
-        /// <summary>
-        /// Initializes the state and the bound variables for the Tracker Select modal dialog
-        /// </summary>
-        /// <param name="selectingLeft">Whether to initialize for the Left or the Right tracker</param>
-        private void InitializeTrackerModal(bool selectingLeft)
-        {
-            this.selectingLeft = selectingLeft;
-            var configData = Configuration.instance.ConfigurationData;
-
-            this.trackerList.tableView.ClearSelection();
-            this.trackerList.data.Clear();
-
-            // Set the currently used tracker text
-            if (this.selectingLeft)
-            {
-                this.CurrentTrackerText = String.IsNullOrWhiteSpace(configData.LeftSaberTrackerFullName) ? NoTrackerHoverHint : configData.LeftSaberTrackerFullName;
+                this.RightSaberTrackerSerial = TrackerConfigData.NoTrackerText;
+                this.RightSaberTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
             }
             else
             {
-                this.CurrentTrackerText = String.IsNullOrWhiteSpace(configData.RightSaberTrackerFullName) ? NoTrackerHoverHint : configData.RightSaberTrackerFullName;
+                this.RightSaberTrackerSerial = config.RightSaberTracker.Serial;
+                this.RightSaberTrackerHoverHint = config.RightSaberTracker.FullName;
             }
-
-            // Add the "No Tracker" cell first
-            var noneTrackerCell = new CustomListTableData.CustomCellInfo(NoTrackerText);
-            this.trackerList.data.Add(noneTrackerCell);
-
-            // Load the currently found trackers
-            TrackedDeviceManager.instance.LoadTrackedDevices();
-            TrackedDeviceManager.instance.TrackedDevices.ForEach(t =>
-            {
-                var customCellInfo = new CustomListTableData.CustomCellInfo(FormatTrackerHoverHint(t));
-                this.trackerList.data.Add(customCellInfo);
-            });
-
-            // Save the list of serials for later reference
-            this.LoadedTrackers = TrackedDeviceManager.instance.TrackedDevices
-                .Select(t => new TrackerDisplayText
-                {
-                    Serial = t.serialNumber,
-                    HoverHint = FormatTrackerHoverHint(t),
-                }).ToList();
-
-            // Reload all the data for display
-            this.trackerList.tableView.ReloadData();
-
-            // Find the cell to select
-            int index = 0;
-            this.selectedTracker = null;
-
-            string serialToFind = this.selectingLeft ? configData.LeftSaberTracker : configData.RightSaberTracker;
-            if (!String.IsNullOrWhiteSpace(serialToFind))
-            {
-                index = this.LoadedTrackers.FindIndex(t => t.Serial == serialToFind) + 1;
-                this.selectedTracker = this.LoadedTrackers.Find(t => t.Serial == serialToFind);
-            }
-            this.trackerList.tableView.SelectCellWithIdx(index);
-
-            // Set the Tracker Renderer to show trackers
-            BehaviorCatalog.instance.ShowTrackersBehavior.ShowTrackers();
-            BehaviorCatalog.instance.ShowTrackersBehavior.SetSelectedSerial(serialToFind);
-        }
-
-        /// <summary>
-        /// Standardizes the formatting of the tracker information
-        /// </summary>
-        /// <param name="tracker">The</param>
-        /// <returns></returns>
-        private string FormatTrackerHoverHint(InputDevice tracker)
-        {
-            return $"{tracker.serialNumber} - {tracker.manufacturer} {tracker.name}";
         }
 
         #endregion

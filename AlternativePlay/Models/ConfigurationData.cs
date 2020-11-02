@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace AlternativePlay.Models
 {
@@ -18,16 +19,25 @@ namespace AlternativePlay.Models
     [Serializable]
     public class ConfigurationData
     {
+        public const string DefaultPositionIncrement = "1.0";
+        public const string DefaultRotationIncrement = "10.0f";
+
+        public const float PositionMax = 500.0f;
+        public const float RotationMax = 360.0f;
+
+        [NonSerialized]
+        public static readonly List<string> PositionIncrementList = new List<string> { "0.1", "1", "5", "10", "100" };
+        [NonSerialized]
+        public static readonly List<string> RotationIncrementList = new List<string> { "0.1", "1", "5", "10", "30" };
+
         public PlayMode PlayMode { get; set; } = PlayMode.BeatSaber;
 
         // Beat Saber Options
         public bool UseLeftSaber { get; set; }
         public bool ReverseLeftSaber { get; set; }
         public bool ReverseRightSaber { get; set; }
-        public string LeftSaberTracker { get; set; }
-        public string RightSaberTracker { get; set; }
-        public string LeftSaberTrackerFullName { get; set; }
-        public string RightSaberTrackerFullName { get; set; }
+        public TrackerConfigData LeftSaberTracker { get; set; } = new TrackerConfigData();
+        public TrackerConfigData RightSaberTracker { get; set; } = new TrackerConfigData();
 
         // Darth Maul Options
         public ControllerCountEnum DarthMaulControllerCount { get; set; } = ControllerCountEnum.One;
@@ -35,20 +45,16 @@ namespace AlternativePlay.Models
         public bool ReverseMaulDirection { get; set; }
         public bool UseTriggerToSeparate { get; set; }
         public int MaulDistance { get; set; } = 15;
-        public string LeftMaulTracker { get; set; }
-        public string LeftMaulTrackerFullName { get; set; }
-        public string RightMaulTracker { get; set; }
-        public string RightMaulTrackerFullName { get; set; }
+        public TrackerConfigData LeftMaulTracker { get; set; } = new TrackerConfigData();
+        public TrackerConfigData RightMaulTracker { get; set; } = new TrackerConfigData();
 
         // Spear Options
         public ControllerCountEnum SpearControllerCount { get; set; } = ControllerCountEnum.One;
         public bool UseLeftSpear { get; set; }
         public bool UseTriggerToSwitchHands { get; set; }
         public bool ReverseSpearDirection { get; set; }
-        public string LeftSpearTracker { get; set; }
-        public string LeftSpearTrackerFullName { get; set; }
-        public string RightSpearTracker { get; set; }
-        public string RightSpearTrackerFullName { get; set; }
+        public TrackerConfigData LeftSpearTracker { get; set; } = new TrackerConfigData();
+        public TrackerConfigData RightSpearTracker { get; set; } = new TrackerConfigData();
 
         // Gameplay Changes Options
         public bool NoArrowsRandom { get; set; }
@@ -56,5 +62,18 @@ namespace AlternativePlay.Models
         public bool RemoveOtherSaber { get; set; }
         public bool NoArrows { get; set; }
         public bool TouchNotes { get; set; }
+
+        // Tracker Select Options
+        public string PositionIncrement { get; set; } = DefaultPositionIncrement;
+        public string RotationIncrement { get; set; } = DefaultRotationIncrement;
+
+        // Convenince functions 
+        public static float GetIncrement(string increment)
+        {
+            bool success = float.TryParse(increment, out float result);
+            if (!success) result = 0.1f;
+
+            return result;
+        }
     }
 }

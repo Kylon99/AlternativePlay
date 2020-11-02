@@ -6,25 +6,22 @@
   <big-button
     pref-width='40'
     text='Beat Saber'
-    font-color='~BeatSaberColor'
     stroke-color='~BeatSaberColor'
-    icon='AlternativePlay.Resources.BeatSaber.png'
+    icon='~BeatSaberIcon'
     on-click='BeatSaberClick'
     hover-hint='Play regular Beat Saber with dual swords' />
   <big-button
     pref-width='40'
     text='Darth Maul'
-    font-color='~DarthMaulColor'
     stroke-color='~DarthMaulColor'
-    icon='AlternativePlay.Resources.DarthMaul.png'
+    icon='~DarthMaulIcon'
     on-click='DarthMaulClick'
     hover-hint='Play with a double bladed staff!' />
   <big-button
     pref-width='40'
     text='Beat Spear'
-    font-color='~BeatSpearColor'
     stroke-color='~BeatSpearColor'
-    icon='AlternativePlay.Resources.BeatSpear.png'
+    icon='~BeatSpearIcon'
     on-click='BeatSpearClick'
     hover-hint='Play with a one bladed spear' />
 </horizontal>

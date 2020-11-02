@@ -27,10 +27,10 @@ namespace AlternativePlay
             if (this.IsTransformNecessary() || Configuration.instance.ConfigurationData.TouchNotes)
             {
                 // Disable scoring due to transforms
-                AlternativePlay.Logger.Info("Disabling submission on Game Modifier mode transformation");
+                AlternativePlay.Logger.Info("Disabling score submission on Game Modifier mode transformation");
                 BS_Utils.Gameplay.ScoreSubmission.DisableSubmission(AlternativePlay.assemblyName);
 
-                SharedCoroutineStarter.instance.StartCoroutine(TransformMap());
+                StartCoroutine(TransformMap());
             }
         }
 

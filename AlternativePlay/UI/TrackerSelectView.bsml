@@ -1,0 +1,34 @@
+﻿<bg xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd">
+  <vertical child-control-height="false">
+
+    <!-- Current Tracker -->
+    <vertical pad-top="5" preferred-width="160">
+      <horizontal pad-left="7" pref-height="8" child-align="MiddleLeft" child-expand-width="false">
+        <img preserve-aspect="true" preferred-width="10" source="AlternativePlay.Resources.ViveTracker.png" />
+        <horizontal pad-left="2" child-expand-width="false">
+          <text font-size="5" text="Current" />
+        </horizontal>
+        <horizontal pad-left="5" child-expand-width="false">
+          <text font-size="5" text="~CurrentTrackerText" />
+        </horizontal>
+      </horizontal>
+    </vertical>
+
+    <!-- Select Tracker List -->
+    <horizontal preferred-height="60" >
+      <vertical preferred-width="150" pad-left="5" pad-right="5" background='round-rect-panel'>
+
+        <pg-button pref-width="60" dir="Up" click-event="SelectTrackerList#PageUp"/>
+        <list id="SelectTrackerList" list-style="Simple" expand-cell="true" cell-size="6" select-cell="OnTrackerListCellSelected" />
+        <pg-button pref-width="60" dir="Down" click-event="SelectTrackerList#PageDown"/>
+      </vertical>
+    </horizontal>
+  </vertical>
+
+
+  <!-- Bottom Buttons -->
+  <bottom-button-panel>
+    <button pref-width="30" preferred-height="8" text="Select" on-click="OnSelected" />
+    <button pref-width="30" preferred-height="8" text="Cancel" on-click="OnCancelled" />
+  </bottom-button-panel>
+</bg>
