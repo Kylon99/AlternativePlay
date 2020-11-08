@@ -19,7 +19,7 @@ namespace AlternativePlay.UI
         protected override void DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling)
         {
             base.DidActivate(firstActivation, addedToHierarchy, screenSystemEnabling);
-            SetTrackerText();
+            //SetTrackerText();
         }
 
         [UIValue("ControllerChoice")]
@@ -68,7 +68,7 @@ namespace AlternativePlay.UI
             Configuration.instance.ConfigurationData.MaulDistance = value;
             Configuration.instance.SaveConfiguration();
         }
-
+        /*
         #region SelectTracker Modal Members
 
         // Text Displays for the Main View
@@ -154,6 +154,6 @@ namespace AlternativePlay.UI
         }
 
         #endregion
-
+        */
     }
 }

@@ -44,7 +44,8 @@
         apply-on-change='true'
         on-change='OnReverseRightSaberChanged'
         hover-hint='Reverse the direction of the right saber' />
-      <horizontal>
+
+      <!-- <horizontal>
         <horizontal pad-right='2'>
           <clickable-text font-size='5' text='Left Hand' highlight-color='#FFFFFF' hover-hint='Use a tracker for the left hand instead of the default controller'/>
         </horizontal>
@@ -58,6 +59,7 @@
                 hover-hint='~RightSaberTrackerHoverHint' on-click='OnShowSelectRightTracker'/>
         <button preferred-width='1' preferred-height='7' on-click='OnClearRightTracker'/>
       </horizontal>
+       -->
     </vertical>
   </vertical>
 </bg>
