@@ -33,19 +33,19 @@
         apply-on-change='true'
         on-change='OnControllersChanged'
         hover-hint='Two controllers or trackers for Darth Maul versus one controller or tracker'/>
-      <bool-setting
+      <checkbox-setting
         text='Use Left Controller'
         value='UseLeftController'
         apply-on-change='true'
         on-change='OnUseLeftControllerChanged'
         hover-hint='Move the sabers to the left controller for one controller mode only' />
-      <bool-setting
+      <checkbox-setting
         text='Reverse Maul Direction'
         value='ReverseMaulDirection'
         apply-on-change='true'
         on-change='OnReverseMaulDirectionChanged'
         hover-hint='Invert the saber directions, useful for one controller mode' />
-      <bool-setting
+      <checkbox-setting
         text='Use Trigger to Separate'
         value='UseTriggerToSeparate'
         apply-on-change='true'
@@ -59,6 +59,20 @@
         max='50' increment='1'
         on-change='OnSeparationAmountChanged'
         hover-hint='The distance between sabers' />
+      <horizontal>
+        <horizontal pad-right='2'>
+          <clickable-text font-size='5' text='Left Hand' highlight-color='#FFFFFF' hover-hint='Use a tracker for the left hand instead of the default controller'/>
+        </horizontal>
+        <button font-size='5' preferred-width='50' preferred-height='7' text='~LeftMaulTrackerSerial'
+                hover-hint='~LeftMaulTrackerHoverHint' on-click='OnShowSelectLeftTracker'/>
+        <button preferred-width='1' preferred-height='7' on-click='OnClearLeftTracker'/>
+      </horizontal>
+      <horizontal>
+        <clickable-text font-size='5' text='Right Hand' highlight-color='#FFFFFF' hover-hint='Use a tracker for the right hand instead of the default controller'/>
+        <button font-size='5' preferred-width='50' preferred-height='7' text='~RightMaulTrackerSerial'
+                hover-hint='~RightMaulTrackerHoverHint' on-click='OnShowSelectRightTracker'/>
+        <button preferred-width='1' preferred-height='7' on-click='OnClearRightTracker'/>
+      </horizontal>
     </vertical>
 
   </vertical>

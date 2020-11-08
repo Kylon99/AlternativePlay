@@ -20,7 +20,6 @@ namespace AlternativePlay.Models
         public Vector3 Position { get; set; }
         [JsonConverter(typeof(Vector3Converter))]
         public Vector3 EulerAngles { get; set; }
-        public float Scale { get; set; } = 1.0f;
 
         /// <summary>
         /// Returns a deep copy of the given <see cref="TrackerConfigData"/>
@@ -35,7 +34,6 @@ namespace AlternativePlay.Models
                 FullName = tracker.FullName,
                 Position = tracker.Position,
                 EulerAngles = tracker.EulerAngles,
-                Scale = tracker.Scale,
             };
         }
 
@@ -51,7 +49,6 @@ namespace AlternativePlay.Models
             target.FullName = source.FullName;
             target.Position = source.Position;
             target.EulerAngles = source.EulerAngles;
-            target.Scale = source.Scale;
         }
 
         /// <summary>

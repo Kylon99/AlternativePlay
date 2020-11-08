@@ -72,8 +72,8 @@ namespace AlternativePlay
                 if (trackerPose != null)
                 {
                     // Set the left saber based on the tracker
-                    saberManager.leftSaber.transform.position = trackerPose.Value.position;
-                    saberManager.leftSaber.transform.rotation = trackerPose.Value.rotation;
+                    Utilities.TransformSaberFromTrackerData(saberManager.leftSaber.transform, config.LeftMaulTracker,
+                        trackerPose.Value.rotation, trackerPose.Value.position);
                 }
             }
 
@@ -84,8 +84,8 @@ namespace AlternativePlay
                 if (trackerPose != null)
                 {
                     // Set the left saber based on the tracker
-                    saberManager.rightSaber.transform.position = trackerPose.Value.position;
-                    saberManager.rightSaber.transform.rotation = trackerPose.Value.rotation;
+                    Utilities.TransformSaberFromTrackerData(saberManager.rightSaber.transform, config.RightMaulTracker,
+                        trackerPose.Value.rotation, trackerPose.Value.position);
                 }
             }
         }
@@ -124,7 +124,7 @@ namespace AlternativePlay
             var rotateSaber = config.ReverseMaulDirection ? baseSaber : otherSaber;
 
             string trackerSerial = config.UseLeftController ? config.LeftMaulTracker?.Serial : config.RightMaulTracker?.Serial;
-            TrackerConfigData trackerData = config.UseLeftController ? config.LeftMaulTracker : config.RightMaulTracker;
+            TrackerConfigData trackerConfigData = config.UseLeftController ? config.LeftMaulTracker : config.RightMaulTracker;
 
             if (String.IsNullOrWhiteSpace(trackerSerial))
             {
@@ -143,9 +143,9 @@ namespace AlternativePlay
                 }
 
                 // Move both sabers to tracker pose
-                Utilities.TransformSaberFromTrackerData(baseSaber.transform, trackerData,
+                Utilities.TransformSaberFromTrackerData(baseSaber.transform, trackerConfigData,
                     trackerPose.Value.rotation, trackerPose.Value.position);
-                Utilities.TransformSaberFromTrackerData(otherSaber.transform, trackerData,
+                Utilities.TransformSaberFromTrackerData(otherSaber.transform, trackerConfigData,
                     trackerPose.Value.rotation, trackerPose.Value.position);
             }
 
@@ -185,7 +185,7 @@ namespace AlternativePlay
             {
                 Vector3? trackerPosition = TrackedDeviceManager.instance.GetPositionFromSerial(config.RightMaulTracker.Serial);
                 rightHandPos = trackerPosition == null
-                    ? rightHandPos = saberManager.rightSaber.transform.position // Fall back to the Beat Saber saber position
+                    ? saberManager.rightSaber.transform.position // Fall back to the Beat Saber saber position
                     : trackerPosition.Value;
             }
 
@@ -193,10 +193,12 @@ namespace AlternativePlay
             Vector3 forward = (rightHandPos - leftHandPos).normalized;
 
             var forwardSaber = config.ReverseMaulDirection ? saberManager.leftSaber : saberManager.rightSaber;
+            var forwardExtraPosition = config.ReverseMaulDirection ? config.LeftMaulTracker.Position : config.RightMaulTracker.Position;
             var backwardSaber = config.ReverseMaulDirection ? saberManager.rightSaber : saberManager.leftSaber;
+            var backwardExtraPosition = config.ReverseMaulDirection ? config.RightMaulTracker.Position : config.LeftMaulTracker.Position;
 
-            forwardSaber.transform.position = middlePos + forward * sep;
-            backwardSaber.transform.position = middlePos + -forward * sep;
+            forwardSaber.transform.position = middlePos + (forward * sep) + forwardExtraPosition;
+            backwardSaber.transform.position = middlePos + (-forward * sep) + backwardExtraPosition;
             forwardSaber.transform.rotation = Quaternion.LookRotation(forward, backwardSaber.transform.up);
             backwardSaber.transform.rotation = Quaternion.LookRotation(-forward, -backwardSaber.transform.up);
         }

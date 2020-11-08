@@ -108,39 +108,57 @@ namespace AlternativePlay
                 }
             }
 
-            // Get the in memory beat map
-            BeatmapObjectCallbackController callbackController = Resources.FindObjectsOfTypeAll<BeatmapObjectCallbackController>().First();
-            BeatmapData beatmapData = callbackController.GetField<BeatmapData>("_beatmapData");
-
-            if (Configuration.instance.ConfigurationData.NoArrowsRandom)
+            try
             {
-                // Transform the map to No Arrows Random using the ingame algorithm first
-                AlternativePlay.Logger.Info($"Transforming NoArrowsRandom for song: {this.currentBeatmap.level.songName}");
-                var transformedBeatmap = BeatmapDataNoArrowsTransform.CreateTransformedData(beatmapData);
-                callbackController.SetNewBeatmapData(transformedBeatmap);
+                BeatmapObjectCallbackController callbackController = null;
+                BeatmapData beatmapData = null;
+                BeatmapObjectCallbackController[] callbackControllers = Resources.FindObjectsOfTypeAll<BeatmapObjectCallbackController>();
+                foreach (BeatmapObjectCallbackController cbc in callbackControllers)
+                {
+                    if (cbc.GetField<BeatmapData>("_beatmapData") != null)
+                    {
+                        callbackController = cbc;
+                        beatmapData = callbackController.GetField<BeatmapData>("_beatmapData");
+                    }
+                }
+                //BeatmapObjectCallbackController callbackController = Resources.FindObjectsOfTypeAll<BeatmapObjectCallbackController>().FirstOrDefault();
+                // BeatmapData beatmapData = callbackController.GetField<BeatmapData>("_beatmapData");
+                if (Configuration.instance.ConfigurationData.NoArrowsRandom)
+                {
+                    // Transform the map to No Arrows Random using the ingame algorithm first
+                    AlternativePlay.Logger.Info($"Transforming NoArrowsRandom for song: {this.currentBeatmap.level.songName}");
+                    var transformedBeatmap = BeatmapDataNoArrowsTransform.CreateTransformedData(beatmapData);
+                    callbackController.SetNewBeatmapData(transformedBeatmap);
+                }
+
+                // Transform every note
+                var allNoteObjects = beatmapData.beatmapLinesData
+                    .SelectMany(line => line.beatmapObjectsData)
+                    .Where(objectData => objectData.beatmapObjectType == BeatmapObjectType.Note)
+                    .ToList();
+                allNoteObjects.ForEach(beatmapObject =>
+                {
+                    var note = beatmapObject as NoteData;
+
+                    // Transform for NoArrows or TouchNotes here but do not if NoArrowsRandom was already applied
+                    if ((Configuration.instance.ConfigurationData.NoArrows || Configuration.instance.ConfigurationData.TouchNotes) && !Configuration.instance.ConfigurationData.NoArrowsRandom)
+                    {
+                        note.SetNoteToAnyCutDirection();
+                    }
+
+                    // Transform for One Color if this is the other note type
+                    if (Configuration.instance.ConfigurationData.OneColor && note.colorType == undesiredNoteType)
+                    {
+                        note.SwitchNoteColorType();
+                    }
+                });
+                // Touch Notes speed detection is not handled here but in the HarmonyPatches
+
             }
-
-            // Transform every note
-            var allNoteObjects = beatmapData.beatmapLinesData
-                .SelectMany(line => line.beatmapObjectsData)
-                .Where(objectData => objectData.beatmapObjectType == BeatmapObjectType.Note)
-                .ToList();
-            allNoteObjects.ForEach(beatmapObject =>
+            catch
             {
-                var note = beatmapObject as NoteData;
-
-                // Transform for NoArrows or TouchNotes here but do not if NoArrowsRandom was already applied
-                if ((Configuration.instance.ConfigurationData.NoArrows || Configuration.instance.ConfigurationData.TouchNotes) && !Configuration.instance.ConfigurationData.NoArrowsRandom)
-                {
-                    note.SetNoteToAnyCutDirection();
-                }
-
-                // Transform for One Color if this is the other note type
-                if (Configuration.instance.ConfigurationData.OneColor && note.colorType == undesiredNoteType)
-                {
-                    note.SwitchNoteColorType();
-                }
-            });
+                AlternativePlay.Logger.Info($"Transforming Error: {this.currentBeatmap.level.songName}");
+            }
 
             // Touch Notes speed detection is not handled here but in the HarmonyPatches
         }

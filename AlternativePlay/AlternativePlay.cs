@@ -49,7 +49,10 @@ namespace AlternativePlay
 
         private void OnGameSceneLoaded()
         {
-            BehaviorCatalog.instance.LoadGameSceneLoadedBehaviors();
+            if (BS_Utils.Plugin.LevelData.Mode != BS_Utils.Gameplay.Mode.Multiplayer)
+            {
+                BehaviorCatalog.instance.LoadGameSceneLoadedBehaviors();
+            }
         }
     }
 }

@@ -1,25 +1,41 @@
 ﻿<bg xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
-  <horizontal pad-left='10' pad-right='10' horizontal-fit='PreferredSize' vertical-fit='PreferredSize'>
-    <button
+  <horizontal
+    pad-left='10'
+    pad-right='10'
+    horizontal-fit='PreferredSize'
+    vertical-fit='PreferredSize'>
+    <vertical
+      pref-width='40'
+      vertical-fit='PreferredSize'>
+      <img pref-width='40' pref-height='40' source='AlternativePlay.Resources.BeatSaber.png' />
+      <button
       pref-width='40'
       text='Beat Saber'
-      font-color='~BeatSaberColor'
       stroke-color='~BeatSaberColor'
       on-click='BeatSaberClick'
       hover-hint='Play regular Beat Saber with dual swords' />
-    <button
+    </vertical>
+    <vertical
+      pref-width='40'
+      vertical-fit='PreferredSize'>
+      <img pref-width='40' pref-height='40' source='AlternativePlay.Resources.DarthMaul.png' />
+      <button
       pref-width='40'
       text='Darth Maul'
-      font-color='~DarthMaulColor'
       stroke-color='~DarthMaulColor'
       on-click='DarthMaulClick'
       hover-hint='Play with a double bladed staff!' />
-    <button
+    </vertical>
+    <vertical
+      pref-width='40'
+      vertical-fit='PreferredSize'>
+      <img pref-width='40' pref-height='40' source='AlternativePlay.Resources.BeatSpear.png' />
+      <button
       pref-width='40'
       text='Beat Spear'
-      font-color='~BeatSpearColor'
       stroke-color='~BeatSpearColor'
       on-click='BeatSpearClick'
       hover-hint='Play with a one bladed spear' />
+    </vertical>
   </horizontal>
 </bg>

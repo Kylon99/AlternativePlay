@@ -23,7 +23,7 @@ namespace AlternativePlay.UI
         public void ShowBeatSaber()
         {
             this.IsBusy = true;
-            this.SetLeftScreenViewController(this.beatSaberSettingsView,ViewController.AnimationType.In);
+            this.SetLeftScreenViewController(this.beatSaberSettingsView, ViewController.AnimationType.In);
             this.IsBusy = false;
         }
 
@@ -41,13 +41,13 @@ namespace AlternativePlay.UI
             this.IsBusy = false;
         }
 
-        public void ShowTrackerSelect(TrackerConfigData trackerData)
+        public void ShowTrackerSelect(TrackerConfigData trackerConfigData)
         {
             this.IsBusy = true;
             SetTitle("Select Tracker");
 
-            this.trackerSelectView.SetSelectingTracker(trackerData);
-            this.trackerPoseView.SetSelectingTracker(trackerData);
+            this.trackerSelectView.SetSelectingTracker(trackerConfigData);
+            this.trackerPoseView.SetSelectingTracker(trackerConfigData);
 
             this.ReplaceTopViewController(this.trackerSelectView);
             this.SetLeftScreenViewController(this.trackerPoseView, ViewController.AnimationType.In);
@@ -60,7 +60,7 @@ namespace AlternativePlay.UI
         public void DismissTrackerSelect()
         {
             this.IsBusy = true;
-            SetTitle( titleString);
+            SetTitle(titleString);
 
             this.ReplaceTopViewController(this.alternativePlayView);
             var viewToDisplay = DecideLeftMainView();
@@ -90,7 +90,6 @@ namespace AlternativePlay.UI
 
         protected override void DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling)
         {
-
             SetTitle(titleString);
             this.showBackButton = true;
 

@@ -14,7 +14,7 @@ namespace AlternativePlay.UI
     {
         // Internal tracker selection members
         private List<TrackerDisplayText> LoadedTrackers;
-        private TrackerConfigData trackerData;
+        private TrackerConfigData trackerConfigData;
         private TrackerConfigData originalTrackerData;
         private ModMainFlowCoordinator mainFlowCoordinator;
 
@@ -23,21 +23,21 @@ namespace AlternativePlay.UI
             this.mainFlowCoordinator = mainFlowCoordinator;
         }
 
-        public void SetSelectingTracker(TrackerConfigData trackerData)
+        public void SetSelectingTracker(TrackerConfigData trackerConfigData)
         {
-            this.trackerData = trackerData;
-            this.originalTrackerData = TrackerConfigData.Clone(trackerData);
+            this.trackerConfigData = trackerConfigData;
+            this.originalTrackerData = TrackerConfigData.Clone(trackerConfigData);
         }
 
         protected override void DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling)
         {
             base.DidActivate(firstActivation, addedToHierarchy, screenSystemEnabling);
 
-            if (this.trackerData == null)
+            if (this.trackerConfigData == null)
             {
                 // Calls to this method should never pass in null
                 AlternativePlay.Logger.Error($"TrackerSelectView.DidActivate() Error null tracker was given at {Environment.StackTrace}");
-                trackerData = new TrackerConfigData();
+                trackerConfigData = new TrackerConfigData();
             }
 
             this.InitializeTrackerList();
@@ -62,10 +62,10 @@ namespace AlternativePlay.UI
         private void OnTrackerListCellSelected(TableView _, int row)
         {
             var tracker = this.LoadedTrackers[row];
-            this.trackerData.Serial = tracker.Serial;
-            this.trackerData.FullName = tracker.HoverHint;
+            this.trackerConfigData.Serial = tracker.Serial;
+            this.trackerConfigData.FullName = tracker.HoverHint;
 
-            BehaviorCatalog.instance.ShowTrackersBehavior.SetSelectedSerial(this.trackerData);
+            BehaviorCatalog.instance.ShowTrackersBehavior.SetSelectedSerial(this.trackerConfigData);
         }
 
         [UIAction("OnSelected")]
@@ -78,7 +78,7 @@ namespace AlternativePlay.UI
         [UIAction("OnCancelled")]
         private void OnCancelled()
         {
-            TrackerConfigData.Copy(this.originalTrackerData, this.trackerData);
+            TrackerConfigData.Copy(this.originalTrackerData, this.trackerConfigData);
             Configuration.instance.SaveConfiguration();
             this.mainFlowCoordinator.DismissTrackerSelect();
         }
@@ -93,7 +93,7 @@ namespace AlternativePlay.UI
             this.trackerList.data.Clear();
 
             // Set the currently used tracker text
-            this.CurrentTrackerText = String.IsNullOrWhiteSpace(this.trackerData.FullName) ? TrackerConfigData.NoTrackerHoverHint : this.trackerData.FullName;
+            this.CurrentTrackerText = String.IsNullOrWhiteSpace(this.trackerConfigData.FullName) ? TrackerConfigData.NoTrackerHoverHint : this.trackerConfigData.FullName;
 
             // Load the currently found trackers
             TrackedDeviceManager.instance.LoadTrackedDevices();
@@ -116,9 +116,9 @@ namespace AlternativePlay.UI
 
             // Find the cell to select
             int index = 0;
-            if (!String.IsNullOrWhiteSpace(this.trackerData.Serial))
+            if (!String.IsNullOrWhiteSpace(this.trackerConfigData.Serial))
             {
-                index = this.LoadedTrackers.FindIndex(t => t.Serial == this.trackerData.Serial);
+                index = this.LoadedTrackers.FindIndex(t => t.Serial == this.trackerConfigData.Serial);
             }
 
             if (index != -1 && this.trackerList.data.Count > 0)
@@ -127,8 +127,7 @@ namespace AlternativePlay.UI
             }
 
             // Set the Tracker Renderer to show trackers
-            BehaviorCatalog.instance.ShowTrackersBehavior.EnableShowTrackers();
-            BehaviorCatalog.instance.ShowTrackersBehavior.SetSelectedSerial(this.trackerData);
+            BehaviorCatalog.instance.ShowTrackersBehavior.SetSelectedSerial(this.trackerConfigData);
         }
     }
 }

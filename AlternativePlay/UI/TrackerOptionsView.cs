@@ -10,26 +10,24 @@ namespace AlternativePlay.UI
     public class TrackerOptionsView : BSMLAutomaticViewController
     {
         [UIValue("PositionIncrementChoice")]
-        private string positionIncrement = Configuration.instance.ConfigurationData.PositionIncrement.ToString();
+        private string positionIncrement = Configuration.instance.ConfigurationData.PositionIncrement;
         [UIValue("PositionIncrementList")]
         private List<object> positionIncrementList = ConfigurationData.PositionIncrementList.Cast<object>().ToList();
         [UIAction("OnPositionIncrementChanged")]
         private void OnPositionIncrementChanged(string value)
         {
-            float increment = float.Parse(value);
-            Configuration.instance.ConfigurationData.PositionIncrement = increment;
+            Configuration.instance.ConfigurationData.PositionIncrement = value;
             Configuration.instance.SaveConfiguration();
         }
 
         [UIValue("RotationIncrementChoice")]
-        private string rotationIncrement = Configuration.instance.ConfigurationData.RotationIncrement.ToString();
+        private string rotationIncrement = Configuration.instance.ConfigurationData.RotationIncrement;
         [UIValue("RotationIncrementList")]
         private List<object> rotationIncrementList = ConfigurationData.RotationIncrementList.Cast<object>().ToList();
         [UIAction("OnRotationIncrementChanged")]
         private void OnRotationIncrementChanged(string value)
         {
-            float increment = float.Parse(value);
-            Configuration.instance.ConfigurationData.RotationIncrement = increment;
+            Configuration.instance.ConfigurationData.RotationIncrement = value;
             Configuration.instance.SaveConfiguration();
         }
     }

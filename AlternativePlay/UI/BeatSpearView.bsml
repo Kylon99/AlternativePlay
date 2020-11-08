@@ -29,24 +29,38 @@
         apply-on-change='true'
         on-change='OnControllersChanged'
         hover-hint='Use two controllers to control the spear or one controller or tracker for the spear'/>
-      <bool-setting
+      <checkbox-setting
         text='Use Left Spear'
         value='UseLeftSpear'
         apply-on-change='true'
         on-change='OnUseLeftSpearChanged'
         hover-hint='Move the spear to the left controller or tracker' />
-      <bool-setting
+      <checkbox-setting
         text='Use Trigger To Switch Hands'
         value='UseTriggerToSwitchHands'
         apply-on-change='true'
         on-change='OnUseTriggerToSwitchHands'
         hover-hint='Use the trigger of the forward hand to switch the spear direction' />
-      <bool-setting
+      <checkbox-setting
         text='Reverse Spear Direction'
         value='ReverseSpearDirection'
         apply-on-change='true'
         on-change='OnReverseSpearDirectionChanged'
         hover-hint='Reverse the spear direction' />
+      <horizontal>
+        <horizontal pad-right='2'>
+          <clickable-text font-size='5' text='Left Hand' highlight-color='#FFFFFF' hover-hint='Use a tracker for the left hand instead of the default controller'/>
+        </horizontal>
+        <button font-size='5' preferred-width='50' preferred-height='7' text='~LeftSpearTrackerSerial'
+                hover-hint='~LeftSpearTrackerHoverHint' on-click='OnShowSelectLeftTracker'/>
+        <button preferred-width='1' preferred-height='7' text='x' on-click='OnClearLeftTracker'/>
+      </horizontal>
+      <horizontal>
+        <clickable-text font-size='5' text='Right Hand' highlight-color='#FFFFFF' hover-hint='Use a tracker for the right hand instead of the default controller'/>
+        <button font-size='5' preferred-width='50' preferred-height='7' text='~RightSpearTrackerSerial'
+                hover-hint='~RightSpearTrackerHoverHint' on-click='OnShowSelectRightTracker'/>
+        <button preferred-width='1' preferred-height='7' text='x'  on-click='OnClearRightTracker'/>
+      </horizontal>
     </vertical>
   </vertical>
 </bg>

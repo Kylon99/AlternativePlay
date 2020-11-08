@@ -19,8 +19,8 @@ namespace AlternativePlay.Models
     [Serializable]
     public class ConfigurationData
     {
-        public const float DefaultPositionIncrement = 1.0f;
-        public const float DefaultRotationIncrement = 10.0f;
+        public const string DefaultPositionIncrement = "1.0";
+        public const string DefaultRotationIncrement = "10.0f";
 
         public const float PositionMax = 500.0f;
         public const float RotationMax = 360.0f;
@@ -64,7 +64,16 @@ namespace AlternativePlay.Models
         public bool TouchNotes { get; set; }
 
         // Tracker Select Options
-        public float PositionIncrement { get; set; } = DefaultPositionIncrement;
-        public float RotationIncrement { get; set; } = DefaultRotationIncrement;
+        public string PositionIncrement { get; set; } = DefaultPositionIncrement;
+        public string RotationIncrement { get; set; } = DefaultRotationIncrement;
+
+        // Convenince functions 
+        public static float GetIncrement(string increment)
+        {
+            bool success = float.TryParse(increment, out float result);
+            if (!success) result = 0.1f;
+
+            return result;
+        }
     }
 }
