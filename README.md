@@ -35,6 +35,13 @@ This mod depends on the following mods.  Download them at [BeatMods](https://bea
 Drop the AlternativePlay.dll file into your Plugins folder under your BeatSaber folder.
 
 ## Changelog
+### 0.5.1
+- Restore the tracker feature in 0.4.2
+- Changed the mode switching UI to be similar to 0.4.2.
+
+### 0.5.0
+- Game version 1.12.2 is supported
+- Disabling Alternative Play in official multimode
 
 ### 0.4.2
 - Added ability to rotate and change positions of the saber when using trackers
