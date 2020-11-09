@@ -40,7 +40,6 @@
     </horizontal>
     <horizontal pad-left='14' pref-height='8' >
       <checkbox-setting
-        font-size='5'
         text='Remove Other Saber'
         value='RemoveOtherSaber'
         apply-on-change='true'

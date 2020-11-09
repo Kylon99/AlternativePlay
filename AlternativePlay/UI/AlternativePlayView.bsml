@@ -1,41 +1,61 @@
-﻿<bg xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
+﻿<bg xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd">
   <horizontal
-    pad-left='10'
-    pad-right='10'
-    horizontal-fit='PreferredSize'
-    vertical-fit='PreferredSize'>
+    pad-left="10"
+    pad-right="10"
+    horizontal-fit="PreferredSize"
+    vertical-fit="PreferredSize">
     <vertical
-      pref-width='40'
-      vertical-fit='PreferredSize'>
-      <img pref-width='40' pref-height='40' source='AlternativePlay.Resources.BeatSaber.png' />
-      <button
-      pref-width='40'
-      text='Beat Saber'
-      stroke-color='~BeatSaberColor'
-      on-click='BeatSaberClick'
-      hover-hint='Play regular Beat Saber with dual swords' />
+      pref-width="30"
+      vertical-fit="PreferredSize">
+      <clickable-image pref-width="30" pref-height="30" 
+          source="AlternativePlay.Resources.BeatSaber.png"
+          default-color="~BeatSaberColor"
+          on-click="BeatSaberClick"
+          hover-hint="Play regular Beat Saber with dual swords" />
+      <clickable-text
+          text="Beat Saber"
+          align="Center"
+          color="~BeatSaberColor"
+          default-color="~BeatSaberDefaultColor"
+          highlight-color="~BeatSaberHighLightColor"
+          on-click="BeatSaberClick"
+          hover-hint="Play regular Beat Saber with dual swords" />
     </vertical>
+    <vertical pref-width="10" />
     <vertical
-      pref-width='40'
-      vertical-fit='PreferredSize'>
-      <img pref-width='40' pref-height='40' source='AlternativePlay.Resources.DarthMaul.png' />
-      <button
-      pref-width='40'
-      text='Darth Maul'
-      stroke-color='~DarthMaulColor'
-      on-click='DarthMaulClick'
-      hover-hint='Play with a double bladed staff!' />
+      pref-width="30"
+      vertical-fit="PreferredSize">
+      <clickable-image pref-width="30" pref-height="30" 
+          source="AlternativePlay.Resources.DarthMaul.png"
+          default-color="~DarthMaulColor"
+          on-click="DarthMaulClick"
+          hover-hint="Play with a double bladed staff!" />
+      <clickable-text
+          text="Darth Maul"
+          align="Center"
+          color="~DarthMaulColor"
+          default-color="~DarthMaulDefaultColor"
+          highlight-color="~DarthMaulHightLightColor"
+          on-click="DarthMaulClick"
+          hover-hint="Play with a double bladed staff!" />
     </vertical>
+    <vertical pref-width="10" />
     <vertical
-      pref-width='40'
-      vertical-fit='PreferredSize'>
-      <img pref-width='40' pref-height='40' source='AlternativePlay.Resources.BeatSpear.png' />
-      <button
-      pref-width='40'
-      text='Beat Spear'
-      stroke-color='~BeatSpearColor'
-      on-click='BeatSpearClick'
-      hover-hint='Play with a one bladed spear' />
+      pref-width="30"
+      vertical-fit="PreferredSize">
+      <clickable-image pref-width="30" pref-height="30" 
+          source="AlternativePlay.Resources.BeatSpear.png"
+          default-color="~BeatSpearColor"
+          on-click="BeatSpearClick"
+          hover-hint="Play with a one bladed spear" />
+      <clickable-text
+          text="Beat Spear"
+          align="Center"
+          color="~BeatSpearColor"
+          default-color="~BeatSpearDefaultColor"
+          highlight-color="~BeatSpearHighLightColor"
+          on-click="BeatSpearClick"
+          hover-hint="Play with a one bladed spear" />
     </vertical>
   </horizontal>
 </bg>

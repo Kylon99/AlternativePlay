@@ -21,6 +21,10 @@ namespace AlternativePlay.UI
         private string beatSaberColor = White;
         [UIValue("BeatSaberColor")]
         public string BeatSaberColor { get => this.beatSaberColor; set { this.beatSaberColor = value; this.NotifyPropertyChanged(nameof(this.BeatSaberColor)); } }
+        [UIValue("BeatSaberDefaultColor")]
+        public string BeatSaberDefaultColor { get => this.beatSaberColor; set { this.beatSaberColor = value; this.NotifyPropertyChanged(nameof(this.BeatSaberColor)); } }
+        [UIValue("BeatSaberHighLightColor")]
+        public string BeatSaberHighLightColor { get => this.beatSaberColor; set { this.beatSaberColor = value; this.NotifyPropertyChanged(nameof(this.BeatSaberColor)); } }
 
         private string beatSaberIcon;
         [UIValue("BeatSaberIcon")]
@@ -29,6 +33,10 @@ namespace AlternativePlay.UI
         private string darthMaulColor = Grey;
         [UIValue("DarthMaulColor")]
         public string DarthMaulColor { get => this.darthMaulColor; set { this.darthMaulColor = value; this.NotifyPropertyChanged(nameof(this.DarthMaulColor)); } }
+        [UIValue("DarthMaulDefaultColor")]
+        public string DarthMaulDefaultColor { get => this.darthMaulColor; set { this.darthMaulColor = value; this.NotifyPropertyChanged(nameof(this.DarthMaulColor)); } }
+        [UIValue("DarthMaulHightLightColor")]
+        public string DarthMaulHightLightColor { get => this.darthMaulColor; set { this.darthMaulColor = value; this.NotifyPropertyChanged(nameof(this.DarthMaulColor)); } }
 
         private string darthMaulIcon;
         [UIValue("DarthMaulIcon")]
@@ -37,6 +45,10 @@ namespace AlternativePlay.UI
         private string beatSpearColor = Grey;
         [UIValue("BeatSpearColor")]
         public string BeatSpearColor { get => this.beatSpearColor; set { this.beatSpearColor = value; this.NotifyPropertyChanged(nameof(this.BeatSpearColor)); } }
+        [UIValue("BeatSpearDefaultColor")]
+        public string BeatSpearDefaultColor { get => this.beatSpearColor; set { this.beatSpearColor = value; this.NotifyPropertyChanged(nameof(this.BeatSpearColor)); } }
+        [UIValue("BeatSpearHighLightColor")]
+        public string BeatSpearHighLightColor { get => this.beatSpearColor; set { this.beatSpearColor = value; this.NotifyPropertyChanged(nameof(this.BeatSpearColor)); } }
 
         private string beatSpearIcon;
         [UIValue("BeatSpearIcon")]

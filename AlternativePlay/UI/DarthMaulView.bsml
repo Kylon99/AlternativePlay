@@ -1,80 +1,76 @@
-﻿<bg xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
-  <vertical child-control-height='false'>
+﻿<bg xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd">
+  <vertical child-control-height="false">
 
     <!-- View Header -->
     <horizontal
-      pad-left='15'
-      pad-right='15'
-      bg='panel-top'
-      pref-height='16'
-      horizontal-fit='PreferredSize'>
-      <vertical pad='1'>
-        <img preserve-aspect='true' pref-width='12' source='AlternativePlay.Resources.DarthMaul.png' />
+      pad-left="15"
+      pad-right="15"
+      bg="panel-top"
+      pref-height="16"
+      horizontal-fit="PreferredSize">
+      <vertical pad="1">
+        <img preserve-aspect="true" pref-width="12" source="AlternativePlay.Resources.DarthMaul.png" />
       </vertical>
       <vertical
-        pad-left='1'
-        pref-height='12'
-        vertical-fit='PreferredSize'>
-        <text text='Darth Maul' font-size='6'/>
-        <text text='Double bladed staff for one or two hands' font-size='4' />
+        pad-left="1"
+        pref-height="12"
+        vertical-fit="PreferredSize">
+        <text text="Darth Maul" font-size="6"/>
+        <text text="Double bladed staff for one or two hands" font-size="4" />
       </vertical>
     </horizontal>
 
     <!-- Main View -->
     <vertical
-      pref-height='45'
-      pref-width='90'
-      vertical-fit='PreferredSize'
-      child-control-height='false'>
+      pref-height="45"
+      pref-width="90"
+      vertical-fit="PreferredSize"
+      child-control-height="false">
       <dropdown-list-setting
-        text='Controllers'
-        value='ControllerChoice'
-        choices='ControllerChoiceList'
-        apply-on-change='true'
-        on-change='OnControllersChanged'
-        hover-hint='Two controllers or trackers for Darth Maul versus one controller or tracker'/>
+        text="Controllers"
+        value="ControllerChoice"
+        choices="ControllerChoiceList"
+        apply-on-change="true"
+        on-change="OnControllersChanged"
+        hover-hint="Two controllers or trackers for Darth Maul versus one controller or tracker"/>
       <checkbox-setting
-        text='Use Left Controller'
-        value='UseLeftController'
-        apply-on-change='true'
-        on-change='OnUseLeftControllerChanged'
-        hover-hint='Move the sabers to the left controller for one controller mode only' />
+        text="Use Left Controller"
+        value="UseLeftController"
+        apply-on-change="true"
+        on-change="OnUseLeftControllerChanged"
+        hover-hint="Move the sabers to the left controller for one controller mode only" />
       <checkbox-setting
-        text='Reverse Maul Direction'
-        value='ReverseMaulDirection'
-        apply-on-change='true'
-        on-change='OnReverseMaulDirectionChanged'
-        hover-hint='Invert the saber directions, useful for one controller mode' />
+        text="Reverse Maul Direction"
+        value="ReverseMaulDirection"
+        apply-on-change="true"
+        on-change="OnReverseMaulDirectionChanged"
+        hover-hint="Invert the saber directions, useful for one controller mode" />
       <checkbox-setting
-        text='Use Trigger to Separate'
-        value='UseTriggerToSeparate'
-        apply-on-change='true'
-        on-change='OnUseTriggerToSeparateChanged'
-        hover-hint='Press any trigger to separate split the sabers' />
+        text="Use Trigger to Separate"
+        value="UseTriggerToSeparate"
+        apply-on-change="true"
+        on-change="OnUseTriggerToSeparateChanged"
+        hover-hint="Press any trigger to separate split the sabers" />
       <increment-setting
-        text='Separation Amount'
-        value='SeparationAmount'
-        integer-only='true'
-        min='0'
-        max='50' increment='1'
-        on-change='OnSeparationAmountChanged'
-        hover-hint='The distance between sabers' />
-      <!--
+        text="Separation Amount"
+        value="SeparationAmount"
+        integer-only="true"
+        min="0"
+        max="50" increment="1"
+        on-change="OnSeparationAmountChanged"
+        hover-hint="The distance between sabers" />
       <horizontal>
-        <horizontal pad-right='2'>
-          <clickable-text font-size='5' text='Left Hand' highlight-color='#FFFFFF' hover-hint='Use a tracker for the left hand instead of the default controller'/>
-        </horizontal>
-        <button font-size='5' preferred-width='50' preferred-height='7' text='~LeftMaulTrackerSerial'
-                hover-hint='~LeftMaulTrackerHoverHint' on-click='OnShowSelectLeftTracker'/>
-        <button preferred-width='1' preferred-height='7' on-click='OnClearLeftTracker'/>
+        <clickable-text text="Left Hand" highlight-color="#FFFFFF" hover-hint="Use a tracker for the left hand instead of the default controller"/>
+        <button preferred-width="50" preferred-height="8" text="~LeftMaulTrackerSerial"
+                hover-hint="~LeftMaulTrackerHoverHint" on-click="OnShowSelectLeftTracker"/>
+        <button pref-width="10" preferred-height="8" text="x" on-click="OnClearLeftTracker"/>
       </horizontal>
       <horizontal>
-        <clickable-text font-size='5' text='Right Hand' highlight-color='#FFFFFF' hover-hint='Use a tracker for the right hand instead of the default controller'/>
-        <button font-size='5' preferred-width='50' preferred-height='7' text='~RightMaulTrackerSerial'
-                hover-hint='~RightMaulTrackerHoverHint' on-click='OnShowSelectRightTracker'/>
-        <button preferred-width='1' preferred-height='7' on-click='OnClearRightTracker'/>
+        <clickable-text text="Right Hand" highlight-color="#FFFFFF" hover-hint="Use a tracker for the right hand instead of the default controller"/>
+        <button pref-width="50" preferred-height="8" text="~RightMaulTrackerSerial"
+                hover-hint="~RightMaulTrackerHoverHint" on-click="OnShowSelectRightTracker"/>
+        <button pref-width="10" preferred-height="8" text="x" on-click="OnClearRightTracker"/>
       </horizontal>
-      -->
     </vertical>
 
   </vertical>
