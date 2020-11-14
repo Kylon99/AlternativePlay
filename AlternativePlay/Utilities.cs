@@ -25,20 +25,34 @@ namespace AlternativePlay
         }
 
         /// <summary>
+        /// Calculates the <see cref="Pose"/> based on the given <see cref="TrackerConfigData"/>
+        /// given the current tracker's rotation and position.
+        /// </summary>
+        public static Pose CalculatePoseFromTrackerData(TrackerConfigData trackerConfigData, Pose tracker)
+        {
+            Pose result = Pose.identity;
+
+            // Calculate and apply rotation first
+            Quaternion extraRotation = Quaternion.Euler(trackerConfigData.EulerAngles);
+            Quaternion finalRotation = tracker.rotation * extraRotation;
+            result.rotation = finalRotation;
+
+            // Rotate position and add 
+            Vector3 rotatedPosition = tracker.rotation * trackerConfigData.Position;
+            result.position = tracker.position + rotatedPosition;
+
+            return result;
+        }
+
+        /// <summary>
         /// Transforms the <see cref="Transform"/> of a Unity game object based on the given <see cref="TrackerConfigData"/>
         /// given the current tracker's rotation and position.
         /// </summary>
-        public static void TransformSaberFromTrackerData(Transform saberTransform, TrackerConfigData trackerConfigData,
-            Quaternion trackerRotation, Vector3 trackerPosition)
+        public static void TransformSaberFromTrackerData(Transform saberTransform, TrackerConfigData trackerConfigData, Pose tracker)
         {
-            // Calculate and apply rotation first
-            Quaternion extraRotation = Quaternion.Euler(trackerConfigData.EulerAngles);
-            Quaternion finalRotation = trackerRotation * extraRotation;
-            saberTransform.localRotation = finalRotation;
-
-            // Rotate position and add 
-            Vector3 rotatedPosition = trackerRotation * trackerConfigData.Position;
-            saberTransform.localPosition = trackerPosition + rotatedPosition;
+            Pose pose = CalculatePoseFromTrackerData(trackerConfigData, tracker);
+            saberTransform.position = pose.position;
+            saberTransform.rotation = pose.rotation;
         }
     }
 }

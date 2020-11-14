@@ -40,16 +40,14 @@ namespace AlternativePlay
             if (!String.IsNullOrWhiteSpace(config.LeftSaberTracker?.Serial) &&
                 (trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.LeftSaberTracker.Serial)) != null)
             {
-                Utilities.TransformSaberFromTrackerData(playerController.leftSaber.transform, config.LeftSaberTracker,
-                    trackerPose.Value.rotation, trackerPose.Value.position);
+                Utilities.TransformSaberFromTrackerData(playerController.leftSaber.transform, config.LeftSaberTracker, trackerPose.Value);
             }
 
             // Check for right tracker
             if (!String.IsNullOrWhiteSpace(config.RightSaberTracker?.Serial) &&
                 (trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.RightSaberTracker.Serial)) != null)
             {
-                Utilities.TransformSaberFromTrackerData(playerController.rightSaber.transform, config.RightSaberTracker,
-                    trackerPose.Value.rotation, trackerPose.Value.position);
+                Utilities.TransformSaberFromTrackerData(playerController.rightSaber.transform, config.RightSaberTracker, trackerPose.Value);
             }
 
             if (Configuration.instance.ConfigurationData.ReverseLeftSaber)

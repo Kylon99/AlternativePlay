@@ -83,16 +83,14 @@ namespace AlternativePlay
             if (!String.IsNullOrWhiteSpace(config.LeftSpearTracker?.Serial) &&
                 (trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.LeftSpearTracker.Serial)) != null)
             {
-                Utilities.TransformSaberFromTrackerData(playerController.leftSaber.transform, config.LeftSpearTracker,
-                    trackerPose.Value.rotation, trackerPose.Value.position);
+                Utilities.TransformSaberFromTrackerData(playerController.leftSaber.transform, config.LeftSpearTracker, trackerPose.Value);
             }
 
             // Check for right tracker
             if (!String.IsNullOrWhiteSpace(config.RightSpearTracker?.Serial) &&
                 (trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.RightSpearTracker.Serial)) != null)
             {
-                Utilities.TransformSaberFromTrackerData(playerController.rightSaber.transform, config.RightSpearTracker,
-                    trackerPose.Value.rotation, trackerPose.Value.position);
+                Utilities.TransformSaberFromTrackerData(playerController.rightSaber.transform, config.RightSpearTracker, trackerPose.Value);
             }
 
             // Handle reversed spear directions

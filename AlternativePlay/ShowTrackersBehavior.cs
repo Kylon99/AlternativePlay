@@ -92,8 +92,10 @@ namespace AlternativePlay
             }
 
             // Transform the Saber according to the Tracker Config Data
-            Utilities.TransformSaberFromTrackerData(this.saberInstance.transform, this.selectedTracker,
-                selectedTrackerInstance.Instance.transform.rotation, selectedTrackerInstance.Instance.transform.position);
+            Pose selectedTrackerPose = new Pose(
+                selectedTrackerInstance.Instance.transform.position,
+                selectedTrackerInstance.Instance.transform.rotation);
+            Utilities.TransformSaberFromTrackerData(this.saberInstance.transform, this.selectedTracker, selectedTrackerPose);
 
             this.saberInstance.SetActive(true);
         }

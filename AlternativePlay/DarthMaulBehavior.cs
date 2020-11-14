@@ -70,18 +70,14 @@ namespace AlternativePlay
             if (!String.IsNullOrWhiteSpace(config.LeftMaulTracker?.Serial) &&
                 (trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.LeftMaulTracker.Serial)) != null)
             {
-                // Set the left saber based on the tracker
-                Utilities.TransformSaberFromTrackerData(playerController.leftSaber.transform, config.LeftMaulTracker,
-                    trackerPose.Value.rotation, trackerPose.Value.position);
+                Utilities.TransformSaberFromTrackerData(playerController.leftSaber.transform, config.LeftMaulTracker, trackerPose.Value);
             }
 
             // Check for right tracker
             if (!String.IsNullOrWhiteSpace(config.RightMaulTracker?.Serial) &&
                 (trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.RightMaulTracker.Serial)) != null)
             {
-                // Set the left saber based on the tracker
-                Utilities.TransformSaberFromTrackerData(playerController.rightSaber.transform, config.RightMaulTracker,
-                    trackerPose.Value.rotation, trackerPose.Value.position);
+                Utilities.TransformSaberFromTrackerData(playerController.rightSaber.transform, config.RightMaulTracker, trackerPose.Value);
             }
         }
 
@@ -132,10 +128,8 @@ namespace AlternativePlay
             else
             {
                 // Move both sabers to tracker pose
-                Utilities.TransformSaberFromTrackerData(baseSaber.transform, trackerConfigData,
-                    trackerPose.Value.rotation, trackerPose.Value.position);
-                Utilities.TransformSaberFromTrackerData(otherSaber.transform, trackerConfigData,
-                    trackerPose.Value.rotation, trackerPose.Value.position);
+                Utilities.TransformSaberFromTrackerData(baseSaber.transform, trackerConfigData, trackerPose.Value);
+                Utilities.TransformSaberFromTrackerData(otherSaber.transform, trackerConfigData, trackerPose.Value);
             }
 
             rotateSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
@@ -151,43 +145,48 @@ namespace AlternativePlay
             float sep = 1.0f * config.MaulDistance / 100.0f;
 
             // Determine Left Hand position
-            Vector3 leftHandPos;
-            Vector3? trackerPosition;
+            Pose? trackerPose;
+            Pose leftHand;
             if (String.IsNullOrWhiteSpace(config.LeftMaulTracker?.Serial) ||
-                (trackerPosition = TrackedDeviceManager.instance.GetPositionFromSerial(config.LeftMaulTracker.Serial)) == null)
+                (trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.LeftMaulTracker.Serial)) == null)
             {
-                leftHandPos = playerController.leftSaber.transform.position;
+                leftHand.position = playerController.leftSaber.transform.position;
+                leftHand.rotation = playerController.leftSaber.transform.rotation;
             }
             else
             {
-                leftHandPos = trackerPosition.Value;
+                Pose transformedPose = Utilities.CalculatePoseFromTrackerData(config.RightMaulTracker, trackerPose.Value);
+                leftHand.position = transformedPose.position;
+                leftHand.rotation = transformedPose.rotation;
             }
 
             // Determine Right Hand position
-            Vector3 rightHandPos;
+            Pose rightHand;
             if (String.IsNullOrWhiteSpace(config.RightMaulTracker?.Serial) ||
-                (trackerPosition = TrackedDeviceManager.instance.GetPositionFromSerial(config.RightMaulTracker.Serial)) == null)
+                (trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.RightMaulTracker.Serial)) == null)
             {
-                rightHandPos = playerController.rightSaber.transform.position;
+                rightHand.position = playerController.rightSaber.transform.position;
+                rightHand.rotation = playerController.rightSaber.transform.rotation;
             }
             else
             {
-                rightHandPos = trackerPosition.Value;
+                Pose transformedPose = Utilities.CalculatePoseFromTrackerData(config.RightMaulTracker, trackerPose.Value);
+                rightHand.position = transformedPose.position;
+                rightHand.rotation = transformedPose.rotation;
             }
 
-            // Determine final saber positions
-            Vector3 middlePos = (rightHandPos + leftHandPos) * 0.5f;
-            Vector3 forward = (rightHandPos - leftHandPos).normalized;
+            // Determine final saber positions and rotations
+            Vector3 middlePos = (rightHand.position + leftHand.position) * 0.5f;
+            Vector3 forward = (rightHand.position - leftHand.position).normalized;
+            Vector3 rightHandUp = rightHand.rotation * Vector3.up;
 
-            var forwardSaber = config.ReverseMaulDirection ? playerController.leftSaber : playerController.rightSaber;
-            var forwardExtraPosition = config.ReverseMaulDirection ? config.LeftMaulTracker.Position : config.RightMaulTracker.Position;
-            var backwardSaber = config.ReverseMaulDirection ? playerController.rightSaber : playerController.leftSaber;
-            var backwardExtraPosition = config.ReverseMaulDirection ? config.RightMaulTracker.Position : config.LeftMaulTracker.Position;
+            Saber forwardSaber = config.ReverseMaulDirection ? playerController.leftSaber : playerController.rightSaber;
+            Saber backwardSaber = config.ReverseMaulDirection ? playerController.rightSaber : playerController.leftSaber;
 
-            forwardSaber.transform.position = middlePos + (forward * sep) + forwardExtraPosition;
-            backwardSaber.transform.position = middlePos + (-forward * sep) + backwardExtraPosition;
-            forwardSaber.transform.rotation = Quaternion.LookRotation(forward, backwardSaber.transform.up);
-            backwardSaber.transform.rotation = Quaternion.LookRotation(-forward, -backwardSaber.transform.up);
+            forwardSaber.transform.position = middlePos + (forward * sep);
+            backwardSaber.transform.position = middlePos + (-forward * sep);
+            forwardSaber.transform.rotation = Quaternion.LookRotation(forward, rightHandUp);
+            backwardSaber.transform.rotation = Quaternion.LookRotation(-forward, -rightHandUp);
         }
     }
 }
