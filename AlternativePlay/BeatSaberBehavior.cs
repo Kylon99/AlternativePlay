@@ -36,25 +36,20 @@ namespace AlternativePlay
             var config = Configuration.instance.ConfigurationData;
 
             // Check and set the left tracker
-            if (!String.IsNullOrWhiteSpace(config.LeftSaberTracker?.Serial))
+            Pose? trackerPose;
+            if (!String.IsNullOrWhiteSpace(config.LeftSaberTracker?.Serial) &&
+                (trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.LeftSaberTracker.Serial)) != null)
             {
-                Pose? trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.LeftSaberTracker.Serial);
-                if (trackerPose != null)
-                {
-                    Utilities.TransformSaberFromTrackerData(playerController.leftSaber.transform, config.LeftSaberTracker,
-                        trackerPose.Value.rotation, trackerPose.Value.position);
-                }
+                Utilities.TransformSaberFromTrackerData(playerController.leftSaber.transform, config.LeftSaberTracker,
+                    trackerPose.Value.rotation, trackerPose.Value.position);
             }
 
             // Check for right tracker
-            if (!String.IsNullOrWhiteSpace(config.RightSaberTracker?.Serial))
+            if (!String.IsNullOrWhiteSpace(config.RightSaberTracker?.Serial) &&
+                (trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.RightSaberTracker.Serial)) != null)
             {
-                Pose? trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.RightSaberTracker.Serial);
-                if (trackerPose != null)
-                {
-                    Utilities.TransformSaberFromTrackerData(playerController.rightSaber.transform, config.RightSaberTracker,
-                        trackerPose.Value.rotation, trackerPose.Value.position);
-                }
+                Utilities.TransformSaberFromTrackerData(playerController.rightSaber.transform, config.RightSaberTracker,
+                    trackerPose.Value.rotation, trackerPose.Value.position);
             }
 
             if (Configuration.instance.ConfigurationData.ReverseLeftSaber)
