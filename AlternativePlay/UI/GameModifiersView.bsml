@@ -14,7 +14,7 @@
     </vertical>
   </horizontal>
   <vertical
-    pref-width='60'
+    pref-width='80'
     vertical-fit='PreferredSize'>
     <horizontal>
       <img pref-width='14' pref-height='4' source='AlternativePlay.Resources.NoArrows.png' />
@@ -38,9 +38,8 @@
           hover-hint='All notes become the same color and can be hit by both sabers.' />
       </horizontal>
     </horizontal>
-    <horizontal pad-left='14'>
+    <horizontal pad-left='14' pref-height='8' >
       <checkbox-setting
-        font-size='5'
         text='Remove Other Saber'
         value='RemoveOtherSaber'
         apply-on-change='true'

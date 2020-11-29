@@ -22,20 +22,28 @@ namespace AlternativePlay.Models
         /// or tracked.</returns>
         public Pose? GetDevicePose(XRNode node)
         {
-            var device = InputDevices.GetDeviceAtXRNode(node);
-            if (!device.isValid) return null;
-
-            bool positionSuccess = device.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position);
-            bool rotationSuccess = device.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion rotation);
-
-            if (positionSuccess && rotationSuccess)
+            try
             {
-                return new Pose { position = position, rotation = rotation };
+                var device = InputDevices.GetDeviceAtXRNode(node);
+                if (!device.isValid) return null;
+
+                bool positionSuccess = device.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position);
+                bool rotationSuccess = device.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion rotation);
+                if (positionSuccess && rotationSuccess)
+                {
+                    return new Pose { position = position, rotation = rotation };
+                }
+                else
+                {
+                    return null;
+                }
             }
-            else
+            catch
             {
+                AlternativePlay.Logger.Error($"Tracker GetDevicePose Error");
                 return null;
             }
+
         }
 
         /// <summary>
@@ -43,8 +51,15 @@ namespace AlternativePlay.Models
         /// </summary>
         public void LoadTrackedDevices()
         {
-            var desiredCharacteristics = InputDeviceCharacteristics.TrackedDevice;
-            InputDevices.GetDevicesWithCharacteristics(desiredCharacteristics, TrackedDevices);
+            try
+            {
+                var desiredCharacteristics = InputDeviceCharacteristics.TrackedDevice;
+                InputDevices.GetDevicesWithCharacteristics(desiredCharacteristics, TrackedDevices);
+            }
+            catch
+            {
+                AlternativePlay.Logger.Error($"Tracker LoadTrackedDevices Error");
+            }
         }
 
         /// <summary>

@@ -6,7 +6,7 @@ namespace AlternativePlay
 {
     public class BeatSaberBehavior : MonoBehaviour
     {
-        private PlayerController playerController;
+        private SaberManager saberManager;
 
         /// <summary>
         /// To be invoked every time when starting the GameCore scene.
@@ -22,12 +22,12 @@ namespace AlternativePlay
 
         private void Awake()
         {
-            this.playerController = FindObjectOfType<PlayerController>();
+            this.saberManager = FindObjectOfType<SaberManager>();
         }
 
         private void Update()
         {
-            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.BeatSaber || playerController == null)
+            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.BeatSaber || saberManager == null)
             {
                 // Do nothing if we aren't playing Beat Saber
                 return;
@@ -40,24 +40,24 @@ namespace AlternativePlay
             if (!String.IsNullOrWhiteSpace(config.LeftSaberTracker?.Serial) &&
                 (trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.LeftSaberTracker.Serial)) != null)
             {
-                Utilities.TransformSaberFromTrackerData(playerController.leftSaber.transform, config.LeftSaberTracker, trackerPose.Value);
+                    Utilities.TransformSaberFromTrackerData(saberManager.leftSaber.transform, config.LeftSaberTracker, trackerPose.Value);
             }
 
             // Check for right tracker
             if (!String.IsNullOrWhiteSpace(config.RightSaberTracker?.Serial) &&
                 (trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.RightSaberTracker.Serial)) != null)
             {
-                Utilities.TransformSaberFromTrackerData(playerController.rightSaber.transform, config.RightSaberTracker, trackerPose.Value);
+                Utilities.TransformSaberFromTrackerData(saberManager.rightSaber.transform, config.RightSaberTracker, trackerPose.Value);
             }
 
             if (Configuration.instance.ConfigurationData.ReverseLeftSaber)
             {
-                playerController.leftSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
+                saberManager.leftSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
             }
 
             if (Configuration.instance.ConfigurationData.ReverseRightSaber)
             {
-                playerController.rightSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
+                saberManager.rightSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
             }
         }
     }

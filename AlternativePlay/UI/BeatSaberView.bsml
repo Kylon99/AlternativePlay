@@ -1,62 +1,61 @@
-﻿<bg xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
-  <vertical child-control-height='false'>
+﻿<bg xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd">
+  <vertical child-control-height="false">
 
     <!-- View Header -->
     <horizontal
-      pad-left='15'
-      pad-right='15'
-      bg='panel-top'
-      pref-height='16'
-      horizontal-fit='PreferredSize'>
-      <vertical pad='1'>
-        <img pref-width='14' source='AlternativePlay.Resources.BeatSaber.png' />
+      pad-left="15"
+      pad-right="15"
+      bg="panel-top"
+      pref-height="16"
+      horizontal-fit="PreferredSize">
+      <vertical pad="1">
+        <img pref-width="14" source="AlternativePlay.Resources.BeatSaber.png" />
       </vertical>
       <vertical
-        pad-left='1'
-        pref-height='12'
-        vertical-fit='PreferredSize'>
-        <text text='Playing Beat Saber' font-size='6'/>
-        <text text='Dual sabers play of the original game' font-size='4' />
+        pad-left="1"
+        pref-height="12"
+        vertical-fit="PreferredSize">
+        <text text="Playing Beat Saber" font-size="6"/>
+        <text text="Dual sabers play of the original game" font-size="4" />
       </vertical>
     </horizontal>
 
     <!-- Main View -->
     <vertical
-    pref-height='15'
-    pref-width='90'
-    vertical-fit='PreferredSize'
-    child-control-height='false'>
-      <bool-setting
-        text='Use Left For One Color'
-        value='UseLeftSaber'
-        apply-on-change='true'
-        on-change='OnUseLeftSaberChanged'
-        hover-hint='Use the left saber when playing One Color' />
-      <bool-setting
-        text='Reverse Left Saber'
-        value='ReverseLeftSaber'
-        apply-on-change='true'
-        on-change='OnReverseLeftSaberChanged'
-        hover-hint='Reverse the direction of the left saber' />
-      <bool-setting
-        text='Reverse Right Saber'
-        value='ReverseRightSaber'
-        apply-on-change='true'
-        on-change='OnReverseRightSaberChanged'
-        hover-hint='Reverse the direction of the right saber' />
+    pref-height="15"
+    pref-width="90"
+    vertical-fit="PreferredSize"
+    child-control-height="false">
+      <checkbox-setting
+        text="Use Left For One Color"
+        value="UseLeftSaber"
+        apply-on-change="true"
+        on-change="OnUseLeftSaberChanged"
+        hover-hint="Use the left saber when playing One Color" />
+      <checkbox-setting
+        text="Reverse Left Saber"
+        value="ReverseLeftSaber"
+        apply-on-change="true"
+        on-change="OnReverseLeftSaberChanged"
+        hover-hint="Reverse the direction of the left saber" />
+      <checkbox-setting
+        text="Reverse Right Saber"
+        value="ReverseRightSaber"
+        apply-on-change="true"
+        on-change="OnReverseRightSaberChanged"
+        hover-hint="Reverse the direction of the right saber" />
+
       <horizontal>
-        <horizontal pad-right='2'>
-          <clickable-text font-size='5' text='Left Hand' highlight-color='#FFFFFF' hover-hint='Use a tracker for the left hand instead of the default controller'/>
-        </horizontal>
-        <button font-size='5' preferred-width='50' preferred-height='7' text='~LeftSaberTrackerSerial'
-                hover-hint='~LeftSaberTrackerHoverHint' on-click='OnShowSelectLeftTracker'/>
-        <button-with-icon icon='AlternativePlay.Resources.XIcon.png' preferred-width='1' preferred-height='7' on-click='OnClearLeftTracker'/>
+        <clickable-text text="Left Hand" highlight-color="#FFFFFF" hover-hint="Use a tracker for the left hand instead of the default controller"/>
+        <button preferred-width="50" preferred-height="8" text="~LeftSaberTrackerSerial"
+                hover-hint="~LeftSaberTrackerHoverHint" on-click="OnShowSelectLeftTracker"/>
+        <button pref-width="10" preferred-height="8" text="x" on-click="OnClearLeftTracker"/>
       </horizontal>
       <horizontal>
-        <clickable-text font-size='5' text='Right Hand' highlight-color='#FFFFFF' hover-hint='Use a tracker for the right hand instead of the default controller'/>
-        <button font-size='5' preferred-width='50' preferred-height='7' text='~RightSaberTrackerSerial'
-                hover-hint='~RightSaberTrackerHoverHint' on-click='OnShowSelectRightTracker'/>
-        <button-with-icon icon='AlternativePlay.Resources.XIcon.png' preferred-width='1' preferred-height='7' on-click='OnClearRightTracker'/>
+        <clickable-text text="Right Hand" highlight-color="#FFFFFF" hover-hint="Use a tracker for the right hand instead of the default controller"/>
+        <button pref-width="50" preferred-height="8" text="~RightSaberTrackerSerial"
+                hover-hint="~RightSaberTrackerHoverHint" on-click="OnShowSelectRightTracker"/>
+        <button pref-width="10" preferred-height="8" text="x" on-click="OnClearRightTracker"/>
       </horizontal>
     </vertical>
   </vertical>

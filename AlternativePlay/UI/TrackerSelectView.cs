@@ -29,9 +29,9 @@ namespace AlternativePlay.UI
             this.originalTrackerData = TrackerConfigData.Clone(trackerConfigData);
         }
 
-        protected override void DidActivate(bool firstActivation, ActivationType activationType)
+        protected override void DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling)
         {
-            base.DidActivate(firstActivation, activationType);
+            base.DidActivate(firstActivation, addedToHierarchy, screenSystemEnabling);
 
             if (this.trackerConfigData == null)
             {
@@ -44,7 +44,7 @@ namespace AlternativePlay.UI
             BehaviorCatalog.instance.ShowTrackersBehavior.EnableShowTrackers();
         }
 
-        protected override void DidDeactivate(DeactivationType deactivationType)
+        protected override void DidDeactivate(bool removedFromHierarchy, bool screenSystemDisabling)
         {
             BehaviorCatalog.instance.ShowTrackersBehavior.DisableShowTrackers();
         }

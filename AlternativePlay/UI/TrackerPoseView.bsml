@@ -1,9 +1,8 @@
 ﻿<bg xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
-  <vertical child-control-height='false'>
-
+  <vertical child-control-height='false' vertical-fit="PreferredSize">
     <horizontal>
       <vertical>
-        <vertical pad='5' background='round-rect-panel'>
+        <vertical pad='5'>
           <increment-setting text='Position X' min='-5000' max='5000' increment='1' integer-only='true'
                              formatter='PositionFormatter' hover-hint='Will disable scoring if not set to 0'
                              value='PositionX' apply-on-change='true' get-event='RefreshPositionXEvent'/>

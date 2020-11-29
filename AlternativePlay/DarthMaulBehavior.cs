@@ -6,7 +6,7 @@ namespace AlternativePlay
 {
     public class DarthMaulBehavior : MonoBehaviour
     {
-        private PlayerController playerController;
+        private SaberManager saberManager;
 
         public static bool Split { get; set; }
 
@@ -25,13 +25,13 @@ namespace AlternativePlay
 
         private void Awake()
         {
-            this.playerController = FindObjectOfType<PlayerController>();
+            this.saberManager = FindObjectOfType<SaberManager>();
             TrackedDeviceManager.instance.LoadTrackedDevices();
         }
 
         private void Update()
         {
-            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.DarthMaul || playerController == null)
+            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.DarthMaul || saberManager == null)
             {
                 // Do nothing if we aren't playing Darth Maul
                 return;
@@ -70,14 +70,14 @@ namespace AlternativePlay
             if (!String.IsNullOrWhiteSpace(config.LeftMaulTracker?.Serial) &&
                 (trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.LeftMaulTracker.Serial)) != null)
             {
-                Utilities.TransformSaberFromTrackerData(playerController.leftSaber.transform, config.LeftMaulTracker, trackerPose.Value);
+                Utilities.TransformSaberFromTrackerData(saberManager.leftSaber.transform, config.LeftMaulTracker, trackerPose.Value);
             }
 
             // Check for right tracker
             if (!String.IsNullOrWhiteSpace(config.RightMaulTracker?.Serial) &&
                 (trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.RightMaulTracker.Serial)) != null)
             {
-                Utilities.TransformSaberFromTrackerData(playerController.rightSaber.transform, config.RightMaulTracker, trackerPose.Value);
+                Utilities.TransformSaberFromTrackerData(saberManager.rightSaber.transform, config.RightMaulTracker, trackerPose.Value);
             }
         }
 
@@ -110,8 +110,8 @@ namespace AlternativePlay
             var config = Configuration.instance.ConfigurationData;
             float sep = 1.0f * config.MaulDistance / 100.0f;
 
-            var baseSaber = config.UseLeftController ? playerController.leftSaber : playerController.rightSaber;
-            var otherSaber = config.UseLeftController ? playerController.rightSaber : playerController.leftSaber;
+            var baseSaber = config.UseLeftController ? saberManager.leftSaber : saberManager.rightSaber;
+            var otherSaber = config.UseLeftController ? saberManager.rightSaber : saberManager.leftSaber;
             var rotateSaber = config.ReverseMaulDirection ? baseSaber : otherSaber;
 
             string trackerSerial = config.UseLeftController ? config.LeftMaulTracker?.Serial : config.RightMaulTracker?.Serial;
@@ -150,8 +150,8 @@ namespace AlternativePlay
             if (String.IsNullOrWhiteSpace(config.LeftMaulTracker?.Serial) ||
                 (trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.LeftMaulTracker.Serial)) == null)
             {
-                leftHand.position = playerController.leftSaber.transform.position;
-                leftHand.rotation = playerController.leftSaber.transform.rotation;
+                leftHand.position = saberManager.leftSaber.transform.position;
+                leftHand.rotation = saberManager.leftSaber.transform.rotation;
             }
             else
             {
@@ -165,8 +165,8 @@ namespace AlternativePlay
             if (String.IsNullOrWhiteSpace(config.RightMaulTracker?.Serial) ||
                 (trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.RightMaulTracker.Serial)) == null)
             {
-                rightHand.position = playerController.rightSaber.transform.position;
-                rightHand.rotation = playerController.rightSaber.transform.rotation;
+                rightHand.position = saberManager.rightSaber.transform.position;
+                rightHand.rotation = saberManager.rightSaber.transform.rotation;
             }
             else
             {
@@ -180,8 +180,8 @@ namespace AlternativePlay
             Vector3 forward = (rightHand.position - leftHand.position).normalized;
             Vector3 rightHandUp = rightHand.rotation * Vector3.up;
 
-            Saber forwardSaber = config.ReverseMaulDirection ? playerController.leftSaber : playerController.rightSaber;
-            Saber backwardSaber = config.ReverseMaulDirection ? playerController.rightSaber : playerController.leftSaber;
+            Saber forwardSaber = config.ReverseMaulDirection ? saberManager.leftSaber : saberManager.rightSaber;
+            Saber backwardSaber = config.ReverseMaulDirection ? saberManager.rightSaber : saberManager.leftSaber;
 
             forwardSaber.transform.position = middlePos + (forward * sep);
             backwardSaber.transform.position = middlePos + (-forward * sep);

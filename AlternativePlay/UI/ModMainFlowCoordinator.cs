@@ -23,35 +23,35 @@ namespace AlternativePlay.UI
         public void ShowBeatSaber()
         {
             this.IsBusy = true;
-            this.SetLeftScreenViewController(this.beatSaberSettingsView);
+            this.SetLeftScreenViewController(this.beatSaberSettingsView, ViewController.AnimationType.In);
             this.IsBusy = false;
         }
 
         public void ShowDarthMaul()
         {
             this.IsBusy = true;
-            this.SetLeftScreenViewController(this.darthMaulSettingsView);
+            this.SetLeftScreenViewController(this.darthMaulSettingsView, ViewController.AnimationType.In);
             this.IsBusy = false;
         }
 
         public void ShowBeatSpear()
         {
             this.IsBusy = true;
-            this.SetLeftScreenViewController(this.beatSpearSettingsView);
+            this.SetLeftScreenViewController(this.beatSpearSettingsView, ViewController.AnimationType.In);
             this.IsBusy = false;
         }
 
         public void ShowTrackerSelect(TrackerConfigData trackerConfigData)
         {
             this.IsBusy = true;
-            this.title = "Select Tracker";
+            this.SetTitle("Select Tracker");
 
             this.trackerSelectView.SetSelectingTracker(trackerConfigData);
             this.trackerPoseView.SetSelectingTracker(trackerConfigData);
 
             this.ReplaceTopViewController(this.trackerSelectView);
-            this.SetLeftScreenViewController(this.trackerPoseView);
-            this.SetRightScreenViewController(this.trackerOptionsView);
+            this.SetLeftScreenViewController(this.trackerPoseView, ViewController.AnimationType.In);
+            this.SetRightScreenViewController(this.trackerOptionsView, ViewController.AnimationType.In);
 
             this.IsBusy = false;
 
@@ -60,12 +60,12 @@ namespace AlternativePlay.UI
         public void DismissTrackerSelect()
         {
             this.IsBusy = true;
-            this.title = titleString;
+            this.SetTitle(titleString);
 
             this.ReplaceTopViewController(this.alternativePlayView);
             var viewToDisplay = DecideLeftMainView();
-            this.SetLeftScreenViewController(viewToDisplay);
-            this.SetRightScreenViewController(this.gameModifiersView);
+            this.SetLeftScreenViewController(viewToDisplay, ViewController.AnimationType.In);
+            this.SetRightScreenViewController(this.gameModifiersView, ViewController.AnimationType.In);
             this.IsBusy = false;
         }
 
@@ -88,9 +88,9 @@ namespace AlternativePlay.UI
             this.trackerOptionsView = BeatSaberUI.CreateViewController<TrackerOptionsView>();
         }
 
-        protected override void DidActivate(bool firstActivation, ActivationType activationType)
+        protected override void DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling)
         {
-            this.title = titleString;
+            this.SetTitle(titleString);
             this.showBackButton = true;
 
             var viewToDisplay = DecideLeftMainView();
