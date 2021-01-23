@@ -70,5 +70,7 @@
         <button pref-width="50" preferred-height="8" text="~RightMaulTrackerSerial"
                 hover-hint="~RightMaulTrackerHoverHint" on-click="OnShowSelectRightTracker"/>
         <button pref-width="10" preferred-height="8" text="x" on-click="OnClearRightTracker"/>
+      </horizontal>
+    </vertical>
   </vertical>
 </bg>
