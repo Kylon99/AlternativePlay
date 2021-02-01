@@ -2,6 +2,7 @@
 using BS_Utils.Utilities;
 using HarmonyLib;
 using IPA;
+using IPA.Loader;
 using System.Reflection;
 
 namespace AlternativePlay
@@ -13,6 +14,7 @@ namespace AlternativePlay
 
         public static IPA.Logging.Logger Logger { get; private set; }
 
+        private string privateMultiModName = "BeatTogether";
 
         [Init]
         public AlternativePlay(IPA.Logging.Logger logger)
@@ -49,7 +51,8 @@ namespace AlternativePlay
 
         private void OnGameSceneLoaded()
         {
-            if (BS_Utils.Plugin.LevelData.Mode != BS_Utils.Gameplay.Mode.Multiplayer)
+            if ((BS_Utils.Plugin.LevelData.Mode != BS_Utils.Gameplay.Mode.Multiplayer) 
+                || (PluginManager.GetPlugin(privateMultiModName).Name == privateMultiModName && BS_Utils.Plugin.LevelData.Mode == BS_Utils.Gameplay.Mode.Multiplayer))
             {
                 BehaviorCatalog.instance.LoadGameSceneLoadedBehaviors();
             }
