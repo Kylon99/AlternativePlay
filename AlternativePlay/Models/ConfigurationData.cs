@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reflection;
 
 namespace AlternativePlay.Models
 {
@@ -29,6 +30,8 @@ namespace AlternativePlay.Models
         public static readonly List<string> PositionIncrementList = new List<string> { "0.1", "1", "5", "10", "100" };
         [NonSerialized]
         public static readonly List<string> RotationIncrementList = new List<string> { "0.1", "1", "5", "10", "30" };
+
+        public string Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
         public PlayMode PlayMode { get; set; } = PlayMode.BeatSaber;
 

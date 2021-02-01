@@ -35,29 +35,51 @@ namespace AlternativePlay
 
             var config = Configuration.instance.ConfigurationData;
 
-            // Check and set the left tracker
+            // Transform the left saber
             Pose? trackerPose;
             if (!String.IsNullOrWhiteSpace(config.LeftSaberTracker?.Serial) &&
                 (trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.LeftSaberTracker.Serial)) != null)
             {
-                    Utilities.TransformSaberFromTrackerData(saberManager.leftSaber.transform, config.LeftSaberTracker, trackerPose.Value);
+                // Transform according to the assigned tracker
+                Utilities.TransformSaberFromTrackerData(saberManager.leftSaber.transform, config.LeftSaberTracker, trackerPose.Value);
+                if (config.ReverseLeftSaber)
+                {
+                    saberManager.leftSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
+                }
+            }
+            else
+            {
+                if (config.ReverseLeftSaber)
+                {
+                    // Transform the saber only if we need to also reverse its direction since we need to set the saber position first
+                    Pose saberPose = BehaviorCatalog.instance.ControllerManager.GetLeftSaberPose();
+                    saberManager.leftSaber.transform.position = saberPose.position;
+                    saberManager.leftSaber.transform.rotation = saberPose.rotation;
+                    saberManager.leftSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
+                }
             }
 
-            // Check for right tracker
+            // Transform the right saber
             if (!String.IsNullOrWhiteSpace(config.RightSaberTracker?.Serial) &&
                 (trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.RightSaberTracker.Serial)) != null)
             {
+                // Transform according to the assigned tracker
                 Utilities.TransformSaberFromTrackerData(saberManager.rightSaber.transform, config.RightSaberTracker, trackerPose.Value);
+                if (config.ReverseRightSaber)
+                {
+                    saberManager.rightSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
+                }
             }
-
-            if (Configuration.instance.ConfigurationData.ReverseLeftSaber)
+            else
             {
-                saberManager.leftSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
-            }
-
-            if (Configuration.instance.ConfigurationData.ReverseRightSaber)
-            {
-                saberManager.rightSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
+                if (config.ReverseRightSaber)
+                {
+                    // Transform the saber only if we need to also reverse its direction since we need to set the saber position first
+                    Pose saberPose = BehaviorCatalog.instance.ControllerManager.GetRightSaberPose();
+                    saberManager.rightSaber.transform.position = saberPose.position;
+                    saberManager.rightSaber.transform.rotation = saberPose.rotation;
+                    saberManager.rightSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
+                }
             }
         }
     }

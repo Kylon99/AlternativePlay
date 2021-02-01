@@ -7,13 +7,12 @@ namespace AlternativePlay
     {
         public AlternativePlayUI AlternativePlayUI { get; set; }
         public InputManager InputManager { get; private set; }
+        public ControllerManager ControllerManager { get; private set; }
         public ShowTrackersBehavior ShowTrackersBehavior { get; private set; }
         public BeatSaberBehavior BeatSaberBehavior { get; private set; }
         public DarthMaulBehavior DarthMaulBehavior { get; private set; }
         public BeatSpearBehavior BeatSpearBehavior { get; private set; }
         public GameModifiersBehavior GameModifiersBehavior { get; private set; }
-        // public GrabTrackerBehavior GrabTrackerBehavior { get; private set; }
-
 
         public void LoadStartBehaviors()
         {
@@ -27,13 +26,15 @@ namespace AlternativePlay
         public void LoadMenuSceneLoadedFreshBehaviors()
         {
             if (ShowTrackersBehavior == null) ShowTrackersBehavior = new GameObject(nameof(ShowTrackersBehavior)).AddComponent<ShowTrackersBehavior>();
-            // if (GrabTrackerBehavior == null) GrabTrackerBehavior = new GameObject(nameof(GrabTrackerBehavior)).AddComponent<GrabTrackerBehavior>();
         }
 
         public void LoadGameSceneLoadedBehaviors()
         {
             if (InputManager == null) InputManager = new GameObject(nameof(InputManager)).AddComponent<InputManager>();
             InputManager.BeginPolling();
+
+            if (ControllerManager == null) ControllerManager = new GameObject(nameof(ControllerManager)).AddComponent<ControllerManager>();
+            ControllerManager.BeginGameCoreScene();
 
             if (BeatSaberBehavior == null) BeatSaberBehavior = new GameObject(nameof(BeatSaberBehavior)).AddComponent<BeatSaberBehavior>();
             BeatSaberBehavior.BeginGameCoreScene();

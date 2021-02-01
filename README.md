@@ -39,6 +39,11 @@ This mod depends on the following mods.  Download them at [BeatMods](https://bea
 Drop the AlternativePlay.dll file into your Plugins folder under your BeatSaber folder.
 
 ## Changelog
+
+### 0.5.2
+- Updated to support Beat Saber 1.13.2
+- Fixed saber positioning code after the changes in 1.13.2
+
 ### 0.5.1
 - Restore the tracker feature in 0.4.2
 - Changed the mode switching UI to be similar to 0.4.2.

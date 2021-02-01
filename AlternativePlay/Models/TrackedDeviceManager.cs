@@ -13,6 +13,15 @@ namespace AlternativePlay.Models
         public List<InputDevice> TrackedDevices { get; private set; } = new List<InputDevice>();
 
         /// <summary>
+        /// Updates the internal list of all tracked devices
+        /// </summary>
+        public void LoadTrackedDevices()
+        {
+            var desiredCharacteristics = InputDeviceCharacteristics.TrackedDevice;
+            InputDevices.GetDevicesWithCharacteristics(desiredCharacteristics, TrackedDevices);
+        }
+
+        /// <summary>
         /// Allows you to get one device based on the XRNode, usually the XRNode.LeftHand or the
         /// XRNode.RightHand and will return the Pose of the device.  It will return null if the
         /// device could not be found or the tracked position and rotation cannot be obtained.
@@ -22,43 +31,18 @@ namespace AlternativePlay.Models
         /// or tracked.</returns>
         public Pose? GetDevicePose(XRNode node)
         {
-            try
-            {
-                var device = InputDevices.GetDeviceAtXRNode(node);
-                if (!device.isValid) return null;
+            var device = InputDevices.GetDeviceAtXRNode(node);
+            if (!device.isValid) return null;
 
-                bool positionSuccess = device.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position);
-                bool rotationSuccess = device.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion rotation);
-                if (positionSuccess && rotationSuccess)
-                {
-                    return new Pose { position = position, rotation = rotation };
-                }
-                else
-                {
-                    return null;
-                }
-            }
-            catch
+            bool positionSuccess = device.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position);
+            bool rotationSuccess = device.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion rotation);
+            if (positionSuccess && rotationSuccess)
             {
-                AlternativePlay.Logger.Error($"Tracker GetDevicePose Error");
+                return new Pose { position = position, rotation = rotation };
+            }
+            else
+            {
                 return null;
-            }
-
-        }
-
-        /// <summary>
-        /// Updates the internal list of all tracked devices
-        /// </summary>
-        public void LoadTrackedDevices()
-        {
-            try
-            {
-                var desiredCharacteristics = InputDeviceCharacteristics.TrackedDevice;
-                InputDevices.GetDevicesWithCharacteristics(desiredCharacteristics, TrackedDevices);
-            }
-            catch
-            {
-                AlternativePlay.Logger.Error($"Tracker LoadTrackedDevices Error");
             }
         }
 
