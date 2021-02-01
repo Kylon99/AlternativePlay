@@ -51,8 +51,7 @@ namespace AlternativePlay
 
         private void OnGameSceneLoaded()
         {
-            if ((BS_Utils.Plugin.LevelData.Mode != BS_Utils.Gameplay.Mode.Multiplayer) 
-                || (PluginManager.GetPlugin(privateMultiModName).Name == privateMultiModName && BS_Utils.Plugin.LevelData.Mode == BS_Utils.Gameplay.Mode.Multiplayer))
+            if (BS_Utils.Plugin.LevelData.Mode != BS_Utils.Gameplay.Mode.Multiplayer) 
             {
                 BehaviorCatalog.instance.LoadGameSceneLoadedBehaviors();
             }
