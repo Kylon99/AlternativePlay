@@ -124,7 +124,6 @@
     <Compile Include="UI\ModMainFlowCoordinator.cs" />
     <Compile Include="UI\TrackerDisplayText.cs" />
     <Compile Include="UI\TrackerPoseView.cs" />
-    <Compile Include="UI\TrackerOptionsView.cs" />
     <Compile Include="UI\TrackerSelectView.cs" />
     <Compile Include="Utilities.cs" />
   </ItemGroup>
@@ -191,13 +190,10 @@
     <EmbeddedResource Include="Resources\alternativeplaymodels" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="UI\TrackerSelectView.bsml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="UI\TrackerOptionsView.bsml" />
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="UI\TrackerPoseView.bsml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="UI\TrackerSelectView.bsml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

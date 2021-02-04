@@ -1,31 +1,28 @@
 ﻿<bg xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd">
-  <vertical child-control-height="false">
+  <vertical>
     <!-- Current Tracker -->
-    <vertical pad-top="5" preferred-width="160" vertical-fit="PreferredSize">
-      <horizontal pad-left="7" pref-height="8" child-align="MiddleLeft" child-expand-width="false">
-        <img preserve-aspect="true" preferred-width="10" source="AlternativePlay.Resources.ViveTracker.png" />
-        <horizontal pad-left="2" child-expand-width="false">
-          <text font-size="5" text="Current" />
-        </horizontal>
-        <horizontal pad-left="5" child-expand-width="false">
-          <text font-size="5" text="~CurrentTrackerText" />
-        </horizontal>
+    <horizontal pref-height="5">
+      <img preserve-aspect="true" preferred-width="6" source="AlternativePlay.Resources.ViveTracker.png" />
+      <text font-size="4" text="Current" />
+      <text font-size="4" text="~CurrentTrackerText" />
+    </horizontal>
+
+    <!-- Select Tracker List -->
+    <vertical preferred-width="110" preferred-height="90" pad-top="2">
+      <horizontal pad-top="2" pad-bottom="2" background="round-rect-panel" background-color="#FFFFFF">
+        <pg-button pref-width="110" preferred-height="2" dir="Up" click-event="SelectTrackerList#PageUp"/>
+      </horizontal>
+      <list id="SelectTrackerList" list-style="Simple" expand-cell="true" cell-size="6" select-cell="OnTrackerListCellSelected"
+            hover-hint="Due to Unity's broken XRNode System only 9 tracked devices can be seen, including HMD, Controllers and Base Stations"/>
+      <horizontal pad-top="2" pad-bottom="2" background="round-rect-panel" background-color="#4F4F4F">
+        <pg-button pref-width="110" preferred-height="2" dir="Down" click-event="SelectTrackerList#PageDown"/>
       </horizontal>
     </vertical>
 
-    <!-- Select Tracker List -->
-    <horizontal preferred-height="40"  vertical-fit="PreferredSize">
-      <vertical preferred-width="150" pad-left="5" pad-right="5">
-
-        <pg-button pref-width="60" dir="Up" click-event="SelectTrackerList#PageUp"/>
-        <list id="SelectTrackerList" list-style="Simple" expand-cell="true" cell-size="6" select-cell="OnTrackerListCellSelected" />
-        <pg-button pref-width="60" dir="Down" click-event="SelectTrackerList#PageDown"/>
-      </vertical>
-    </horizontal>
-
-    <horizontal preferred-height="30" vertical-fit="PreferredSize" >
-      <!-- Bottom Buttons -->
-      <button pref-width="30" preferred-height="8" text="Select" on-click="OnSelected" />
+    <!-- Bottom Buttons -->
+    <horizontal preferred-height="25">
+      <button pref-width="30" preferred-height="8" text="Select" on-click="OnSelected" face-color="#00AFFF"
+              hover-hint="Unityの壊れましたXRNodeシステムの所為で、HMD、コントローラー、ベースステーションを含む9個のデバイスしか見えません"/>
       <button pref-width="30" preferred-height="8" text="Cancel" on-click="OnCancelled" />
     </horizontal>
   </vertical>

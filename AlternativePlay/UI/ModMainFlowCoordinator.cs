@@ -16,7 +16,6 @@ namespace AlternativePlay.UI
 
         private TrackerSelectView trackerSelectView;
         private TrackerPoseView trackerPoseView;
-        private TrackerOptionsView trackerOptionsView;
 
         public bool IsBusy { get; set; }
 
@@ -50,8 +49,8 @@ namespace AlternativePlay.UI
             this.trackerPoseView.SetSelectingTracker(trackerConfigData);
 
             this.ReplaceTopViewController(this.trackerSelectView);
-            this.SetLeftScreenViewController(this.trackerPoseView, ViewController.AnimationType.In);
-            this.SetRightScreenViewController(this.trackerOptionsView, ViewController.AnimationType.In);
+            this.SetLeftScreenViewController(null, ViewController.AnimationType.In);
+            this.SetRightScreenViewController(this.trackerPoseView, ViewController.AnimationType.In);
 
             this.IsBusy = false;
 
@@ -64,8 +63,8 @@ namespace AlternativePlay.UI
 
             this.ReplaceTopViewController(this.alternativePlayView);
             var viewToDisplay = DecideLeftMainView();
-            this.SetLeftScreenViewController(viewToDisplay, ViewController.AnimationType.In);
-            this.SetRightScreenViewController(this.gameModifiersView, ViewController.AnimationType.In);
+            this.SetLeftScreenViewController(viewToDisplay, ViewController.AnimationType.Out);
+            this.SetRightScreenViewController(this.gameModifiersView, ViewController.AnimationType.Out);
             this.IsBusy = false;
         }
 
@@ -85,7 +84,6 @@ namespace AlternativePlay.UI
             this.trackerSelectView = BeatSaberUI.CreateViewController<TrackerSelectView>();
             this.trackerSelectView.SetMainFlowCoordinator(this);
             this.trackerPoseView = BeatSaberUI.CreateViewController<TrackerPoseView>();
-            this.trackerOptionsView = BeatSaberUI.CreateViewController<TrackerOptionsView>();
         }
 
         protected override void DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling)

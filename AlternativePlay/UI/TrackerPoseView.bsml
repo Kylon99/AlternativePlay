@@ -1,31 +1,49 @@
 ﻿<bg xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
-  <vertical child-control-height='false' vertical-fit="PreferredSize">
-    <horizontal>
-      <vertical>
-        <vertical pad='5'>
-          <increment-setting text='Position X' min='-5000' max='5000' increment='1' integer-only='true'
-                             formatter='PositionFormatter' hover-hint='Will disable scoring if not set to 0'
-                             value='PositionX' apply-on-change='true' get-event='RefreshPositionXEvent'/>
-          <increment-setting text='Position Y' min='-5000' max='5000' increment='1' integer-only='true'
-                             formatter='PositionFormatter' hover-hint='Will disable scoring if not set to 0'
-                             value='PositionY' apply-on-change='true' get-event='RefreshPositionYEvent'/>
-          <increment-setting text='Position Z' min='-5000' max='5000' increment='1' integer-only='true'
-                             formatter='PositionFormatter' hover-hint='Will disable scoring if not set to 0'
-                             value='PositionZ' apply-on-change='true' get-event='RefreshPositionZEvent'/>
+  <vertical>
+    <!-- View Header -->
+    <horizontal pad-left='20' pad-right='20' bg='panel-top' pref-height='8' horizontal-fit='PreferredSize'>
+      <text text='Tracker Options' font-size='5' />
+    </horizontal>
 
-          <increment-setting text='Rotation X' min='-1' max='3601' increment='1' integer-only='true' formatter='RotationFormatter'
-                             value='RotationX' apply-on-change='true' get-event='RefreshRotationXEvent' />
-          <increment-setting text='Rotation Y' min='-1' max='3601' increment='1' integer-only='true' formatter='RotationFormatter'
-                             value='RotationY' apply-on-change='true' get-event='RefreshRotationYEvent'/>
-          <increment-setting text='Rotation Z' min='-1' max='3601' increment='1' integer-only='true' formatter='RotationFormatter'
-                             value='RotationZ' apply-on-change='true' get-event='RefreshRotationZEvent'/>
-        </vertical>
-        <horizontal pad-top='2'>
-          <button pref-width="30" preferred-height="8" text="Reset" hover-hint='Reset to everything to zero' on-click="OnReset"/>
-          <button pref-width="30" preferred-height="8" text="Revert" hover-hint='Undo your current changes' on-click="OnRevert"/>
-        </horizontal>
+    <!-- Position and Rotation Options -->
+    <horizontal>
+      <vertical preferred-width="60" pad-right='2'>
+        <increment-setting text='Position X' min='-5000' max='5000' increment='1' integer-only='true'
+                           formatter='PositionFormatter' hover-hint='Scoring disabled when not set to 0 | 0設定以外でスコアー無効'
+                           value='PositionX' apply-on-change='true' get-event='RefreshPositionXEvent'/>
+        <increment-setting text='Position Y' min='-5000' max='5000' increment='1' integer-only='true'
+                           formatter='PositionFormatter' hover-hint='Scoring disabled when not set to 0 | 0設定以外でスコアー無効'
+                           value='PositionY' apply-on-change='true' get-event='RefreshPositionYEvent'/>
+        <increment-setting text='Position Z' min='-5000' max='5000' increment='1' integer-only='true'
+                           formatter='PositionFormatter' hover-hint='Scoring disabled when not set to 0 | 0設定以外でスコアー無効'
+                           value='PositionZ' apply-on-change='true' get-event='RefreshPositionZEvent'/>
+
+        <increment-setting text='Rotation X' min='-1' max='3601' increment='1' integer-only='true' formatter='RotationFormatter'
+                           value='RotationX' apply-on-change='true' get-event='RefreshRotationXEvent'/>
+        <increment-setting text='Rotation Y' min='-1' max='3601' increment='1' integer-only='true' formatter='RotationFormatter'
+                           value='RotationY' apply-on-change='true' get-event='RefreshRotationYEvent'/>
+        <increment-setting text='Rotation Z' min='-1' max='3601' increment='1' integer-only='true' formatter='RotationFormatter'
+                           value='RotationZ' apply-on-change='true' get-event='RefreshRotationZEvent'/>
       </vertical>
 
+      <!-- Increment Options -->
+      <vertical preferred-width="35" pad-left="5">
+        <label text='Position Increment' />
+        <dropdown-list-setting text='' anchor-pos-y='5' anchor-pos-x='3' value='PositionIncrementChoice' choices='PositionIncrementList'
+                               on-change='OnPositionIncrementChanged' apply-on-change='true'
+                               hover-hint='Increment for position | ポジションのインクリメント'/>
+        <label text='Rotation Increment' />
+        <dropdown-list-setting text='' anchor-pos-y='5' anchor-pos-x='3' value='RotationIncrementChoice' choices='RotationIncrementList'
+                               on-change='OnRotationIncrementChanged' apply-on-change='true'
+                               hover-hint='Increment for rotation | ローテーションのインクリメント'/>
+      </vertical>
+
+    </horizontal>
+
+    <!-- Bottom Buttons-->
+    <horizontal>
+      <button pref-width="30" preferred-height="8" text="Reset" hover-hint='Reset everything to zero | 全部０にリセット' on-click="OnReset"/>
+      <button pref-width="30" preferred-height="8" text="Undo" hover-hint='Undo your current changes | 変更を戻す' on-click="OnRevert"/>
     </horizontal>
 
   </vertical>
