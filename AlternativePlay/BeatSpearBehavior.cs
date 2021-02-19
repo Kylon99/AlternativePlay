@@ -1,5 +1,4 @@
 ﻿using AlternativePlay.Models;
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -72,27 +71,12 @@ namespace AlternativePlay
             var config = Configuration.instance.ConfigurationData;
             if (!config.UseLeftController && config.RemoveOtherSaber) { return; }
 
-            // Check for left tracker
-            Pose? trackerPose;
-            if (!String.IsNullOrWhiteSpace(config.LeftSpearTracker?.Serial) &&
-                (trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.LeftSpearTracker.Serial)) != null)
+            Pose saberPose = BehaviorCatalog.instance.SaberDeviceManager.GetLeftSaberPose(config.LeftSpearTracker);
+            saberManager.leftSaber.transform.position = saberPose.position;
+            saberManager.leftSaber.transform.rotation = saberPose.rotation;
+            if (config.ReverseSpearDirection)
             {
-                Utilities.TransformSaberFromTrackerData(saberManager.leftSaber.transform, config.LeftSpearTracker, trackerPose.Value);
-                if (config.ReverseSpearDirection)
-                {
-                    saberManager.leftSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
-                }
-            }
-            else
-            {
-                if (config.ReverseSpearDirection)
-                {
-                    // Transform the saber only if we need to also reverse its direction since we need to set the saber position first
-                    Pose saberPose = BehaviorCatalog.instance.ControllerManager.GetLeftSaberPose();
-                    saberManager.leftSaber.transform.position = saberPose.position;
-                    saberManager.leftSaber.transform.rotation = saberPose.rotation;
-                    saberManager.leftSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
-                }
+                saberManager.leftSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
             }
         }
 
@@ -104,27 +88,12 @@ namespace AlternativePlay
             var config = Configuration.instance.ConfigurationData;
             if (config.UseLeftController && config.RemoveOtherSaber) { return; }
 
-            // Check for right tracker
-            Pose? trackerPose;
-            if (!String.IsNullOrWhiteSpace(config.RightSpearTracker?.Serial) &&
-                (trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(config.RightSpearTracker.Serial)) != null)
+            Pose saberPose = BehaviorCatalog.instance.SaberDeviceManager.GetRightSaberPose(config.RightSpearTracker);
+            saberManager.rightSaber.transform.position = saberPose.position;
+            saberManager.rightSaber.transform.rotation = saberPose.rotation;
+            if (config.ReverseSpearDirection)
             {
-                Utilities.TransformSaberFromTrackerData(saberManager.rightSaber.transform, config.RightSpearTracker, trackerPose.Value);
-                if (config.ReverseSpearDirection)
-                {
-                    saberManager.rightSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
-                }
-            }
-            else
-            {
-                if (config.ReverseSpearDirection)
-                {
-                    // Transform the saber only if we need to also reverse its direction since we need to set the saber position first
-                    Pose saberPose = BehaviorCatalog.instance.ControllerManager.GetRightSaberPose();
-                    saberManager.rightSaber.transform.position = saberPose.position;
-                    saberManager.rightSaber.transform.rotation = saberPose.rotation;
-                    saberManager.rightSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
-                }
+                saberManager.rightSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
             }
         }
 
@@ -135,6 +104,7 @@ namespace AlternativePlay
         {
             const float handleLength = 0.75f;
             const float handleLengthSquared = 0.5625f;
+            var config = Configuration.instance.ConfigurationData;
 
             // Determine the forward hand
             if (Configuration.instance.ConfigurationData.UseTriggerToSwitchHands)
@@ -144,8 +114,11 @@ namespace AlternativePlay
             }
 
             // Get positions and rotations of hands
-            Pose forwardHand = this.useLeftHandForward ? this.GetLeftPosition() : this.GetRightPosition();
-            Pose rearHand = this.useLeftHandForward ? this.GetRightPosition() : this.GetLeftPosition();
+            Pose leftPosition = BehaviorCatalog.instance.SaberDeviceManager.GetLeftSaberPose(config.LeftSpearTracker);
+            Pose rightPosition = BehaviorCatalog.instance.SaberDeviceManager.GetRightSaberPose(config.RightSpearTracker);
+
+            Pose forwardHand = this.useLeftHandForward ? leftPosition : rightPosition;
+            Pose rearHand = this.useLeftHandForward ? rightPosition : leftPosition;
             Vector3 forward = (forwardHand.position - rearHand.position).normalized;
             Vector3 up = forwardHand.rotation * Vector3.one;
 
@@ -172,46 +145,6 @@ namespace AlternativePlay
             Saber saberToTransform = Configuration.instance.ConfigurationData.UseLeftSpear ? this.saberManager.leftSaber : this.saberManager.rightSaber;
             saberToTransform.transform.position = saberPosition;
             saberToTransform.transform.rotation = Quaternion.LookRotation(forward, up);
-        }
-
-        /// <summary>
-        /// Gets the position of the left tracker or controller
-        /// </summary>
-        private Pose GetLeftPosition()
-        {
-            var config = Configuration.instance.ConfigurationData;
-
-            // Determine the left hand controller
-            Pose? leftTracker;
-            if (String.IsNullOrWhiteSpace(config.LeftSpearTracker?.Serial) ||
-                (leftTracker = TrackedDeviceManager.instance.GetPoseFromSerial(config.LeftSpearTracker.Serial)) == null)
-            {
-                return BehaviorCatalog.instance.ControllerManager.GetLeftSaberPose();
-            }
-            else
-            {
-                return Utilities.CalculatePoseFromTrackerData(config.LeftSpearTracker, leftTracker.Value);
-            }
-        }
-
-        /// <summary>
-        /// Gets the position of the right tracker or controller
-        /// </summary>
-        private Pose GetRightPosition()
-        {
-            var config = Configuration.instance.ConfigurationData;
-
-            // Determine the left hand controller
-            Pose? rightTracker;
-            if (String.IsNullOrWhiteSpace(config.RightSpearTracker?.Serial) ||
-                (rightTracker = TrackedDeviceManager.instance.GetPoseFromSerial(config.RightSpearTracker.Serial)) == null)
-            {
-                return BehaviorCatalog.instance.ControllerManager.GetRightSaberPose();
-            }
-            else
-            {
-                return Utilities.CalculatePoseFromTrackerData(config.RightSpearTracker, rightTracker.Value);
-            }
         }
 
         private IEnumerator HideOffColorSaber()

@@ -102,7 +102,7 @@
     <Compile Include="BeatSaberBehavior.cs" />
     <Compile Include="BehaviorCatalog.cs" />
     <Compile Include="DarthMaulBehavior.cs" />
-    <Compile Include="ControllerManager.cs" />
+    <Compile Include="SaberDeviceManager.cs" />
     <Compile Include="Models\Vector3Converter.cs" />
     <Compile Include="Models\TrackerConfigData.cs" />
     <Compile Include="ShowTrackersBehavior.cs" />

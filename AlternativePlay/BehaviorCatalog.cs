@@ -7,7 +7,7 @@ namespace AlternativePlay
     {
         public AlternativePlayUI AlternativePlayUI { get; set; }
         public InputManager InputManager { get; private set; }
-        public ControllerManager ControllerManager { get; private set; }
+        public SaberDeviceManager SaberDeviceManager { get; private set; }
         public ShowTrackersBehavior ShowTrackersBehavior { get; private set; }
         public BeatSaberBehavior BeatSaberBehavior { get; private set; }
         public DarthMaulBehavior DarthMaulBehavior { get; private set; }
@@ -33,8 +33,8 @@ namespace AlternativePlay
             if (InputManager == null) InputManager = new GameObject(nameof(InputManager)).AddComponent<InputManager>();
             InputManager.BeginPolling();
 
-            if (ControllerManager == null) ControllerManager = new GameObject(nameof(ControllerManager)).AddComponent<ControllerManager>();
-            ControllerManager.BeginGameCoreScene();
+            if (SaberDeviceManager == null) SaberDeviceManager = new GameObject(nameof(SaberDeviceManager)).AddComponent<SaberDeviceManager>();
+            SaberDeviceManager.BeginGameCoreScene();
 
             if (BeatSaberBehavior == null) BeatSaberBehavior = new GameObject(nameof(BeatSaberBehavior)).AddComponent<BeatSaberBehavior>();
             BeatSaberBehavior.BeginGameCoreScene();
