@@ -39,6 +39,9 @@ This mod depends on the following mods.  Download them at [BeatMods](https://bea
 Drop the AlternativePlay.dll file into your Plugins folder under your BeatSaber folder.
 
 ## Changelog
+### 0.5.3
+- Added room and noodle extension adjustment to saber tracking
+- Fixed tracker select display to follow room rotation
 
 ### 0.5.2
 - Updated to support Beat Saber 1.13.2
