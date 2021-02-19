@@ -44,7 +44,7 @@ namespace AlternativePlay
             {
                 // Return adjusted position from the tracker
                 Pose adjustedPose = this.AdjustForPlayerOrigin(trackerPose.Value);
-                return this.CalculatePoseFromTrackerData(configData, adjustedPose);
+                return Utilities.CalculatePoseFromTrackerData(configData, adjustedPose);
             }
             else
             {
@@ -70,7 +70,7 @@ namespace AlternativePlay
             {
                 // Return adjusted position from the tracker
                 Pose adjustedPose = this.AdjustForPlayerOrigin(trackerPose.Value);
-                return this.CalculatePoseFromTrackerData(configData, adjustedPose);
+                return Utilities.CalculatePoseFromTrackerData(configData, adjustedPose);
             }
             else
             {
@@ -127,22 +127,6 @@ namespace AlternativePlay
             }
 
             return newDevicePose;
-        }
-
-        public Pose CalculatePoseFromTrackerData(TrackerConfigData trackerConfigData, Pose tracker)
-        {
-            Pose result = Pose.identity;
-
-            // Calculate and apply rotation first
-            Quaternion extraRotation = Quaternion.Euler(trackerConfigData.EulerAngles);
-            Quaternion finalRotation = tracker.rotation * extraRotation;
-            result.rotation = finalRotation;
-
-            // Rotate position and add 
-            Vector3 rotatedPosition = tracker.rotation * trackerConfigData.Position;
-            result.position = tracker.position + rotatedPosition;
-
-            return result;
         }
     }
 }

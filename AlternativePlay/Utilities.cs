@@ -43,16 +43,5 @@ namespace AlternativePlay
 
             return result;
         }
-
-        /// <summary>
-        /// Transforms the <see cref="Transform"/> of a Unity game object based on the given <see cref="TrackerConfigData"/>
-        /// given the current tracker's rotation and position.
-        /// </summary>
-        public static void TransformSaberFromTrackerData(Transform saberTransform, TrackerConfigData trackerConfigData, Pose tracker)
-        {
-            Pose pose = CalculatePoseFromTrackerData(trackerConfigData, tracker);
-            saberTransform.position = pose.position;
-            saberTransform.rotation = pose.rotation;
-        }
     }
 }

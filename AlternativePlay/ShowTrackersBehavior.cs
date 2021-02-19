@@ -10,6 +10,8 @@ namespace AlternativePlay
 {
     public class ShowTrackersBehavior : MonoBehaviour
     {
+        private MainSettingsModelSO mainSettingsModel;
+
         private bool showTrackers;
         private TrackerConfigData selectedTracker;
 
@@ -63,6 +65,8 @@ namespace AlternativePlay
 
         private void Awake()
         {
+            this.mainSettingsModel = Resources.FindObjectsOfTypeAll<MainSettingsModelSO>().FirstOrDefault();
+
             AssetBundle assetBundle = AssetBundle.LoadFromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream("AlternativePlay.Resources.alternativeplaymodels"));
             this.trackerPrefab = assetBundle.LoadAsset<GameObject>("APTracker");
             this.saberPrefab = assetBundle.LoadAsset<GameObject>("APSaber");
@@ -76,17 +80,17 @@ namespace AlternativePlay
             foreach (var tracker in this.trackerInstances)
             {
                 // Update all the tracker poses
-                bool positionSuccess = tracker.InputDevice.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position);
-                if (positionSuccess) tracker.Instance.transform.position = position;
+                Pose trackerPose = TrackedDeviceManager.GetDevicePose(tracker.InputDevice) ?? new Pose();
+                trackerPose = this.AdjustForRoomRotation(trackerPose);
 
-                bool rotationSuccess = tracker.InputDevice.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion rotation);
-                if (rotationSuccess) tracker.Instance.transform.rotation = rotation;
+                tracker.Instance.transform.position = trackerPose.position;
+                tracker.Instance.transform.rotation = trackerPose.rotation;
             }
 
             var selectedTrackerInstance = this.trackerInstances.Find(t => t.Serial == this.selectedTracker.Serial);
             if (this.selectedTracker == null || String.IsNullOrWhiteSpace(this.selectedTracker.Serial))
             {
-                // No tracker so disable the saber
+                // No selected tracker so disable the saber
                 this.saberInstance.SetActive(false);
                 return;
             }
@@ -95,9 +99,28 @@ namespace AlternativePlay
             Pose selectedTrackerPose = new Pose(
                 selectedTrackerInstance.Instance.transform.position,
                 selectedTrackerInstance.Instance.transform.rotation);
-            Utilities.TransformSaberFromTrackerData(this.saberInstance.transform, this.selectedTracker, selectedTrackerPose);
+
+            Pose pose = Utilities.CalculatePoseFromTrackerData(this.selectedTracker, selectedTrackerPose);
+            this.saberInstance.transform.position = pose.position;
+            this.saberInstance.transform.rotation = pose.rotation;
 
             this.saberInstance.SetActive(true);
+        }
+
+        /// <summary>
+        /// Given any pose this method returns a new pose that is adjusted for the Beat Saber
+        /// Room Rotation.
+        /// </summary>
+        private Pose AdjustForRoomRotation(Pose pose)
+        {
+            var roomCenter = this.mainSettingsModel.roomCenter;
+            var roomRotation = Quaternion.Euler(0, this.mainSettingsModel.roomRotation, 0);
+
+            Pose result = pose;
+            result.position = roomRotation * pose.position;
+            result.position += roomCenter;
+            result.rotation = roomRotation * pose.rotation;
+            return result;
         }
 
         // Deletes all the instances and all the locally stored tracker instances data
@@ -109,6 +132,7 @@ namespace AlternativePlay
             if (this.saberInstance != null) GameObject.Destroy(this.saberInstance);
             this.saberInstance = null;
         }
+
 
         private class TrackerInstance
         {
