@@ -193,7 +193,7 @@
     <EmbeddedResource Include="UI\TrackerPoseView.bsml" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="UI\TrackerSelectView.bsml" />
+    <EmbeddedResource Include="UI\TrackerSelectView.bsml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
