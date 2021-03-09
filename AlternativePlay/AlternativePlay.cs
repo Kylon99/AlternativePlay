@@ -3,6 +3,7 @@ using BS_Utils.Utilities;
 using HarmonyLib;
 using IPA;
 using System.Reflection;
+using AlternativePlay.HarmonyPatches;
 
 namespace AlternativePlay
 {
@@ -48,7 +49,8 @@ namespace AlternativePlay
 
         private void OnGameSceneLoaded()
         {
-            if (BS_Utils.Plugin.LevelData.Mode != BS_Utils.Gameplay.Mode.Multiplayer)
+            if ((BS_Utils.Plugin.LevelData.Mode != BS_Utils.Gameplay.Mode.Multiplayer) ||
+                (BS_Utils.Plugin.LevelData.Mode == BS_Utils.Gameplay.Mode.Multiplayer && MultiplayerPatch.connectionType != MultiplayerLobbyConnectionController.LobbyConnectionType.QuickPlay))
             {
                 BehaviorCatalog.instance.LoadGameSceneLoadedBehaviors();
             }
