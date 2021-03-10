@@ -3,8 +3,8 @@ using HarmonyLib;
 
 namespace AlternativePlay.HarmonyPatches
 {
-    [HarmonyPatch(nameof(NoteBasicCutInfo.GetBasicCutInfo))]
-    [HarmonyPatch(typeof(NoteBasicCutInfo))]
+    [HarmonyPatch(nameof(NoteBasicCutInfoHelper.GetBasicCutInfo))]
+    [HarmonyPatch(typeof(NoteBasicCutInfoHelper))]
     internal class TouchNotesPatch
     {
         private static void Prefix(ref float saberBladeSpeed)

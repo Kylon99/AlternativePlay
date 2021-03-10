@@ -39,6 +39,10 @@ This mod depends on the following mods.  Download them at [BeatMods](https://bea
 Drop the AlternativePlay.dll file into your Plugins folder under your BeatSaber folder.
 
 ## Changelog
+### 0.6.0
+- Updated to support Beat Saber 1.13.4
+- Fixed Touch Notes to patch the new NoteBasicCutInfoHelper
+
 ### 0.5.3
 - Added room and noodle extension adjustment to saber tracking
 - Fixed tracker select display to follow room rotation
@@ -110,6 +114,7 @@ Drop the AlternativePlay.dll file into your Plugins folder under your BeatSaber 
 
 ## Author
 * Kylon99 - Main modder
+* Snow1226 - Contributor (https://github.com/Snow1226/AlternativePlay/)
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
