@@ -4,7 +4,7 @@ using UnityEngine.XR;
 
 namespace AlternativePlay.HarmonyPatches
 {
-    [HarmonyPatch(nameof(HapticFeedbackController.GetRumble))]
+    [HarmonyPatch(nameof(HapticFeedbackController.PlayHapticFeedback))]
     [HarmonyPatch(typeof(HapticFeedbackController))]
     internal class DarthMaulHapticPatch
     {

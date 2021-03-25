@@ -39,6 +39,10 @@ This mod depends on the following mods.  Download them at [BeatMods](https://bea
 Drop the AlternativePlay.dll file into your Plugins folder under your BeatSaber folder.
 
 ## Changelog
+
+### 0.6.1
+- Updated to support Beat Saber 1.14
+
 ### 0.6.0
 - Updated to support Beat Saber 1.13.4
 - Fixed Touch Notes to patch the new NoteBasicCutInfoHelper

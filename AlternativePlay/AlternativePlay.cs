@@ -1,9 +1,9 @@
-﻿using AlternativePlay.Models;
+﻿using AlternativePlay.HarmonyPatches;
+using AlternativePlay.Models;
 using BS_Utils.Utilities;
 using HarmonyLib;
 using IPA;
 using System.Reflection;
-using AlternativePlay.HarmonyPatches;
 
 namespace AlternativePlay
 {
