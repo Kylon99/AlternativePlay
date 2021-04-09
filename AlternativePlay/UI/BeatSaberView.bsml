@@ -2,61 +2,41 @@
   <vertical child-control-height="false">
 
     <!-- View Header -->
-    <horizontal
-      pad-left="15"
-      pad-right="15"
-      bg="panel-top"
-      pref-height="16"
-      horizontal-fit="PreferredSize">
-      <vertical pad="1">
-        <img pref-width="14" source="AlternativePlay.Resources.BeatSaber.png" />
-      </vertical>
-      <vertical
-        pad-left="1"
-        pref-height="12"
-        vertical-fit="PreferredSize">
-        <text text="Playing Beat Saber" font-size="6"/>
-        <text text="Dual sabers play of the original game" font-size="4" />
+    <horizontal pad-left="10" pad-right="10" bg="panel-top" pref-height="11">
+      <img preserve-aspect="true" pref-width="5" source="AlternativePlay.Resources.BeatSaber.png" />
+      <vertical pad-left="1" pad-top="1" pad-bottom="3" pref-height="12" vertical-fit="PreferredSize">
+        <text text="Beat Saber" font-size="5"/>
+        <text text="Play dual sabers from the original game" font-size="4" />
       </vertical>
     </horizontal>
 
     <!-- Main View -->
-    <vertical
-    pref-height="15"
-    pref-width="90"
-    vertical-fit="PreferredSize"
-    child-control-height="false">
-      <checkbox-setting
-        text="Use Left For One Color"
-        value="UseLeftSaber"
-        apply-on-change="true"
-        on-change="OnUseLeftSaberChanged"
-        hover-hint="Use the left saber when playing One Color" />
-      <checkbox-setting
-        text="Reverse Left Saber"
-        value="ReverseLeftSaber"
-        apply-on-change="true"
-        on-change="OnReverseLeftSaberChanged"
-        hover-hint="Reverse the direction of the left saber" />
-      <checkbox-setting
-        text="Reverse Right Saber"
-        value="ReverseRightSaber"
-        apply-on-change="true"
-        on-change="OnReverseRightSaberChanged"
-        hover-hint="Reverse the direction of the right saber" />
+    <vertical pref-width="70" vertical-fit="PreferredSize">
+      <checkbox-setting text="Use Left For One Color" value="UseLeftSaber" apply-on-change="true"
+                        on-change="OnUseLeftSaberChanged" hover-hint="Use the left saber when playing One Color" />
+      <checkbox-setting text="Reverse Left Saber" value="ReverseLeftSaber" apply-on-change="true"
+                        on-change="OnReverseLeftSaberChanged" hover-hint="Reverse the direction of the left saber" />
+      <checkbox-setting text="Reverse Right Saber" value="ReverseRightSaber" apply-on-change="true"
+                        on-change="OnReverseRightSaberChanged" hover-hint="Reverse the direction of the right saber" />
+    </vertical>
 
+    <!--Tracker Selection-->
+    <vertical pref-width="80" vertical-fit="PreferredSize">
       <horizontal>
-        <clickable-text text="Left Hand" highlight-color="#FFFFFF" hover-hint="Use a tracker for the left hand instead of the default controller"/>
+        <clickable-text text="Left Hand" italics="true" font-size="4" highlight-color="#FFFFFF" align="MidlineLeft"
+                        hover-hint="Choose a tracker for the left hand instead of the default controller"/>
         <button preferred-width="50" preferred-height="8" text="~LeftSaberTrackerSerial"
                 hover-hint="~LeftSaberTrackerHoverHint" on-click="OnShowSelectLeftTracker"/>
         <button pref-width="10" preferred-height="8" text="x" on-click="OnClearLeftTracker"/>
       </horizontal>
       <horizontal>
-        <clickable-text text="Right Hand" highlight-color="#FFFFFF" hover-hint="Use a tracker for the right hand instead of the default controller"/>
+        <clickable-text text="Right Hand" italics="true" font-size="4" highlight-color="#FFFFFF" align="MidlineLeft"
+                        hover-hint="Choose a tracker for the right hand instead of the default controller"/>
         <button pref-width="50" preferred-height="8" text="~RightSaberTrackerSerial"
                 hover-hint="~RightSaberTrackerHoverHint" on-click="OnShowSelectRightTracker"/>
         <button pref-width="10" preferred-height="8" text="x" on-click="OnClearRightTracker"/>
       </horizontal>
     </vertical>
+
   </vertical>
 </bg>

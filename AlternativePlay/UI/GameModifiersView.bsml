@@ -1,72 +1,42 @@
 ﻿<bg xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd">
-  <vertical child-control-height='false'>
-    <horizontal
-      pad-left='25'
-      pad-right='25'
-      pad-top='2'
-      pad-bottom='2'
-      bg='panel-top'
-      horizontal-fit='PreferredSize'>
-      <vertical
-        pref-height='12'
-        vertical-fit='PreferredSize'>
-        <text text='Game Modifiers' font-size='6' align='CenterGeoAligned'/>
-        <text text='Modify the maps to support different styles of play' font-size='4' align='CenterGeoAligned'/>
+  <vertical child-control-height="false">
+
+    <!-- View Header -->
+    <horizontal pad-left="12" pad-right="12" bg="panel-top" pref-height="11">
+      <vertical pad-left="1" pad-top="1" pad-bottom="3" pref-height="12" vertical-fit="PreferredSize">
+        <text text="Game Modifiers" font-size="5" align="Center"/>
+        <text text="Modify the maps to support different styles of play" font-size="3" align="Center"/>
       </vertical>
     </horizontal>
-    <vertical
-      pref-width='80'
-      vertical-fit='PreferredSize'>
+
+    <!-- Main Settings -->
+    <vertical preferred-width="75" vertical-fit="PreferredSize">
       <horizontal>
-        <img preserve-aspect="true" pref-width='14' pref-height='4' source='AlternativePlay.Resources.NoArrows.png' />
-        <horizontal pad-left='3'>
-          <checkbox-setting
-            text='No Arrows'
-            value='NoArrows'
-            apply-on-change='true'
-            on-change='OnNoArrowsChanged'
-            hover-hint='All notes can be hit in from direction!' />
+        <img preserve-aspect="true" pref-width="12" preferred-height="5" source="AlternativePlay.Resources.NoArrows.png" />
+        <checkbox-setting text="No Arrows" value="NoArrows" apply-on-change="true" on-change="OnNoArrowsChanged"
+                          hover-hint="All notes can be hit in from direction!" />
+      </horizontal>
+      <horizontal pad-top="2">
+        <img preserve-aspect="true" pref-width="12" preferred-height="5" source="AlternativePlay.Resources.OneColor.png" />
+        <checkbox-setting text="One Color" value="OneColor" apply-on-change="true" on-change="OnOneColorChanged"
+                          hover-hint="All notes become the same color and can be hit by both sabers." />
+      </horizontal>
+      <horizontal pad-left="12">
+        <checkbox-setting text="Remove Other Saber" value="RemoveOtherSaber" apply-on-change="true" on-change="OnRemoveOtherSaberChanged"
+                          hover-hint="Remove the other saber when playing with One Color with Beat Saber" />
+      </horizontal>
+      <horizontal pad-top="2">
+        <img preserve-aspect="true" pref-width="12" preferred-height="5" source="AlternativePlay.Resources.NoArrowsRandom.png" />
+        <horizontal>
+          <checkbox-setting text="No Arrows Random" value="NoArrowsRandom" apply-on-change="true" on-change="OnNoArrowsRandomChanged"
+            hover-hint="BEAT SABER 1.13 BROKE THIS! This is No Arrows but the left and right are sometimes swapped making gameplay harder. Similar to No Arrows maps in the Original Sound Tracks." />
         </horizontal>
       </horizontal>
-      <horizontal pad-top='1'>
-        <img preserve-aspect="true" pref-width='14' pref-height='8' source='AlternativePlay.Resources.OneColor.png' />
-        <horizontal pad-left='3'>
-          <checkbox-setting
-            text='One Color'
-            value='OneColor'
-            apply-on-change='true'
-            on-change='OnOneColorChanged'
-            hover-hint='All notes become the same color and can be hit by both sabers.' />
-        </horizontal>
-      </horizontal>
-      <horizontal pad-left='14' pref-height='8' >
-        <checkbox-setting
-          text='Remove Other Saber'
-          value='RemoveOtherSaber'
-          apply-on-change='true'
-          on-change='OnRemoveOtherSaberChanged'
-          hover-hint='Remove the other saber when playing with One Color with Beat Saber' />
-      </horizontal>
-      <horizontal pad-top='1'>
-        <img preserve-aspect="true" pref-width='14' pref-height='8' source='AlternativePlay.Resources.NoArrowsRandom.png' />
-        <horizontal pad-left='3'>
-          <checkbox-setting
-            text='No Arrows Random'
-            value='NoArrowsRandom'
-            apply-on-change='true'
-            on-change='OnNoArrowsRandomChanged'
-            hover-hint='BEAT SABER 1.13 BROKE THIS! This is No Arrows but the left and right are sometimes swapped making gameplay harder. Similar to No Arrows maps in the Original Sound Tracks.' />
-        </horizontal>
-      </horizontal>
-      <horizontal pad-top='1' pad-bottom='2'>
-        <img preserve-aspect="true" pref-width='14' pref-height='8' source='AlternativePlay.Resources.TouchNotes.png' />
-        <horizontal pad-left='3'>
-          <checkbox-setting
-            text='Touch Notes'
-            value='TouchNotes'
-            apply-on-change='true'
-            on-change='OnTouchNotesChanged'
-            hover-hint='All notes no longer require direction or speed to cut. You can touch, shoot or stab them.' />
+      <horizontal pad-top="2">
+        <img preserve-aspect="true" pref-width="12" preferred-height="5" source="AlternativePlay.Resources.TouchNotes.png" />
+        <horizontal>
+          <checkbox-setting text="Touch Notes" value="TouchNotes" apply-on-change="true" on-change="OnTouchNotesChanged"
+            hover-hint="All notes no longer require direction or speed to cut. You can touch, shoot or stab them." />
         </horizontal>
       </horizontal>
     </vertical>

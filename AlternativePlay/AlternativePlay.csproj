@@ -137,14 +137,11 @@
     <EmbeddedResource Include="Resources\TouchNotes.png" />
     <Content Include="Resources\BeatSaberColor.svg" />
     <Content Include="Resources\BeatSaberColor64.png" />
-    <EmbeddedResource Include="Resources\BeatSaberGrey.png" />
     <Content Include="Resources\BeatSpearColor.svg" />
     <Content Include="Resources\BeatSpearColor64.png" />
     <EmbeddedResource Include="Resources\DarthMaulColor.png" />
-    <EmbeddedResource Include="Resources\BeatSpearGrey.png" />
     <Content Include="Resources\DarthMaulColor.svg" />
     <Content Include="Resources\DarthMaulColor64.png" />
-    <EmbeddedResource Include="Resources\DarthMaulGrey.png" />
     <Content Include="Resources\NoArrowsColor.png" />
     <Content Include="Resources\NoArrowsColor.svg" />
     <Content Include="Resources\NoArrowsColor64.png" />

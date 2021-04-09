@@ -9,12 +9,12 @@
 
     <!-- Select Tracker List -->
     <vertical preferred-width="110" preferred-height="90" pad-top="2">
-      <horizontal pad-top="2" pad-bottom="2" background="round-rect-panel" background-color="#FFFFFF">
+      <horizontal pad-top="2" pad-bottom="2" background="round-rect-panel" background-color="#0000004F">
         <pg-button pref-width="110" preferred-height="2" dir="Up" click-event="SelectTrackerList#PageUp"/>
       </horizontal>
       <list id="SelectTrackerList" list-style="Simple" expand-cell="true" cell-size="6" select-cell="OnTrackerListCellSelected"
             hover-hint="Due to Unity's broken XRNode System only 9 tracked devices can be seen, including HMD, Controllers and Base Stations"/>
-      <horizontal pad-top="2" pad-bottom="2" background="round-rect-panel" background-color="#4F4F4F">
+      <horizontal pad-top="2" pad-bottom="2" background="round-rect-panel" background-color="#0000004F">
         <pg-button pref-width="110" preferred-height="2" dir="Down" click-event="SelectTrackerList#PageDown"/>
       </horizontal>
     </vertical>
