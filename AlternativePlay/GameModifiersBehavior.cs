@@ -13,7 +13,6 @@ namespace AlternativePlay
         private ColorType undesiredNoteType;
         private SaberManager saberManager;
 
-
         /// <summary>
         /// To be invoked every time when starting the GameCore scene.
         /// </summary>
@@ -29,7 +28,7 @@ namespace AlternativePlay
                 AlternativePlay.Logger.Info("Disabling score submission on Game Modifier mode transformation");
                 BS_Utils.Gameplay.ScoreSubmission.DisableSubmission(AlternativePlay.assemblyName);
 
-                StartCoroutine(TransformMap());
+                this.StartCoroutine(this.TransformMap());
             }
         }
 
@@ -147,7 +146,7 @@ namespace AlternativePlay
                     }
 
                     // Transform for One Color if this is the other note type
-                    if (Configuration.instance.ConfigurationData.OneColor && note.colorType == undesiredNoteType)
+                    if (Configuration.instance.ConfigurationData.OneColor && note.colorType == this.undesiredNoteType)
                     {
                         note.SwitchNoteColorType();
                     }
