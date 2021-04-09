@@ -26,7 +26,7 @@ namespace AlternativePlay
 
             Utilities.CheckAndDisableForTrackerTransforms(Configuration.instance.ConfigurationData.LeftSpearTracker);
             Utilities.CheckAndDisableForTrackerTransforms(Configuration.instance.ConfigurationData.RightSpearTracker);
-            StartCoroutine(HideOffColorSaber());
+            this.StartCoroutine(this.HideOffColorSaber());
         }
 
 
@@ -41,7 +41,7 @@ namespace AlternativePlay
 
         private void Update()
         {
-            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.BeatSpear || saberManager == null)
+            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.BeatSpear)
             {
                 // Do nothing if we aren't playing Beat Spear or if we can't find the player controller
                 return;
@@ -50,11 +50,11 @@ namespace AlternativePlay
             switch (Configuration.instance.ConfigurationData.SpearControllerCount)
             {
                 case ControllerCountEnum.One:
-                    TransformForOneControllerSpearLeft();
-                    TransformForOneControllerSpearRight();
+                    this.TransformForOneControllerSpearLeft();
+                    this.TransformForOneControllerSpearRight();
                     break;
                 case ControllerCountEnum.Two:
-                    TransformForTwoControllerSpear();
+                    this.TransformForTwoControllerSpear();
                     break;
 
                 default:
@@ -72,11 +72,11 @@ namespace AlternativePlay
             if (!config.UseLeftController && config.RemoveOtherSaber) { return; }
 
             Pose saberPose = BehaviorCatalog.instance.SaberDeviceManager.GetLeftSaberPose(config.LeftSpearTracker);
-            saberManager.leftSaber.transform.position = saberPose.position;
-            saberManager.leftSaber.transform.rotation = saberPose.rotation;
+            this.saberManager.leftSaber.transform.position = saberPose.position;
+            this.saberManager.leftSaber.transform.rotation = saberPose.rotation;
             if (config.ReverseSpearDirection)
             {
-                saberManager.leftSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
+                this.saberManager.leftSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
             }
         }
 
@@ -89,11 +89,11 @@ namespace AlternativePlay
             if (config.UseLeftController && config.RemoveOtherSaber) { return; }
 
             Pose saberPose = BehaviorCatalog.instance.SaberDeviceManager.GetRightSaberPose(config.RightSpearTracker);
-            saberManager.rightSaber.transform.position = saberPose.position;
-            saberManager.rightSaber.transform.rotation = saberPose.rotation;
+            this.saberManager.rightSaber.transform.position = saberPose.position;
+            this.saberManager.rightSaber.transform.rotation = saberPose.rotation;
             if (config.ReverseSpearDirection)
             {
-                saberManager.rightSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
+                this.saberManager.rightSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
             }
         }
 

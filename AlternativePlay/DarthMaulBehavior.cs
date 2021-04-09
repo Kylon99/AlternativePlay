@@ -8,7 +8,7 @@ namespace AlternativePlay
     {
         private SaberManager saberManager;
 
-        public static bool Split { get; set; }
+        public bool Split { get; private set; }
 
         /// <summary>
         /// To be invoked every time when starting the GameCore scene.
@@ -16,7 +16,7 @@ namespace AlternativePlay
         public void BeginGameCoreScene()
         {
             // Do nothing if we aren't playing Darth Maul
-            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.DarthMaul || saberManager == null) { return; }
+            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.DarthMaul || this.saberManager == null) { return; }
 
             TrackedDeviceManager.instance.LoadTrackedDevices();
 
@@ -31,7 +31,7 @@ namespace AlternativePlay
 
         private void Update()
         {
-            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.DarthMaul || saberManager == null)
+            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.DarthMaul)
             {
                 // Do nothing if we aren't playing Darth Maul
                 return;
@@ -45,17 +45,39 @@ namespace AlternativePlay
 
                 if (leftTriggerPressed || rightTriggerPressed)
                 {
-                    Split = !Split;
-                }
-
-                if (Split)
-                {
-                    TransformForSplitDarthMaul();
-                    return;
+                    this.Split = !this.Split;
                 }
             }
 
-            TransformForMaul();
+            this.TransformSabers();
+        }
+
+        /// <summary>
+        /// Track the Maul sabers using internal Beat Saber locations or the assigned trackers
+        /// </summary>
+        private void TransformSabers()
+        {
+
+            if (this.Split)
+            {
+                this.TransformForSplitDarthMaul();
+                return;
+            }
+
+            switch (Configuration.instance.ConfigurationData.DarthMaulControllerCount)
+            {
+                case ControllerCountEnum.One:
+                    this.TransformOneControllerMaul();
+                    break;
+
+                case ControllerCountEnum.Two:
+                    this.TransformTwoControllerMaul();
+                    break;
+
+                default:
+                    // Do nothing
+                    break;
+            }
         }
 
         /// <summary>
@@ -66,33 +88,12 @@ namespace AlternativePlay
             var config = Configuration.instance.ConfigurationData;
 
             Pose leftSaberPose = BehaviorCatalog.instance.SaberDeviceManager.GetLeftSaberPose(config.LeftMaulTracker);
-            saberManager.leftSaber.transform.position = leftSaberPose.position;
-            saberManager.leftSaber.transform.rotation = leftSaberPose.rotation;
+            this.saberManager.leftSaber.transform.position = leftSaberPose.position;
+            this.saberManager.leftSaber.transform.rotation = leftSaberPose.rotation;
 
             Pose rightSaberPose = BehaviorCatalog.instance.SaberDeviceManager.GetRightSaberPose(config.RightMaulTracker);
-            saberManager.rightSaber.transform.position = rightSaberPose.position;
-            saberManager.rightSaber.transform.rotation = rightSaberPose.rotation;
-        }
-
-        /// <summary>
-        /// Track the Maul sabers using internal Beat Saber locations or the assigned trackers
-        /// </summary>
-        private void TransformForMaul()
-        {
-            switch (Configuration.instance.ConfigurationData.DarthMaulControllerCount)
-            {
-                case ControllerCountEnum.One:
-                    TransformOneControllerMaul();
-                    break;
-
-                case ControllerCountEnum.Two:
-                    TransformTwoControllerMaul();
-                    break;
-
-                default:
-                    // Do nothing
-                    break;
-            }
+            this.saberManager.rightSaber.transform.position = rightSaberPose.position;
+            this.saberManager.rightSaber.transform.rotation = rightSaberPose.rotation;
         }
 
         /// <summary>
@@ -113,15 +114,15 @@ namespace AlternativePlay
             {
                 getBaseController = BehaviorCatalog.instance.SaberDeviceManager.GetLeftSaberPose;
                 baseTrackerConfig = config.LeftMaulTracker;
-                baseSaber = saberManager.leftSaber;
-                otherSaber = saberManager.rightSaber;
+                baseSaber = this.saberManager.leftSaber;
+                otherSaber = this.saberManager.rightSaber;
             }
             else
             {
                 getBaseController = BehaviorCatalog.instance.SaberDeviceManager.GetRightSaberPose;
                 baseTrackerConfig = config.RightMaulTracker;
-                baseSaber = saberManager.rightSaber;
-                otherSaber = saberManager.leftSaber;
+                baseSaber = this.saberManager.rightSaber;
+                otherSaber = this.saberManager.leftSaber;
             }
             var rotateSaber = config.ReverseMaulDirection ? baseSaber : otherSaber;
 
@@ -154,8 +155,8 @@ namespace AlternativePlay
             Vector3 forward = (rightHand.position - leftHand.position).normalized;
             Vector3 rightHandUp = rightHand.rotation * Vector3.up;
 
-            Saber forwardSaber = config.ReverseMaulDirection ? saberManager.leftSaber : saberManager.rightSaber;
-            Saber backwardSaber = config.ReverseMaulDirection ? saberManager.rightSaber : saberManager.leftSaber;
+            Saber forwardSaber = config.ReverseMaulDirection ? this.saberManager.leftSaber : this.saberManager.rightSaber;
+            Saber backwardSaber = config.ReverseMaulDirection ? this.saberManager.rightSaber : this.saberManager.leftSaber;
 
             forwardSaber.transform.position = middlePos + (forward * sep);
             backwardSaber.transform.position = middlePos + (-forward * sep);
