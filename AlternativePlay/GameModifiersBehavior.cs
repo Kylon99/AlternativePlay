@@ -30,11 +30,26 @@ namespace AlternativePlay
 
                 this.StartCoroutine(this.TransformMap());
             }
+
+            this.StartCoroutine(this.DisableOtherSaberMesh());
         }
 
         private void Awake()
         {
             this.saberManager = FindObjectOfType<SaberManager>();
+        }
+
+        private void Update()
+        {
+            if (!(Configuration.instance.ConfigurationData.OneColor &&
+                Configuration.instance.ConfigurationData.PlayMode == PlayMode.BeatSaber &&
+                Configuration.instance.ConfigurationData.RemoveOtherSaber)) { return; }
+
+            // Move the other saber away since there's a bug in the base game which makes it
+            // able to cut bombs still
+            Saber saberToHide = Configuration.instance.ConfigurationData.UseLeftSaber ? this.saberManager.rightSaber : this.saberManager.leftSaber;
+            saberToHide.gameObject.transform.position = new Vector3(0.0f, -1000.0f, 0.0f);
+            saberToHide.gameObject.transform.rotation = Quaternion.Euler(90.0f, 0.0f, 0.0f);
         }
 
         /// <summary>
@@ -46,17 +61,19 @@ namespace AlternativePlay
             const string NoArrowsModeName = "NoArrows";
             const string OneSaberModeName = "OneSaber";
 
+            var config = Configuration.instance.ConfigurationData;
+
             // No transform if nothing is selected
-            if (!Configuration.instance.ConfigurationData.NoArrows &&
-                !Configuration.instance.ConfigurationData.OneColor &&
-                !Configuration.instance.ConfigurationData.RemoveOtherSaber &&
-                !Configuration.instance.ConfigurationData.NoArrowsRandom)
+            if (!config.NoArrows &&
+                !config.OneColor &&
+                !config.RemoveOtherSaber &&
+                !config.NoArrowsRandom)
             {
                 return false;
             }
 
-            bool IsOnlyOneColorSelected() { return Configuration.instance.ConfigurationData.OneColor && !Configuration.instance.ConfigurationData.NoArrows && !Configuration.instance.ConfigurationData.NoArrowsRandom && !Configuration.instance.ConfigurationData.TouchNotes; }
-            bool AreOnlyNoArrowsOptionsSelected() { return (Configuration.instance.ConfigurationData.NoArrows || Configuration.instance.ConfigurationData.NoArrowsRandom) && !Configuration.instance.ConfigurationData.OneColor; }
+            bool IsOnlyOneColorSelected() { return config.OneColor && !config.NoArrows && !config.NoArrowsRandom && !config.TouchNotes; }
+            bool AreOnlyNoArrowsOptionsSelected() { return (config.NoArrows || config.NoArrowsRandom) && !config.OneColor; }
 
             // Check for map modes that already reproduce our game mode
             string serializedName = this.currentBeatmap.parentDifficultyBeatmapSet.beatmapCharacteristic.serializedName;
@@ -80,13 +97,15 @@ namespace AlternativePlay
         {
             yield return new WaitForSecondsRealtime(0.1f);
 
+            var config = Configuration.instance.ConfigurationData;
+
             // Set up for One Color
-            if (Configuration.instance.ConfigurationData.OneColor && !Configuration.instance.ConfigurationData.NoArrowsRandom)
+            if (config.OneColor && !config.NoArrowsRandom)
             {
                 this.useLeft =
-                    (Configuration.instance.ConfigurationData.PlayMode == PlayMode.BeatSaber && Configuration.instance.ConfigurationData.UseLeftSaber) ||
-                    (Configuration.instance.ConfigurationData.PlayMode == PlayMode.DarthMaul && Configuration.instance.ConfigurationData.UseLeftController) ||
-                    (Configuration.instance.ConfigurationData.PlayMode == PlayMode.BeatSpear && Configuration.instance.ConfigurationData.UseLeftSpear);
+                    (config.PlayMode == PlayMode.BeatSaber && config.UseLeftSaber) ||
+                    (config.PlayMode == PlayMode.DarthMaul && config.UseLeftController) ||
+                    (config.PlayMode == PlayMode.BeatSpear && config.UseLeftSpear);
 
                 this.undesiredNoteType = this.useLeft ? ColorType.ColorB : ColorType.ColorA;
 
@@ -98,13 +117,6 @@ namespace AlternativePlay
                 var player = Resources.FindObjectsOfTypeAll<SaberManager>().FirstOrDefault();
                 Saber saberToSwap = this.useLeft ? player.rightSaber : player.leftSaber;
                 saberToSwap.SetField("_saberType", saberObject);
-
-                if (Configuration.instance.ConfigurationData.RemoveOtherSaber && Configuration.instance.ConfigurationData.PlayMode == PlayMode.BeatSaber)
-                {
-                    // Hide the off color saber
-                    Saber saberToHide = Configuration.instance.ConfigurationData.UseLeftSaber ? this.saberManager.rightSaber : this.saberManager.leftSaber;
-                    saberToHide.gameObject.SetActive(false);
-                }
             }
 
             try
@@ -122,7 +134,7 @@ namespace AlternativePlay
                 }
                 //BeatmapObjectCallbackController callbackController = Resources.FindObjectsOfTypeAll<BeatmapObjectCallbackController>().FirstOrDefault();
                 // BeatmapData beatmapData = callbackController.GetField<BeatmapData>("_beatmapData");
-                if (Configuration.instance.ConfigurationData.NoArrowsRandom)
+                if (config.NoArrowsRandom)
                 {
                     // Transform the map to No Arrows Random using the ingame algorithm first
                     AlternativePlay.Logger.Info($"Transforming NoArrowsRandom for song: {this.currentBeatmap.level.songName}");
@@ -140,13 +152,13 @@ namespace AlternativePlay
                     var note = beatmapObject as NoteData;
 
                     // Transform for NoArrows or TouchNotes here but do not if NoArrowsRandom was already applied
-                    if ((Configuration.instance.ConfigurationData.NoArrows || Configuration.instance.ConfigurationData.TouchNotes) && !Configuration.instance.ConfigurationData.NoArrowsRandom)
+                    if ((config.NoArrows || config.TouchNotes) && !config.NoArrowsRandom)
                     {
                         note.SetNoteToAnyCutDirection();
                     }
 
                     // Transform for One Color if this is the other note type
-                    if (Configuration.instance.ConfigurationData.OneColor && note.colorType == this.undesiredNoteType)
+                    if (config.OneColor && note.colorType == this.undesiredNoteType)
                     {
                         note.SwitchNoteColorType();
                     }
@@ -160,6 +172,22 @@ namespace AlternativePlay
             }
 
             // Touch Notes speed detection is not handled here but in the HarmonyPatches
+        }
+
+        /// <summary>
+        /// Disables the rendering of the other saber
+        /// </summary>
+        private IEnumerator DisableOtherSaberMesh()
+        {
+            yield return new WaitForSecondsRealtime(0.1f);
+
+            if (!(Configuration.instance.ConfigurationData.OneColor &&
+                Configuration.instance.ConfigurationData.PlayMode == PlayMode.BeatSaber &&
+                Configuration.instance.ConfigurationData.RemoveOtherSaber)) { yield break; }
+
+            Saber saberToHide = Configuration.instance.ConfigurationData.UseLeftSpear ? this.saberManager.rightSaber : this.saberManager.leftSaber;
+            var saberRenderers = saberToHide.gameObject.GetComponentsInChildren<Renderer>();
+            foreach (var r in saberRenderers) { r.enabled = false; }
         }
     }
 }
