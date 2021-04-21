@@ -26,9 +26,9 @@ namespace AlternativePlay
 
             Utilities.CheckAndDisableForTrackerTransforms(Configuration.instance.ConfigurationData.LeftSpearTracker);
             Utilities.CheckAndDisableForTrackerTransforms(Configuration.instance.ConfigurationData.RightSpearTracker);
-            this.StartCoroutine(this.HideOffColorSaber());
-        }
 
+            this.StartCoroutine(this.DisableOtherSaberMesh());
+        }
 
         private void Awake()
         {
@@ -61,6 +61,12 @@ namespace AlternativePlay
                     // Do nothing
                     break;
             }
+
+            // Move the other saber away since there's a bug in the base game which makes it
+            // able to cut bombs still
+            Saber saberToHide = Configuration.instance.ConfigurationData.UseLeftSpear ? this.saberManager.rightSaber : this.saberManager.leftSaber;
+            saberToHide.gameObject.transform.position = new Vector3(0.0f, -1000.0f, 0.0f);
+            saberToHide.gameObject.transform.rotation = Quaternion.Euler(90.0f, 0.0f, 0.0f);
         }
 
         /// <summary>
@@ -147,13 +153,16 @@ namespace AlternativePlay
             saberToTransform.transform.rotation = Quaternion.LookRotation(forward, up);
         }
 
-        private IEnumerator HideOffColorSaber()
+        /// <summary>
+        /// Disables the rendering of the other saber
+        /// </summary>
+        private IEnumerator DisableOtherSaberMesh()
         {
             yield return new WaitForSecondsRealtime(0.1f);
 
-            // Always hide the off color saber
             Saber saberToHide = Configuration.instance.ConfigurationData.UseLeftSpear ? this.saberManager.rightSaber : this.saberManager.leftSaber;
-            saberToHide.gameObject.SetActive(false);
+            var saberRenderers = saberToHide.gameObject.GetComponentsInChildren<Renderer>();
+            foreach (var r in saberRenderers) { r.enabled = false; }
         }
 
         private void ResumeFromPauseAnimationDidFinishEvent()
