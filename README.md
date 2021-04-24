@@ -42,6 +42,10 @@ Drop the AlternativePlay.dll file into your Plugins folder under your BeatSaber 
 
 ### 0.6.1
 - Updated to support Beat Saber 1.14
+- Changed code to avoid disabled sabers still hitting bombs in the base game
+- Fixed Beat Saber mode to not move sabers unless reverse is used
+- Enabled AlternativePlay functionality in multiplayer modes besides QuickPlay
+- Cleaned up UI and removed unused icons
 
 ### 0.6.0
 - Updated to support Beat Saber 1.13.4
