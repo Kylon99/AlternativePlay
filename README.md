@@ -39,6 +39,12 @@ This mod depends on the following mods.  Download them at [BeatMods](https://bea
 Drop the AlternativePlay.dll file into your Plugins folder under your BeatSaber folder.
 
 ## Changelog
+### 0.5.4
+- Changed code to avoid disabled sabers still hitting bombs in the base game
+- Fixed BeatSaberBehavior to only move the saber if reversed
+- Enabled AlternativePlay functionality in multiplayer modes besides QuickPlay
+- Cleaned up UI and removed unused icons
+
 ### 0.5.3
 - Added room and noodle extension adjustment to saber tracking
 - Fixed tracker select display to follow room rotation
