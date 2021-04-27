@@ -27,7 +27,16 @@ namespace AlternativePlay
         {
             this.leftController = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
             this.rightController = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
-            this.playerOrigin = GameObject.Find("LocalPlayerGameCore/Origin");
+            if (!MultiplayerSession.isMultiplay)
+            {
+                this.playerOrigin = GameObject.Find("LocalPlayerGameCore/Origin");
+                AlternativePlay.Logger.Notice("SingleplayerOrigin");
+            }
+            else
+            {
+                this.playerOrigin = GameObject.Find("MultiplayerLocalActivePlayerController/IsActiveObjects/LocalPlayerGameCore/Origin");
+                AlternativePlay.Logger.Notice("MultiplayerOrigin");
+            }
             calibrated = false;
         }
 
@@ -85,7 +94,7 @@ namespace AlternativePlay
 
         private void Awake()
         {
-            this.saberManager = FindObjectOfType<SaberManager>();
+            this.saberManager = playerOrigin.GetComponent<SaberManager>() ;//FindObjectOfType<SaberManager>();
         }
 
         private void Update()
@@ -123,6 +132,9 @@ namespace AlternativePlay
                 // Adjust for room rotation and noodle extensions player movement as well
                 newDevicePose.position = playerOrigin.transform.rotation * pose.position;
                 newDevicePose.position += playerOrigin.transform.position;
+                newDevicePose.position.x *= playerOrigin.transform.localScale.x;
+                newDevicePose.position.y *= playerOrigin.transform.localScale.y;
+                newDevicePose.position.z *= playerOrigin.transform.localScale.z;
                 newDevicePose.rotation = playerOrigin.transform.rotation * pose.rotation;
             }
 
