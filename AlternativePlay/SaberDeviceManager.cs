@@ -85,7 +85,7 @@ namespace AlternativePlay
 
         private void Awake()
         {
-            this.saberManager = playerOrigin.GetComponent<SaberManager>() ;//FindObjectOfType<SaberManager>();
+            this.saberManager = FindObjectOfType<SaberManager>();
         }
 
         private void Update()
