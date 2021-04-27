@@ -27,16 +27,7 @@ namespace AlternativePlay
         {
             this.leftController = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
             this.rightController = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
-            if (!MultiplayerSession.isMultiplay)
-            {
-                this.playerOrigin = GameObject.Find("LocalPlayerGameCore/Origin");
-                AlternativePlay.Logger.Notice("SingleplayerOrigin");
-            }
-            else
-            {
-                this.playerOrigin = GameObject.Find("MultiplayerLocalActivePlayerController/IsActiveObjects/LocalPlayerGameCore/Origin");
-                AlternativePlay.Logger.Notice("MultiplayerOrigin");
-            }
+            this.playerOrigin = GameObject.Find("LocalPlayerGameCore/Origin");
             calibrated = false;
         }
 
