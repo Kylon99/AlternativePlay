@@ -1,6 +1,7 @@
 ﻿using AlternativePlay.Models;
 using System.Collections;
 using UnityEngine;
+using AlternativePlay.HarmonyPatches;
 
 namespace AlternativePlay
 {
@@ -32,7 +33,10 @@ namespace AlternativePlay
 
         private void Awake()
         {
-            this.saberManager = FindObjectOfType<SaberManager>();
+            if (MultiplayerLocalActivePlayerGameplayManagerPatch.multiplayerSaberManager)
+                this.saberManager = MultiplayerLocalActivePlayerGameplayManagerPatch.multiplayerSaberManager;
+            else
+                this.saberManager = FindObjectOfType<SaberManager>();
             this.useLeftHandForward = !Configuration.instance.ConfigurationData.UseLeftSpear;
 
             var pauseAnimationController = FindObjectOfType<PauseAnimationController>();
