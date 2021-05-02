@@ -1,4 +1,5 @@
 ﻿using HarmonyLib;
+using UnityEngine;
 
 namespace AlternativePlay.HarmonyPatches
 {
@@ -30,4 +31,28 @@ namespace AlternativePlay.HarmonyPatches
             multiplayerSaberManager = null;
         }
     }
+
+    [HarmonyPatch(typeof(MultiplayerSyncStateManager<NodePoseSyncState, NodePoseSyncState.NodePose, PoseSerializable, NodePoseSyncStateNetSerializable, NodePoseSyncStateDeltaNetSerializable>), "LateUpdate")]
+    internal class MultiplayerSyncStateManagerPatch
+    {
+        private static PoseSerializable _leftSaber = new PoseSerializable();
+        private static PoseSerializable _rightSaber = new PoseSerializable();
+        private static void Prefix(LocalMultiplayerSyncState<NodePoseSyncState, NodePoseSyncState.NodePose, PoseSerializable> ____localState)
+        {
+            if (_leftSaber.position != Vector3.zero && _rightSaber.position != Vector3.zero)
+            {
+                ____localState[NodePoseSyncState.NodePose.LeftController] = _leftSaber;
+                ____localState[NodePoseSyncState.NodePose.RightController] = _rightSaber;
+            }
+        }
+
+        internal static void SetMultiplayerSaberPositionAndRotate(Saber leftSaber, Saber rightSaber)
+        {
+            _leftSaber.position = leftSaber.transform.position;
+            _leftSaber.rotation = leftSaber.transform.rotation;
+            _rightSaber.position = rightSaber.transform.position;
+            _rightSaber.rotation = rightSaber.transform.rotation;
+        }
+    }
+
 }

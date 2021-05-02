@@ -40,6 +40,10 @@
       <HintPath>$(GameDirPath)Beat Saber_Data\Managed\BeatmapCore.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="BGNet, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(GameDirPath)Beat Saber_Data\Managed\BGNet.dll</HintPath>
+    </Reference>
     <Reference Include="BSML">
       <HintPath>$(GameDirPath)Plugins\BSML.dll</HintPath>
       <Private>False</Private>
@@ -64,6 +68,10 @@
     <Reference Include="IPA.Loader">
       <HintPath>$(GameDirPath)Beat Saber_Data\Managed\IPA.Loader.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="LiteNetLib, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>$(GameDirPath)Beat Saber_Data\Managed\LiteNetLib.dll</HintPath>
     </Reference>
     <Reference Include="Main">
       <HintPath>$(GameDirPath)Beat Saber_Data\Managed\Main.dll</HintPath>

@@ -37,6 +37,7 @@ namespace AlternativePlay
                 this.saberManager = MultiplayerLocalActivePlayerGameplayManagerPatch.multiplayerSaberManager;
             else
                 this.saberManager = FindObjectOfType<SaberManager>();
+
             this.useLeftHandForward = !Configuration.instance.ConfigurationData.UseLeftSpear;
 
             var pauseAnimationController = FindObjectOfType<PauseAnimationController>();
@@ -88,6 +89,10 @@ namespace AlternativePlay
             {
                 this.saberManager.leftSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
             }
+
+            if (MultiplayerLocalActivePlayerGameplayManagerPatch.multiplayerSaberManager)
+                MultiplayerSyncStateManagerPatch.SetMultiplayerSaberPositionAndRotate(this.saberManager.leftSaber,this.saberManager.rightSaber);
+
         }
 
         /// <summary>
@@ -105,6 +110,8 @@ namespace AlternativePlay
             {
                 this.saberManager.rightSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
             }
+            if (MultiplayerLocalActivePlayerGameplayManagerPatch.multiplayerSaberManager)
+                MultiplayerSyncStateManagerPatch.SetMultiplayerSaberPositionAndRotate(this.saberManager.leftSaber, this.saberManager.rightSaber);
         }
 
         /// <summary>
@@ -155,6 +162,9 @@ namespace AlternativePlay
             Saber saberToTransform = Configuration.instance.ConfigurationData.UseLeftSpear ? this.saberManager.leftSaber : this.saberManager.rightSaber;
             saberToTransform.transform.position = saberPosition;
             saberToTransform.transform.rotation = Quaternion.LookRotation(forward, up);
+
+            if (MultiplayerLocalActivePlayerGameplayManagerPatch.multiplayerSaberManager)
+                MultiplayerSyncStateManagerPatch.SetMultiplayerSaberPositionAndRotate(Configuration.instance.ConfigurationData.UseLeftSpear ? saberToTransform : this.saberManager.rightSaber, Configuration.instance.ConfigurationData.UseLeftSpear ? this.saberManager.leftSaber : saberToTransform);
         }
 
         /// <summary>
