@@ -43,6 +43,7 @@
     <Reference Include="BGNet, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(GameDirPath)Beat Saber_Data\Managed\BGNet.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="BSML">
       <HintPath>$(GameDirPath)Plugins\BSML.dll</HintPath>
@@ -72,6 +73,7 @@
     <Reference Include="LiteNetLib, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(GameDirPath)Beat Saber_Data\Managed\LiteNetLib.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Main">
       <HintPath>$(GameDirPath)Beat Saber_Data\Managed\Main.dll</HintPath>
