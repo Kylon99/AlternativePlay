@@ -123,6 +123,9 @@ namespace AlternativePlay
                 // Adjust for room rotation and noodle extensions player movement as well
                 newDevicePose.position = playerOrigin.transform.rotation * pose.position;
                 newDevicePose.position += playerOrigin.transform.position;
+                newDevicePose.position.x *= playerOrigin.transform.localScale.x;
+                newDevicePose.position.y *= playerOrigin.transform.localScale.y;
+                newDevicePose.position.z *= playerOrigin.transform.localScale.z;
                 newDevicePose.rotation = playerOrigin.transform.rotation * pose.rotation;
             }
 
