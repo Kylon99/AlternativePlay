@@ -1,6 +1,7 @@
 ﻿using AlternativePlay.Models;
 using System;
 using UnityEngine;
+using AlternativePlay.HarmonyPatches;
 
 namespace AlternativePlay
 {
@@ -9,7 +10,6 @@ namespace AlternativePlay
         private SaberManager saberManager;
 
         public bool Split { get; private set; }
-
         /// <summary>
         /// To be invoked every time when starting the GameCore scene.
         /// </summary>
@@ -26,7 +26,10 @@ namespace AlternativePlay
 
         private void Awake()
         {
-            this.saberManager = FindObjectOfType<SaberManager>();
+            if (MultiplayerLocalActivePlayerGameplayManagerPatch.multiplayerSaberManager)
+                this.saberManager = MultiplayerLocalActivePlayerGameplayManagerPatch.multiplayerSaberManager;
+            else
+                this.saberManager = FindObjectOfType<SaberManager>();
         }
 
         private void Update()
@@ -136,6 +139,10 @@ namespace AlternativePlay
             // Rotate the 'opposite' saber 180 degrees around
             rotateSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
             rotateSaber.transform.Translate(0.0f, 0.0f, sep * 2.0f, Space.Self);
+
+            if (MultiplayerLocalActivePlayerGameplayManagerPatch.multiplayerSaberManager)
+                MultiplayerSyncStateManagerPatch.SetMultiplayerSaberPositionAndRotate(config.ReverseMaulDirection ? baseSaber : otherSaber, config.ReverseMaulDirection ? otherSaber : baseSaber);
+
         }
 
         /// <summary>
@@ -162,6 +169,9 @@ namespace AlternativePlay
             backwardSaber.transform.position = middlePos + (-forward * sep);
             forwardSaber.transform.rotation = Quaternion.LookRotation(forward, rightHandUp);
             backwardSaber.transform.rotation = Quaternion.LookRotation(-forward, -rightHandUp);
+
+            if (MultiplayerLocalActivePlayerGameplayManagerPatch.multiplayerSaberManager)
+                MultiplayerSyncStateManagerPatch.SetMultiplayerSaberPositionAndRotate(config.ReverseMaulDirection ? forwardSaber : backwardSaber, config.ReverseMaulDirection ? backwardSaber : forwardSaber);
         }
     }
 

@@ -2,6 +2,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.XR;
+using AlternativePlay.HarmonyPatches;
 
 namespace AlternativePlay
 {
@@ -85,7 +86,10 @@ namespace AlternativePlay
 
         private void Awake()
         {
-            this.saberManager = FindObjectOfType<SaberManager>();
+            if (MultiplayerLocalActivePlayerGameplayManagerPatch.multiplayerSaberManager)
+                this.saberManager = MultiplayerLocalActivePlayerGameplayManagerPatch.multiplayerSaberManager;
+            else
+                this.saberManager = FindObjectOfType<SaberManager>();
         }
 
         private void Update()
