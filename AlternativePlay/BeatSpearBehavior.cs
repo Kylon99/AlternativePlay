@@ -1,14 +1,14 @@
 ﻿using AlternativePlay.Models;
+using System;
 using System.Collections;
 using UnityEngine;
-using AlternativePlay.HarmonyPatches;
 
 namespace AlternativePlay
 {
     public class BeatSpearBehavior : MonoBehaviour
     {
-        private SaberManager saberManager;
         private bool useLeftHandForward;
+        private readonly Pose hiddenPose = new Pose(new Vector3(0.0f, -1000.0f, 0.0f), Quaternion.Euler(90.0f, 0.0f, 0.0f));
 
         /// <summary>
         /// To be invoked every time when starting the GameCore scene.
@@ -16,7 +16,8 @@ namespace AlternativePlay
         public void BeginGameCoreScene()
         {
             // Do nothing if we aren't playing Beat Spear
-            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.BeatSpear) { return; }
+            var config = Configuration.instance.ConfigurationData;
+            if (config.PlayMode != PlayMode.BeatSpear) { return; }
 
             TrackedDeviceManager.instance.LoadTrackedDevices();
 
@@ -28,35 +29,39 @@ namespace AlternativePlay
             Utilities.CheckAndDisableForTrackerTransforms(Configuration.instance.ConfigurationData.LeftSpearTracker);
             Utilities.CheckAndDisableForTrackerTransforms(Configuration.instance.ConfigurationData.RightSpearTracker);
 
+            // Take control of both sabers
+            SaberDeviceManager saberDeviceManager = BehaviorCatalog.instance.SaberDeviceManager;
+            saberDeviceManager.DisableLeftVRControl();
+            saberDeviceManager.DisableRightVRControl();
+
+            // Move the other saber away since there's a bug in the base game which makes it
+            // able to cut bombs still
+            if (config.UseLeftSpear)
+                saberDeviceManager.SetRightSaberPose(hiddenPose);
+            else
+                saberDeviceManager.SetLeftSaberPose(hiddenPose);
+
             this.StartCoroutine(this.DisableOtherSaberMesh());
         }
 
         private void Awake()
         {
-            if (MultiplayerLocalActivePlayerGameplayManagerPatch.multiplayerSaberManager)
-                this.saberManager = MultiplayerLocalActivePlayerGameplayManagerPatch.multiplayerSaberManager;
-            else
-                this.saberManager = FindObjectOfType<SaberManager>();
-
             this.useLeftHandForward = !Configuration.instance.ConfigurationData.UseLeftSpear;
-
-            var pauseAnimationController = FindObjectOfType<PauseAnimationController>();
-            if (pauseAnimationController != null) pauseAnimationController.resumeFromPauseAnimationDidFinishEvent += this.ResumeFromPauseAnimationDidFinishEvent;
         }
 
         private void Update()
         {
-            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.BeatSpear)
+            var config = Configuration.instance.ConfigurationData;
+            if (config.PlayMode != PlayMode.BeatSpear)
             {
                 // Do nothing if we aren't playing Beat Spear or if we can't find the player controller
                 return;
             }
 
-            switch (Configuration.instance.ConfigurationData.SpearControllerCount)
+            switch (config.SpearControllerCount)
             {
                 case ControllerCountEnum.One:
-                    this.TransformForOneControllerSpearLeft();
-                    this.TransformForOneControllerSpearRight();
+                    this.TransformForOneControllerSpear();
                     break;
                 case ControllerCountEnum.Two:
                     this.TransformForTwoControllerSpear();
@@ -66,52 +71,29 @@ namespace AlternativePlay
                     // Do nothing
                     break;
             }
-
-            // Move the other saber away since there's a bug in the base game which makes it
-            // able to cut bombs still
-            Saber saberToHide = Configuration.instance.ConfigurationData.UseLeftSpear ? this.saberManager.rightSaber : this.saberManager.leftSaber;
-            saberToHide.gameObject.transform.position = new Vector3(0.0f, -1000.0f, 0.0f);
-            saberToHide.gameObject.transform.rotation = Quaternion.Euler(90.0f, 0.0f, 0.0f);
         }
 
         /// <summary>
         /// Transform the left spear based on the controller or the tracker
         /// </summary>
-        private void TransformForOneControllerSpearLeft()
+        private void TransformForOneControllerSpear()
         {
             var config = Configuration.instance.ConfigurationData;
-            if (!config.UseLeftController && config.RemoveOtherSaber) { return; }
 
-            Pose saberPose = BehaviorCatalog.instance.SaberDeviceManager.GetLeftSaberPose(config.LeftSpearTracker);
-            this.saberManager.leftSaber.transform.position = saberPose.position;
-            this.saberManager.leftSaber.transform.rotation = saberPose.rotation;
+            // Get the spear pose and correct spear method
+            SaberDeviceManager saberDeviceManager = BehaviorCatalog.instance.SaberDeviceManager;
+            Action<Pose> setSpearPose = this.GetSpearPoseAction();
+            Pose spearPose = config.UseLeftSpear
+                ? saberDeviceManager.GetLeftSaberPose(config.LeftSpearTracker)
+                : saberDeviceManager.GetRightSaberPose(config.RightSpearTracker);
+
+            // Check for reversing saber direction
             if (config.ReverseSpearDirection)
             {
-                this.saberManager.leftSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
+                spearPose = spearPose.Reverse();
             }
 
-            if (MultiplayerLocalActivePlayerGameplayManagerPatch.multiplayerSaberManager)
-                MultiplayerSyncStateManagerPatch.SetMultiplayerSaberPositionAndRotate(this.saberManager.leftSaber,this.saberManager.rightSaber);
-
-        }
-
-        /// <summary>
-        /// Transform the right spear based on the controller or the tracker
-        /// </summary>
-        private void TransformForOneControllerSpearRight()
-        {
-            var config = Configuration.instance.ConfigurationData;
-            if (config.UseLeftController && config.RemoveOtherSaber) { return; }
-
-            Pose saberPose = BehaviorCatalog.instance.SaberDeviceManager.GetRightSaberPose(config.RightSpearTracker);
-            this.saberManager.rightSaber.transform.position = saberPose.position;
-            this.saberManager.rightSaber.transform.rotation = saberPose.rotation;
-            if (config.ReverseSpearDirection)
-            {
-                this.saberManager.rightSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
-            }
-            if (MultiplayerLocalActivePlayerGameplayManagerPatch.multiplayerSaberManager)
-                MultiplayerSyncStateManagerPatch.SetMultiplayerSaberPositionAndRotate(this.saberManager.leftSaber, this.saberManager.rightSaber);
+            setSpearPose(spearPose);
         }
 
         /// <summary>
@@ -153,18 +135,32 @@ namespace AlternativePlay
                 saberPosition = rearHand.position + (forward * handleLength);
             }
 
-            if (Configuration.instance.ConfigurationData.ReverseSpearDirection)
+            if (config.ReverseSpearDirection)
             {
                 forward = -forward;
             }
 
             // Apply transforms to saber
-            Saber saberToTransform = Configuration.instance.ConfigurationData.UseLeftSpear ? this.saberManager.leftSaber : this.saberManager.rightSaber;
-            saberToTransform.transform.position = saberPosition;
-            saberToTransform.transform.rotation = Quaternion.LookRotation(forward, up);
+            Pose finalSpearPose = new Pose(saberPosition, Quaternion.LookRotation(forward, up));
+            Action<Pose> setSpearPose = this.GetSpearPoseAction();
+            setSpearPose(finalSpearPose);
+        }
 
-            if (MultiplayerLocalActivePlayerGameplayManagerPatch.multiplayerSaberManager)
-                MultiplayerSyncStateManagerPatch.SetMultiplayerSaberPositionAndRotate(Configuration.instance.ConfigurationData.UseLeftSpear ? saberToTransform : this.saberManager.rightSaber, Configuration.instance.ConfigurationData.UseLeftSpear ? this.saberManager.leftSaber : saberToTransform);
+        /// <summary>
+        /// Gets the method in <see cref="SaberDeviceManager"/> to set the correct saber
+        /// based on whether we are using the left or the right as the spear.
+        /// </summary>
+        private Action<Pose> GetSpearPoseAction()
+        {
+            var config = Configuration.instance.ConfigurationData;
+
+            Action<Pose> result;
+            if (config.UseLeftSpear)
+                result = BehaviorCatalog.instance.SaberDeviceManager.SetLeftSaberPose;
+            else
+                result = BehaviorCatalog.instance.SaberDeviceManager.SetRightSaberPose;
+
+            return result;
         }
 
         /// <summary>
@@ -174,17 +170,13 @@ namespace AlternativePlay
         {
             yield return new WaitForSecondsRealtime(0.1f);
 
-            Saber saberToHide = Configuration.instance.ConfigurationData.UseLeftSpear ? this.saberManager.rightSaber : this.saberManager.leftSaber;
-            var saberRenderers = saberToHide.gameObject.GetComponentsInChildren<Renderer>();
-            foreach (var r in saberRenderers) { r.enabled = false; }
-        }
-
-        private void ResumeFromPauseAnimationDidFinishEvent()
-        {
-            if (Configuration.instance.ConfigurationData.PlayMode == PlayMode.BeatSpear)
+            if (Configuration.instance.ConfigurationData.UseLeftSpear)
             {
-                Saber saberToHide = Configuration.instance.ConfigurationData.UseLeftSpear ? this.saberManager.rightSaber : this.saberManager.leftSaber;
-                saberToHide.gameObject.SetActive(false);
+                BehaviorCatalog.instance.SaberDeviceManager.DisableRightSaberMesh();
+            }
+            else
+            {
+                BehaviorCatalog.instance.SaberDeviceManager.DisableLeftSaberMesh();
             }
         }
     }

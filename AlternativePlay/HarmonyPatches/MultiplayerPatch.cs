@@ -16,8 +16,8 @@ namespace AlternativePlay.HarmonyPatches
     [HarmonyPatch(typeof(MultiplayerLocalActivePlayerGameplayManager), "Start")]
     internal class MultiplayerLocalActivePlayerGameplayManagerPatch
     {
-        internal static SaberManager multiplayerSaberManager=null;
-        private static void Postfix(MultiplayerLocalActivePlayerGameplayManager __instance,SaberManager ____saberManager)
+        internal static SaberManager multiplayerSaberManager = null;
+        private static void Postfix(MultiplayerLocalActivePlayerGameplayManager __instance, SaberManager ____saberManager)
         {
             multiplayerSaberManager = ____saberManager;
 #if DEBUG
@@ -46,12 +46,16 @@ namespace AlternativePlay.HarmonyPatches
             }
         }
 
-        internal static void SetMultiplayerSaberPositionAndRotate(Saber leftSaber, Saber rightSaber)
+        internal static void SetMultiplayerLeftSaberPose(Pose leftSaberPose)
         {
-            _leftSaber.position = leftSaber.transform.position;
-            _leftSaber.rotation = leftSaber.transform.rotation;
-            _rightSaber.position = rightSaber.transform.position;
-            _rightSaber.rotation = rightSaber.transform.rotation;
+            _leftSaber.position = leftSaberPose.position;
+            _leftSaber.rotation = leftSaberPose.rotation;
+        }
+
+        internal static void SetMultiplayerRightSaberPose(Pose rightSaberPose)
+        {
+            _rightSaber.position = rightSaberPose.position;
+            _rightSaber.rotation = rightSaberPose.rotation;
         }
     }
 
