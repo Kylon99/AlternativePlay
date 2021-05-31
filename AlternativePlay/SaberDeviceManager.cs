@@ -1,7 +1,6 @@
 ﻿using AlternativePlay.HarmonyPatches;
 using AlternativePlay.Models;
 using System;
-using System.Linq;
 using UnityEngine;
 using UnityEngine.XR;
 
@@ -15,8 +14,6 @@ namespace AlternativePlay
     public class SaberDeviceManager : MonoBehaviour
     {
         private SaberManager saberManager;
-        private VRController leftVRController;
-        private VRController rightVRController;
         private GameObject playerOrigin;
         private InputDevice leftController;
         private InputDevice rightController;
@@ -30,42 +27,6 @@ namespace AlternativePlay
         public void BeginGameCoreScene()
         {
             calibrated = false;
-        }
-
-        /// <summary>
-        /// Return control to the SaberManager's left VRController
-        /// </summary>
-        public void EnableLeftVRControl()
-        {
-            this.leftVRController.enabled = true;
-            this.SetLeftSaberPose(savedLeftController);
-        }
-
-        /// <summary>
-        /// Return control to the SaberManager's right VRController
-        /// </summary>
-        public void EnableRightVRControl()
-        {
-            this.rightVRController.enabled = true;
-            this.SetRightSaberPose(savedRightController);
-        }
-
-        /// <summary>
-        /// Disable SaberManager's VRController from moving the left saber
-        /// </summary>
-        public void DisableLeftVRControl()
-        {
-            if (!calibrated) this.CalibrateSaberPositions();
-            this.leftVRController.enabled = false;
-        }
-
-        /// <summary>
-        /// Disable SaberManager's VRController from moving the right saber
-        /// </summary>
-        public void DisableRightVRControl()
-        {
-            if (!calibrated) this.CalibrateSaberPositions();
-            this.rightVRController.enabled = false;
         }
 
         /// <summary>
@@ -191,8 +152,6 @@ namespace AlternativePlay
         private void Awake()
         {
             this.saberManager = MultiplayerLocalActivePlayerGameplayManagerPatch.multiplayerSaberManager ?? FindObjectOfType<SaberManager>();
-            this.leftVRController = this.saberManager.GetComponentsInChildren<VRController>().SingleOrDefault(vrc => vrc.name == "LeftHand");
-            this.rightVRController = this.saberManager.GetComponentsInChildren<VRController>().SingleOrDefault(vrc => vrc.name == "RightHand");
             this.playerOrigin = GameObject.Find("LocalPlayerGameCore/Origin");
             this.leftController = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
             this.rightController = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);

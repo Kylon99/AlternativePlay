@@ -17,18 +17,6 @@ namespace AlternativePlay
 
             Utilities.CheckAndDisableForTrackerTransforms(Configuration.instance.ConfigurationData.LeftSaberTracker);
             Utilities.CheckAndDisableForTrackerTransforms(Configuration.instance.ConfigurationData.RightSaberTracker);
-
-            // Take control of the left saber if we are reversing it or it was assigned a tracker
-            if (config.ReverseLeftSaber || !String.IsNullOrWhiteSpace(config.LeftSaberTracker.Serial))
-            {
-                BehaviorCatalog.instance.SaberDeviceManager.DisableLeftVRControl();
-            }
-
-            // Take control of the right saber if we are reversing it or it was assigned a tracker
-            if (config.ReverseRightSaber || !String.IsNullOrWhiteSpace(config.RightSaberTracker.Serial))
-            {
-                BehaviorCatalog.instance.SaberDeviceManager.DisableRightVRControl();
-            }
         }
 
         private void Update()

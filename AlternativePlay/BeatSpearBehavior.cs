@@ -29,18 +29,6 @@ namespace AlternativePlay
             Utilities.CheckAndDisableForTrackerTransforms(Configuration.instance.ConfigurationData.LeftSpearTracker);
             Utilities.CheckAndDisableForTrackerTransforms(Configuration.instance.ConfigurationData.RightSpearTracker);
 
-            // Take control of both sabers
-            SaberDeviceManager saberDeviceManager = BehaviorCatalog.instance.SaberDeviceManager;
-            saberDeviceManager.DisableLeftVRControl();
-            saberDeviceManager.DisableRightVRControl();
-
-            // Move the other saber away since there's a bug in the base game which makes it
-            // able to cut bombs still
-            if (config.UseLeftSpear)
-                saberDeviceManager.SetRightSaberPose(hiddenPose);
-            else
-                saberDeviceManager.SetLeftSaberPose(hiddenPose);
-
             this.StartCoroutine(this.DisableOtherSaberMesh());
         }
 
@@ -71,6 +59,14 @@ namespace AlternativePlay
                     // Do nothing
                     break;
             }
+
+            // Move the other saber away since there's a bug in the base game which makes it
+            // able to cut bombs still
+            SaberDeviceManager saberDeviceManager = BehaviorCatalog.instance.SaberDeviceManager;
+            if (config.UseLeftSpear)
+                saberDeviceManager.SetRightSaberPose(hiddenPose);
+            else
+                saberDeviceManager.SetLeftSaberPose(hiddenPose);
         }
 
         /// <summary>

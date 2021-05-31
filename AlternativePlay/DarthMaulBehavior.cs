@@ -18,10 +18,6 @@ namespace AlternativePlay
 
             Utilities.CheckAndDisableForTrackerTransforms(Configuration.instance.ConfigurationData.LeftMaulTracker);
             Utilities.CheckAndDisableForTrackerTransforms(Configuration.instance.ConfigurationData.RightMaulTracker);
-
-            // Take control of both sabers
-            BehaviorCatalog.instance.SaberDeviceManager.DisableLeftVRControl();
-            BehaviorCatalog.instance.SaberDeviceManager.DisableRightVRControl();
         }
 
         private void Update()
