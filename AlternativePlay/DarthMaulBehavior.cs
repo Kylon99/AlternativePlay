@@ -1,14 +1,10 @@
 ﻿using AlternativePlay.Models;
-using System;
 using UnityEngine;
-using AlternativePlay.HarmonyPatches;
 
 namespace AlternativePlay
 {
     public class DarthMaulBehavior : MonoBehaviour
     {
-        private SaberManager saberManager;
-
         public bool Split { get; private set; }
         /// <summary>
         /// To be invoked every time when starting the GameCore scene.
@@ -16,20 +12,12 @@ namespace AlternativePlay
         public void BeginGameCoreScene()
         {
             // Do nothing if we aren't playing Darth Maul
-            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.DarthMaul || this.saberManager == null) { return; }
+            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.DarthMaul) { return; }
 
             TrackedDeviceManager.instance.LoadTrackedDevices();
 
             Utilities.CheckAndDisableForTrackerTransforms(Configuration.instance.ConfigurationData.LeftMaulTracker);
             Utilities.CheckAndDisableForTrackerTransforms(Configuration.instance.ConfigurationData.RightMaulTracker);
-        }
-
-        private void Awake()
-        {
-            if (MultiplayerLocalActivePlayerGameplayManagerPatch.multiplayerSaberManager)
-                this.saberManager = MultiplayerLocalActivePlayerGameplayManagerPatch.multiplayerSaberManager;
-            else
-                this.saberManager = FindObjectOfType<SaberManager>();
         }
 
         private void Update()
@@ -56,11 +44,10 @@ namespace AlternativePlay
         }
 
         /// <summary>
-        /// Track the Maul sabers using internal Beat Saber locations or the assigned trackers
+        /// Move the sabers that have been disconnected from the VRControllers ourselves
         /// </summary>
         private void TransformSabers()
         {
-
             if (this.Split)
             {
                 this.TransformForSplitDarthMaul();
@@ -89,14 +76,8 @@ namespace AlternativePlay
         private void TransformForSplitDarthMaul()
         {
             var config = Configuration.instance.ConfigurationData;
-
-            Pose leftSaberPose = BehaviorCatalog.instance.SaberDeviceManager.GetLeftSaberPose(config.LeftMaulTracker);
-            this.saberManager.leftSaber.transform.position = leftSaberPose.position;
-            this.saberManager.leftSaber.transform.rotation = leftSaberPose.rotation;
-
-            Pose rightSaberPose = BehaviorCatalog.instance.SaberDeviceManager.GetRightSaberPose(config.RightMaulTracker);
-            this.saberManager.rightSaber.transform.position = rightSaberPose.position;
-            this.saberManager.rightSaber.transform.rotation = rightSaberPose.rotation;
+            BehaviorCatalog.instance.SaberDeviceManager.SetLeftSaber(config.LeftMaulTracker);
+            BehaviorCatalog.instance.SaberDeviceManager.SetRightSaber(config.RightMaulTracker);
         }
 
         /// <summary>
@@ -106,43 +87,23 @@ namespace AlternativePlay
         {
             var config = Configuration.instance.ConfigurationData;
             float sep = 1.0f * config.MaulDistance / 100.0f;
+            var saberDevice = BehaviorCatalog.instance.SaberDeviceManager;
 
-            // Determine which is the held normally 'base' saber and which is the 'other' saber that must be moved
-            Func<TrackerConfigData, Pose> getBaseController;
-            TrackerConfigData baseTrackerConfig;
-            Saber baseSaber;
-            Saber otherSaber;
+            // Get the Pose of the base saber and calculate the rotated pose from it
+            Pose basePose = config.UseLeftController
+                ? saberDevice.GetLeftSaberPose(config.LeftMaulTracker)
+                : saberDevice.GetRightSaberPose(config.RightMaulTracker);
 
-            if (config.UseLeftController)
-            {
-                getBaseController = BehaviorCatalog.instance.SaberDeviceManager.GetLeftSaberPose;
-                baseTrackerConfig = config.LeftMaulTracker;
-                baseSaber = this.saberManager.leftSaber;
-                otherSaber = this.saberManager.rightSaber;
-            }
-            else
-            {
-                getBaseController = BehaviorCatalog.instance.SaberDeviceManager.GetRightSaberPose;
-                baseTrackerConfig = config.RightMaulTracker;
-                baseSaber = this.saberManager.rightSaber;
-                otherSaber = this.saberManager.leftSaber;
-            }
-            var rotateSaber = config.ReverseMaulDirection ? baseSaber : otherSaber;
+            Pose rotatedPose = basePose.Reverse();
+            Vector3 separation = new Vector3(0.0f, 0.0f, sep * 2.0f);
+            rotatedPose.position += (rotatedPose.rotation * separation);
 
-            // Move the other saber to the base saber
-            Pose basePose = getBaseController(baseTrackerConfig);
-            baseSaber.transform.position = basePose.position;
-            baseSaber.transform.rotation = basePose.rotation;
-            otherSaber.transform.position = basePose.position;
-            otherSaber.transform.rotation = basePose.rotation;
+            // Determine which pose belongs to which saber and set them
+            Pose leftSaberPose = config.ReverseMaulDirection ? basePose : rotatedPose;
+            Pose rightSaberPose = config.ReverseMaulDirection ? rotatedPose : basePose;
 
-            // Rotate the 'opposite' saber 180 degrees around
-            rotateSaber.transform.Rotate(0.0f, 180.0f, 180.0f);
-            rotateSaber.transform.Translate(0.0f, 0.0f, sep * 2.0f, Space.Self);
-
-            if (MultiplayerLocalActivePlayerGameplayManagerPatch.multiplayerSaberManager)
-                MultiplayerSyncStateManagerPatch.SetMultiplayerSaberPositionAndRotate(config.ReverseMaulDirection ? baseSaber : otherSaber, config.ReverseMaulDirection ? otherSaber : baseSaber);
-
+            saberDevice.SetLeftSaberPose(leftSaberPose);
+            saberDevice.SetRightSaberPose(rightSaberPose);
         }
 
         /// <summary>
@@ -153,25 +114,25 @@ namespace AlternativePlay
             var config = Configuration.instance.ConfigurationData;
             float sep = 1.0f * config.MaulDistance / 100.0f;
 
+            var saberDevice = BehaviorCatalog.instance.SaberDeviceManager;
+
             // Determine Hand positions
-            Pose leftHand = BehaviorCatalog.instance.SaberDeviceManager.GetLeftSaberPose(config.LeftMaulTracker);
-            Pose rightHand = BehaviorCatalog.instance.SaberDeviceManager.GetRightSaberPose(config.RightMaulTracker);
+            Pose leftHand = saberDevice.GetLeftSaberPose(config.LeftMaulTracker);
+            Pose rightHand = saberDevice.GetRightSaberPose(config.RightMaulTracker);
 
             // Determine final saber positions and rotations
             Vector3 middlePos = (rightHand.position + leftHand.position) * 0.5f;
             Vector3 forward = (rightHand.position - leftHand.position).normalized;
             Vector3 rightHandUp = rightHand.rotation * Vector3.up;
 
-            Saber forwardSaber = config.ReverseMaulDirection ? this.saberManager.leftSaber : this.saberManager.rightSaber;
-            Saber backwardSaber = config.ReverseMaulDirection ? this.saberManager.rightSaber : this.saberManager.leftSaber;
+            Pose forwardSaberPose = new Pose(middlePos + (forward * sep), Quaternion.LookRotation(forward, rightHandUp));
+            Pose backwardSaberPose = new Pose(middlePos + (-forward * sep), Quaternion.LookRotation(-forward, -rightHandUp));
 
-            forwardSaber.transform.position = middlePos + (forward * sep);
-            backwardSaber.transform.position = middlePos + (-forward * sep);
-            forwardSaber.transform.rotation = Quaternion.LookRotation(forward, rightHandUp);
-            backwardSaber.transform.rotation = Quaternion.LookRotation(-forward, -rightHandUp);
+            Pose leftSaberPose = config.ReverseMaulDirection ? forwardSaberPose : backwardSaberPose;
+            Pose rightSaberPose = config.ReverseMaulDirection ? backwardSaberPose : forwardSaberPose;
 
-            if (MultiplayerLocalActivePlayerGameplayManagerPatch.multiplayerSaberManager)
-                MultiplayerSyncStateManagerPatch.SetMultiplayerSaberPositionAndRotate(config.ReverseMaulDirection ? forwardSaber : backwardSaber, config.ReverseMaulDirection ? backwardSaber : forwardSaber);
+            saberDevice.SetLeftSaberPose(leftSaberPose);
+            saberDevice.SetRightSaberPose(rightSaberPose);
         }
     }
 

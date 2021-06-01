@@ -43,5 +43,16 @@ namespace AlternativePlay
 
             return result;
         }
+
+        /// <summary>
+        /// Rotates the pose around 180 degrees in both the Y and Z direction effectively
+        /// reversing a saber direction.
+        /// </summary>
+        public static Pose Reverse(this Pose pose)
+        {
+            Pose result = pose;
+            result.rotation *= Quaternion.Euler(0.0f, 180.0f, 180.0f);
+            return result;
+        }
     }
 }
