@@ -10,7 +10,9 @@ namespace AlternativePlay.HarmonyPatches
     {
         private static void Prefix(HapticFeedbackController __instance, ref XRNode node)
         {
-            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.DarthMaul || BehaviorCatalog.instance.DarthMaulBehavior.Split)
+            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.DarthMaul ||
+                BehaviorCatalog.instance.DarthMaulBehavior == null ||
+                BehaviorCatalog.instance.DarthMaulBehavior.Split)
             {
                 // Let the original function handle the haptic feedback
                 return;
