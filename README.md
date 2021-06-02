@@ -27,6 +27,11 @@ Play with one controller or tracker mounted on a stick for spear-like play.  Or 
 
 You can now choose which trackers to use for Beat Saber, Darth Maul and Beat Spear without the need for OpenVR Input Emulator.  You can also adjust the position and rotation of the saber for when using these trackers.
 
+## Contributors
+
+* https://github.com/Kylon99
+* https://github.com/Snow1226
+
 ## Requirements
 This mod depends on the following mods.  Download them at [BeatMods](https://beatmods.com).
 
@@ -39,6 +44,13 @@ This mod depends on the following mods.  Download them at [BeatMods](https://bea
 Drop the AlternativePlay.dll file into your Plugins folder under your BeatSaber folder.
 
 ## Changelog
+
+### 0.6.2
+- Checked for compatibility with Beat Saber 1.14, 1.15 and 1.16.1
+- Added support for play styles during Multiplayer (Snow1226)
+- Changed license to GPLv3
+- Fixed DarthMaulHapticPatch NullReferenceException log spam
+- Added support for TrueVR in VMCAvatar (Snow1226)
 
 ### 0.6.1
 - Updated to support Beat Saber 1.14
