@@ -101,6 +101,9 @@
       <HintPath>$(GameDirPath)Beat Saber_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>$(GameDirPath)Beat Saber_Data\Managed\UnityEngine.PhysicsModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.XRModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(GameDirPath)Beat Saber_Data\Managed\UnityEngine.XRModule.dll</HintPath>
@@ -112,6 +115,8 @@
     <Compile Include="BeatSaberBehavior.cs" />
     <Compile Include="BehaviorCatalog.cs" />
     <Compile Include="DarthMaulBehavior.cs" />
+    <Compile Include="NunchakuBehavior.cs" />
+    <Compile Include="FlailBehavior.cs" />
     <Compile Include="HarmonyPatches\MultiplayerPatch.cs" />
     <Compile Include="HarmonyPatches\OneColorSaberPatch.cs" />
     <Compile Include="SaberDeviceManager.cs" />
@@ -130,6 +135,8 @@
     <Compile Include="UI\AlternativePlayUI.cs" />
     <Compile Include="UI\BeatSpearView.cs" />
     <Compile Include="UI\BeatSaberView.cs" />
+    <Compile Include="UI\BeatFlailView.cs" />
+    <Compile Include="UI\NunchakuView.cs" />
     <Compile Include="UI\GameModifiersView.cs" />
     <Compile Include="UI\DarthMaulView.cs" />
     <Compile Include="UI\AlternativePlayView.cs" />
@@ -146,25 +153,21 @@
     <EmbeddedResource Include="Resources\XIcon.png" />
     <EmbeddedResource Include="Resources\ViveTracker.png" />
     <EmbeddedResource Include="Resources\TouchNotes.png" />
-    <Content Include="Resources\BeatSaberColor.svg" />
+    <EmbeddedResource Include="Resources\BeatFlail.png" />
+    <Content Include="Resources\BeatFlail.svg" />
+    <Content Include="Resources\BeatFlailColor64.png" />
     <Content Include="Resources\BeatSaberColor64.png" />
-    <Content Include="Resources\BeatSpearColor.svg" />
     <Content Include="Resources\BeatSpearColor64.png" />
     <EmbeddedResource Include="Resources\DarthMaulColor.png" />
-    <Content Include="Resources\DarthMaulColor.svg" />
     <Content Include="Resources\DarthMaulColor64.png" />
-    <Content Include="Resources\NoArrowsColor.png" />
-    <Content Include="Resources\NoArrowsColor.svg" />
     <Content Include="Resources\NoArrowsColor64.png" />
-    <Content Include="Resources\NoArrowsRandomColor.png" />
-    <Content Include="Resources\NoArrowsRandomColor.svg" />
+    <Content Include="Resources\NoArrowsRandom.svg" />
     <Content Include="Resources\NoArrowsRandomColor64.png" />
-    <Content Include="Resources\OneColorColor.png" />
-    <Content Include="Resources\OneColorColor.svg" />
+    <EmbeddedResource Include="Resources\Nunchaku.png" />
+    <Content Include="Resources\Nunchaku.svg" />
+    <Content Include="Resources\NunchakuColor64.png" />
     <Content Include="Resources\OneColorColor64.png" />
     <Content Include="Resources\TouchNotes.svg" />
-    <Content Include="Resources\TouchNotesColor.png" />
-    <Content Include="Resources\TouchNotesColor.svg" />
     <Content Include="Resources\TouchNotesColor64.png" />
     <EmbeddedResource Include="Resources\BeatSaber.png" />
     <Content Include="AlternativePlay.csproj.user" />
@@ -176,7 +179,6 @@
     <EmbeddedResource Include="Resources\NoArrows.png" />
     <Content Include="Resources\NoArrows.svg" />
     <EmbeddedResource Include="Resources\NoArrowsRandom.png" />
-    <Content Include="Resources\NoArrowsRandom.svg" />
     <EmbeddedResource Include="Resources\OneColor.png" />
     <Content Include="Resources\OneColor.svg" />
   </ItemGroup>
@@ -203,6 +205,12 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="UI\TrackerSelectView.bsml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\NunchakuView.bsml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="UI\BeatFlailView.bsml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

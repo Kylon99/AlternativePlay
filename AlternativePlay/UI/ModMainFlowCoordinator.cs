@@ -13,6 +13,8 @@ namespace AlternativePlay.UI
         private BeatSaberView beatSaberSettingsView;
         private DarthMaulView darthMaulSettingsView;
         private BeatSpearView beatSpearSettingsView;
+        private NunchakuView nunchakuView;
+        private BeatFlailView beatFlailView;
 
         private TrackerSelectView trackerSelectView;
         private TrackerPoseView trackerPoseView;
@@ -37,6 +39,20 @@ namespace AlternativePlay.UI
         {
             this.IsBusy = true;
             this.SetLeftScreenViewController(this.beatSpearSettingsView, ViewController.AnimationType.In);
+            this.IsBusy = false;
+        }
+
+        public void ShowNunchaku()
+        {
+            this.IsBusy = true;
+            this.SetLeftScreenViewController(this.nunchakuView, ViewController.AnimationType.In);
+            this.IsBusy = false;
+        }
+
+        public void ShowBeatFlail()
+        {
+            this.IsBusy = true;
+            this.SetLeftScreenViewController(this.beatFlailView, ViewController.AnimationType.In);
             this.IsBusy = false;
         }
 
@@ -80,6 +96,10 @@ namespace AlternativePlay.UI
             this.darthMaulSettingsView.SetMainFlowCoordinator(this);
             this.beatSpearSettingsView = BeatSaberUI.CreateViewController<BeatSpearView>();
             this.beatSpearSettingsView.SetMainFlowCoordinator(this);
+            this.nunchakuView = BeatSaberUI.CreateViewController<NunchakuView>();
+            this.nunchakuView.SetMainFlowCoordinator(this);
+            this.beatFlailView = BeatSaberUI.CreateViewController<BeatFlailView>();
+            this.beatFlailView.SetMainFlowCoordinator(this);
 
             this.trackerSelectView = BeatSaberUI.CreateViewController<TrackerSelectView>();
             this.trackerSelectView.SetMainFlowCoordinator(this);
@@ -111,6 +131,14 @@ namespace AlternativePlay.UI
 
                 case PlayMode.BeatSpear:
                     viewToDisplay = this.beatSpearSettingsView;
+                    break;
+
+                case PlayMode.Nunchaku:
+                    viewToDisplay = this.nunchakuView;
+                    break;
+
+                case PlayMode.Flail:
+                    viewToDisplay = this.beatFlailView;
                     break;
 
                 case PlayMode.BeatSaber:

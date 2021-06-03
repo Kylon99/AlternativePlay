@@ -8,7 +8,9 @@ namespace AlternativePlay.Models
     {
         BeatSaber = 0,
         DarthMaul = 1,
-        BeatSpear = 2
+        BeatSpear = 2,
+        Nunchaku = 3,
+        Flail = 4,
     }
 
     public enum ControllerCountEnum
@@ -59,6 +61,21 @@ namespace AlternativePlay.Models
         public bool ReverseSpearDirection { get; set; }
         public TrackerConfigData LeftSpearTracker { get; set; } = new TrackerConfigData();
         public TrackerConfigData RightSpearTracker { get; set; } = new TrackerConfigData();
+
+        // Nunchaku Options
+        public bool ReverseNunchaku { get; set; }
+        public int NunchakuLength { get; set; } = 50; // in centimetres
+        public float NunchakuGravity { get; set; } = 2.0f;
+        public TrackerConfigData LeftNunchakuTracker { get; set; } = new TrackerConfigData();
+        public TrackerConfigData RightNunchakuTracker { get; set; } = new TrackerConfigData();
+
+        // Flail Options
+        public bool UseLeftFlail { get; set; }
+        public int LeftFlailLength { get; set; } = 80; // in centimetres
+        public int RightFlailLength { get; set; } = 80; // in centimetres
+        public float FlailGravity { get; set; } = 2.0f;
+        public TrackerConfigData LeftFlailTracker { get; set; } = new TrackerConfigData();
+        public TrackerConfigData RightFlailTracker { get; set; } = new TrackerConfigData();
 
         // Gameplay Changes Options
         public bool NoArrowsRandom { get; set; }

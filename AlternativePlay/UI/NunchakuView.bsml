@@ -1,0 +1,40 @@
+﻿<bg xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd">
+  <vertical child-control-height="false">
+
+    <!-- View Header -->
+    <horizontal pad-left="15" pad-right="15" bg="panel-top" pref-height="16">
+      <img preserve-aspect="true" pref-width="12" source="AlternativePlay.Resources.Nunchaku.png" />
+      <vertical pad-left="1" pref-height="10" vertical-fit="PreferredSize">
+        <text text="Nunchaku" font-size="6"/>
+        <text text="Play with two segments connected by a chain" font-size="4" />
+      </vertical>
+    </horizontal>
+
+    <!-- Main View -->
+    <vertical pref-width="90" vertical-fit="PreferredSize" child-control-height="false">
+      <checkbox-setting text="Swap Hands" value="ReverseNunchaku" apply-on-change='true' on-change='ReverseNunchakuChanged'
+                        hover-hint='Swing right saber when held in right hand and vice versa' />
+      <increment-setting text="Chain Length" value="NunchakuLength" integer-only="true" min="10" max="100" increment="10" formatter="LengthFormatter"
+                         on-change="OnNunchakuLengthChanged" hover-hint="The distance between the handles" />
+      <horizontal>
+        <slider-setting text="Gravity" value="NunchakuGravity" integer-only="false" min="0" max="5" increment="0.1" get-event="RefreshNunchakuGravity"
+                        on-change="OnNunchakuGravityChanged" hover-hint="Amount of G force applied to the nunchaku (multiple of -9.81 m/s^2)" />
+        <button pref-width="15" preferred-height="8" text="Reset" hover-hint='Reset gravity to 1.0' on-click="OnResetGravity"/>
+      </horizontal>
+
+      <!--Tracker Settings-->
+      <horizontal>
+        <clickable-text text="Left Hand" highlight-color="#FFFFFF" hover-hint="Use a tracker for the left hand instead of the default controller"/>
+        <button preferred-width="50" preferred-height="8" text="~LeftNunchakuTrackerSerial"
+                hover-hint="~LeftNunchakuTrackerHoverHint" on-click="OnShowSelectLeftTracker"/>
+        <button pref-width="10" preferred-height="8" text="x" on-click="OnClearLeftTracker"/>
+      </horizontal>
+      <horizontal>
+        <clickable-text text="Right Hand" highlight-color="#FFFFFF" hover-hint="Use a tracker for the right hand instead of the default controller"/>
+        <button pref-width="50" preferred-height="8" text="~RightNunchakuTrackerSerial"
+                hover-hint="~RightNunchakuTrackerHoverHint" on-click="OnShowSelectRightTracker"/>
+        <button pref-width="10" preferred-height="8" text="x" on-click="OnClearRightTracker"/>
+      </horizontal>
+    </vertical>
+  </vertical>
+</bg>
