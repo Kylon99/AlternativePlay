@@ -12,12 +12,14 @@
 
     <!-- Main View -->
     <vertical pref-width="70" vertical-fit="PreferredSize">
-      <checkbox-setting text="Use Left For One Color" value="UseLeftSaber" apply-on-change="true"
-                        on-change="OnUseLeftSaberChanged" hover-hint="Use the left saber when playing One Color" />
       <checkbox-setting text="Reverse Left Saber" value="ReverseLeftSaber" apply-on-change="true"
                         on-change="OnReverseLeftSaberChanged" hover-hint="Reverse the direction of the left saber" />
       <checkbox-setting text="Reverse Right Saber" value="ReverseRightSaber" apply-on-change="true"
                         on-change="OnReverseRightSaberChanged" hover-hint="Reverse the direction of the right saber" />
+      <checkbox-setting text="Remove Other Saber for One Color" value="RemoveOtherSaber" apply-on-change="true" on-change="OnRemoveOtherSaberChanged"
+                        hover-hint="Remove the other saber when playing with One Color" />
+      <checkbox-setting text="Use Left Saber for One Color" value="UseLeftSaber" apply-on-change="true"
+                        on-change="OnUseLeftSaberChanged" hover-hint="Use the left saber instead of the right when playing One Color" />
     </vertical>
 
     <!--Tracker Selection-->

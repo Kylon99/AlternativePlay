@@ -36,9 +36,10 @@ namespace AlternativePlay.Models
         public PlayMode PlayMode { get; set; } = PlayMode.BeatSaber;
 
         // Beat Saber Options
-        public bool UseLeftSaber { get; set; }
         public bool ReverseLeftSaber { get; set; }
         public bool ReverseRightSaber { get; set; }
+        public bool UseLeftSaber { get; set; }
+        public bool RemoveOtherSaber { get; set; }
         public TrackerConfigData LeftSaberTracker { get; set; } = new TrackerConfigData();
         public TrackerConfigData RightSaberTracker { get; set; } = new TrackerConfigData();
 
@@ -62,7 +63,6 @@ namespace AlternativePlay.Models
         // Gameplay Changes Options
         public bool NoArrowsRandom { get; set; }
         public bool OneColor { get; set; }
-        public bool RemoveOtherSaber { get; set; }
         public bool NoArrows { get; set; }
         public bool TouchNotes { get; set; }
 

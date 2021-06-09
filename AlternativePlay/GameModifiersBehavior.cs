@@ -11,7 +11,6 @@ namespace AlternativePlay
         private IDifficultyBeatmap currentBeatmap;
         private bool useLeft;
         private ColorType undesiredNoteType;
-        private SaberManager saberManager;
 
         /// <summary>
         /// To be invoked every time when starting the GameCore scene.
@@ -30,26 +29,6 @@ namespace AlternativePlay
 
                 this.StartCoroutine(this.TransformMap());
             }
-
-            this.StartCoroutine(this.DisableOtherSaberMesh());
-        }
-
-        private void Awake()
-        {
-            this.saberManager = FindObjectOfType<SaberManager>();
-        }
-
-        private void Update()
-        {
-            if (!(Configuration.instance.ConfigurationData.OneColor &&
-                Configuration.instance.ConfigurationData.PlayMode == PlayMode.BeatSaber &&
-                Configuration.instance.ConfigurationData.RemoveOtherSaber)) { return; }
-
-            // Move the other saber away since there's a bug in the base game which makes it
-            // able to cut bombs still
-            Saber saberToHide = Configuration.instance.ConfigurationData.UseLeftSaber ? this.saberManager.rightSaber : this.saberManager.leftSaber;
-            saberToHide.gameObject.transform.position = new Vector3(0.0f, -1000.0f, 0.0f);
-            saberToHide.gameObject.transform.rotation = Quaternion.Euler(90.0f, 0.0f, 0.0f);
         }
 
         /// <summary>
@@ -108,15 +87,6 @@ namespace AlternativePlay
                     (config.PlayMode == PlayMode.BeatSpear && config.UseLeftSpear);
 
                 this.undesiredNoteType = this.useLeft ? ColorType.ColorB : ColorType.ColorA;
-
-                // Change the other saber to desired type
-                SaberType desiredSaberType = this.useLeft ? SaberType.SaberA : SaberType.SaberB;
-                var saberObject = new GameObject("SaberTypeObject").AddComponent<SaberTypeObject>();
-                saberObject.SetField("_saberType", desiredSaberType);
-
-                var player = Resources.FindObjectsOfTypeAll<SaberManager>().FirstOrDefault();
-                Saber saberToSwap = this.useLeft ? player.rightSaber : player.leftSaber;
-                saberToSwap.SetField("_saberType", saberObject);
             }
 
             try
@@ -132,8 +102,6 @@ namespace AlternativePlay
                         beatmapData = callbackController.GetField<BeatmapData>("_beatmapData");
                     }
                 }
-                //BeatmapObjectCallbackController callbackController = Resources.FindObjectsOfTypeAll<BeatmapObjectCallbackController>().FirstOrDefault();
-                // BeatmapData beatmapData = callbackController.GetField<BeatmapData>("_beatmapData");
                 if (config.NoArrowsRandom)
                 {
                     // Transform the map to No Arrows Random using the ingame algorithm first
@@ -172,22 +140,6 @@ namespace AlternativePlay
             }
 
             // Touch Notes speed detection is not handled here but in the HarmonyPatches
-        }
-
-        /// <summary>
-        /// Disables the rendering of the other saber
-        /// </summary>
-        private IEnumerator DisableOtherSaberMesh()
-        {
-            yield return new WaitForSecondsRealtime(0.1f);
-
-            if (!(Configuration.instance.ConfigurationData.OneColor &&
-                Configuration.instance.ConfigurationData.PlayMode == PlayMode.BeatSaber &&
-                Configuration.instance.ConfigurationData.RemoveOtherSaber)) { yield break; }
-
-            Saber saberToHide = Configuration.instance.ConfigurationData.UseLeftSpear ? this.saberManager.rightSaber : this.saberManager.leftSaber;
-            var saberRenderers = saberToHide.gameObject.GetComponentsInChildren<Renderer>();
-            foreach (var r in saberRenderers) { r.enabled = false; }
         }
     }
 }

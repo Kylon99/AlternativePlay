@@ -113,6 +113,7 @@
     <Compile Include="BehaviorCatalog.cs" />
     <Compile Include="DarthMaulBehavior.cs" />
     <Compile Include="HarmonyPatches\MultiplayerPatch.cs" />
+    <Compile Include="HarmonyPatches\OneColorSaberPatch.cs" />
     <Compile Include="SaberDeviceManager.cs" />
     <Compile Include="Models\Vector3Converter.cs" />
     <Compile Include="Models\TrackerConfigData.cs" />
