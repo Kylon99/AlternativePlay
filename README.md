@@ -44,6 +44,10 @@ This mod depends on the following mods.  Download them at [BeatMods](https://bea
 Drop the AlternativePlay.dll file into your Plugins folder under your BeatSaber folder.
 
 ## Changelog
+### 0.6.3
+- Updated code to restore compatibility with Custom Saber when playing One Color
+- Fixed right saber not showing when use left saber set in Beat Saber
+- Moved Remove Other Saber option to Beat Saber
 
 ### 0.6.2
 - Checked for compatibility with Beat Saber 1.14, 1.15 and 1.16.1
