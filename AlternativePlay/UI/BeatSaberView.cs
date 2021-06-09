@@ -21,15 +21,6 @@ namespace AlternativePlay.UI
             SetTrackerText();
         }
 
-        [UIValue("UseLeftSaber")]
-        private bool useLeftSaber = Configuration.instance.ConfigurationData.UseLeftSaber;
-        [UIAction("OnUseLeftSaberChanged")]
-        private void OnUseLeftSaberChanged(bool value)
-        {
-            Configuration.instance.ConfigurationData.UseLeftSaber = value;
-            Configuration.instance.SaveConfiguration();
-        }
-
         [UIValue("ReverseLeftSaber")]
         private bool reverseLeftSaber = Configuration.instance.ConfigurationData.ReverseLeftSaber;
         [UIAction("OnReverseLeftSaberChanged")]
@@ -45,6 +36,24 @@ namespace AlternativePlay.UI
         private void OnReverseRightSaberChanged(bool value)
         {
             Configuration.instance.ConfigurationData.ReverseRightSaber = value;
+            Configuration.instance.SaveConfiguration();
+        }
+
+        [UIValue("RemoveOtherSaber")]
+        private bool removeOtherSaber = Configuration.instance.ConfigurationData.RemoveOtherSaber;
+        [UIAction("OnRemoveOtherSaberChanged")]
+        private void OnRemoveOtherSaberChanged(bool value)
+        {
+            Configuration.instance.ConfigurationData.RemoveOtherSaber = value;
+            Configuration.instance.SaveConfiguration();
+        }
+
+        [UIValue("UseLeftSaber")]
+        private bool useLeftSaber = Configuration.instance.ConfigurationData.UseLeftSaber;
+        [UIAction("OnUseLeftSaberChanged")]
+        private void OnUseLeftSaberChanged(bool value)
+        {
+            Configuration.instance.ConfigurationData.UseLeftSaber = value;
             Configuration.instance.SaveConfiguration();
         }
 
@@ -134,6 +143,6 @@ namespace AlternativePlay.UI
         }
 
         #endregion
-  
+
     }
 }

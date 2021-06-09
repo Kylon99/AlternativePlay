@@ -25,15 +25,6 @@ namespace AlternativePlay.UI
             Configuration.instance.SaveConfiguration();
         }
 
-        [UIValue("RemoveOtherSaber")]
-        private bool removeOtherSaber = Configuration.instance.ConfigurationData.RemoveOtherSaber;
-        [UIAction("OnRemoveOtherSaberChanged")]
-        private void OnRemoveOtherSaberChanged(bool value)
-        {
-            Configuration.instance.ConfigurationData.RemoveOtherSaber = value;
-            Configuration.instance.SaveConfiguration();
-        }
-
         [UIValue("NoArrows")]
         private bool noArrows = Configuration.instance.ConfigurationData.NoArrows;
         [UIAction("OnNoArrowsChanged")]

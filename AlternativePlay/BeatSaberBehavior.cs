@@ -1,11 +1,14 @@
 ﻿using AlternativePlay.Models;
 using System;
+using System.Collections;
 using UnityEngine;
 
 namespace AlternativePlay
 {
     public class BeatSaberBehavior : MonoBehaviour
     {
+        private readonly Pose hiddenPose = new Pose(new Vector3(0.0f, -1000.0f, 0.0f), Quaternion.Euler(90.0f, 0.0f, 0.0f));
+
         /// <summary>
         /// To be invoked every time when starting the GameCore scene.
         /// </summary>
@@ -17,27 +20,78 @@ namespace AlternativePlay
 
             Utilities.CheckAndDisableForTrackerTransforms(Configuration.instance.ConfigurationData.LeftSaberTracker);
             Utilities.CheckAndDisableForTrackerTransforms(Configuration.instance.ConfigurationData.RightSaberTracker);
+
+            this.StartCoroutine(this.DisableOtherSaberMesh());
         }
 
         private void Update()
         {
-            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.BeatSaber) return;
-
             var config = Configuration.instance.ConfigurationData;
-            var saberDevice = BehaviorCatalog.instance.SaberDeviceManager;
+            if (config.PlayMode != PlayMode.BeatSaber) return;
+
+            this.UpdateLeftSaber();
+            this.UpdateRightSaber();
+        }
+
+        private void UpdateLeftSaber()
+        {
+            var config = Configuration.instance.ConfigurationData;
+            var saberDeviceManager = BehaviorCatalog.instance.SaberDeviceManager;
+
+            if (config.OneColor && config.RemoveOtherSaber && !config.UseLeftSaber)
+            {
+                // Move the other saber away since there's a bug in the base game which makes it
+                // able to cut bombs still
+                saberDeviceManager.SetLeftSaberPose(hiddenPose);
+                return;
+            }
 
             // Move the left saber if we are reversing it or it was assigned a tracker
             if (config.ReverseLeftSaber || !String.IsNullOrWhiteSpace(config.LeftSaberTracker.Serial))
             {
-                Pose leftSaberPose = saberDevice.GetLeftSaberPose(config.LeftSaberTracker);
-                saberDevice.SetLeftSaberPose(config.ReverseLeftSaber ? leftSaberPose.Reverse() : leftSaberPose);
+                Pose leftSaberPose = saberDeviceManager.GetLeftSaberPose(config.LeftSaberTracker);
+                saberDeviceManager.SetLeftSaberPose(config.ReverseLeftSaber ? leftSaberPose.Reverse() : leftSaberPose);
+            }
+        }
+
+        private void UpdateRightSaber()
+        {
+            var config = Configuration.instance.ConfigurationData;
+            var saberDeviceManager = BehaviorCatalog.instance.SaberDeviceManager;
+
+            if (config.OneColor && config.RemoveOtherSaber && config.UseLeftSaber)
+            {
+                // Move the other saber away since there's a bug in the base game which makes it
+                // able to cut bombs still
+                saberDeviceManager.SetRightSaberPose(hiddenPose);
+                return;
             }
 
             // Move the right saber if we are reversing it or it was assigned a tracker
             if (config.ReverseRightSaber || !String.IsNullOrWhiteSpace(config.RightSaberTracker.Serial))
             {
-                Pose rightSaberPose = saberDevice.GetRightSaberPose(config.RightSaberTracker);
-                saberDevice.SetRightSaberPose(config.ReverseRightSaber ? rightSaberPose.Reverse() : rightSaberPose);
+                Pose rightSaberPose = saberDeviceManager.GetRightSaberPose(config.RightSaberTracker);
+                saberDeviceManager.SetRightSaberPose(config.ReverseRightSaber ? rightSaberPose.Reverse() : rightSaberPose);
+            }
+        }
+
+        /// <summary>
+        /// Disables the rendering of the other saber
+        /// </summary>
+        private IEnumerator DisableOtherSaberMesh()
+        {
+            yield return new WaitForSecondsRealtime(0.1f);
+
+            var config = Configuration.instance.ConfigurationData;
+            if (!(config.OneColor && config.RemoveOtherSaber)) { yield break; }
+
+            if (config.UseLeftSaber)
+            {
+                BehaviorCatalog.instance.SaberDeviceManager.DisableRightSaberMesh();
+            }
+            else
+            {
+                BehaviorCatalog.instance.SaberDeviceManager.DisableLeftSaberMesh();
             }
         }
     }
