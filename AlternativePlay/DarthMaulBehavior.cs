@@ -101,7 +101,11 @@ namespace AlternativePlay
             // Determine which pose belongs to which saber and set them
             Pose leftSaberPose = config.ReverseMaulDirection ? basePose : rotatedPose;
             Pose rightSaberPose = config.ReverseMaulDirection ? rotatedPose : basePose;
-
+            if (config.UseLeftController)
+            {
+                leftSaberPose = config.ReverseMaulDirection ? rotatedPose : basePose;
+                rightSaberPose = config.ReverseMaulDirection ? basePose : rotatedPose;
+            }
             saberDevice.SetLeftSaberPose(leftSaberPose);
             saberDevice.SetRightSaberPose(rightSaberPose);
         }
