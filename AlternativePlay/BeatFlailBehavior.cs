@@ -64,8 +64,6 @@ namespace AlternativePlay
             this.rightLinks = Utilities.CreateLinkMeshes(this.rightFlail.Count, config.RightFlailLength / 100.0f);
             this.leftHandle = GameObject.Instantiate(BehaviorCatalog.instance.AssetLoaderBehavior.FlailHandlePrefab);
             this.rightHandle = GameObject.Instantiate(BehaviorCatalog.instance.AssetLoaderBehavior.FlailHandlePrefab);
-
-            // this.CreateDebugCubes(this.leftLinks.Count);
         }
 
         private void FixedUpdate()
@@ -126,8 +124,6 @@ namespace AlternativePlay
                 Vector3 moveHandleUp = leftSaberPose.rotation * new Vector3(0.0f, 0.0f, oneChainDistance); // Move handle forward one chain length
                 this.leftHandle.transform.position = leftSaberPose.position + moveHandleUp;
                 this.leftHandle.transform.rotation = leftSaberPose.rotation;
-
-                //this.MoveDebugCubes(this.leftFlail);
             }
 
             if (!this.removeRightFlail)
@@ -144,36 +140,6 @@ namespace AlternativePlay
                 this.rightHandle.transform.rotation = rightSaberPose.rotation;
             }
         }
-
-        ///// <summary>
-        ///// Move the link meshes to the same positions of the chain
-        ///// </summary>
-        ///// 
-        //public void MoveDebugCubes(List<GameObject> chain)
-        //{
-        //    for (int i = 0; i < chain.Count; i++)
-        //    {
-        //        this.debugCubes[i].transform.position = chain[i].transform.position / 10.0f;
-        //        this.debugCubes[i].transform.rotation = chain[i].transform.rotation;
-        //    }
-        //}
-
-        //private List<GameObject> debugCubes;
-
-        ///// <summary>
-        ///// Creates the same number of link mesh instances as the number of links
-        ///// in the chain
-        ///// </summary>
-        //public void CreateDebugCubes(int linkCount)
-        //{
-        //    this.debugCubes = new List<GameObject>();
-        //    for (int i = 0; i < linkCount; i++)
-        //    {
-        //        var gameObject = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        //        gameObject.transform.localScale = new Vector3(0.1f, 0.05f, 0.05f);
-        //        this.debugCubes.Add(gameObject);
-        //    }
-        //}
 
         /// <summary>
         /// Creates a flail chain sequence and connects them

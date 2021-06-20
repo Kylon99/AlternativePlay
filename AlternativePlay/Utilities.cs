@@ -153,36 +153,17 @@ namespace AlternativePlay
             float chainSegmentLength = chainLength / chainSegments;
             float linkMeshSeparation = shortChainLength / linkMeshes.Count;
 
-            //AlternativePlay.Logger.Info($"*****");
-            //AlternativePlay.Logger.Info($"*****");
-            //AlternativePlay.Logger.Info($"*****");
-            //AlternativePlay.Logger.Info($"***** shortChainLength: {shortChainLength}");
-            //AlternativePlay.Logger.Info($"***** chainSegmentLength: {chainSegmentLength}");
-            //AlternativePlay.Logger.Info($"***** linkMeshSeparation: {linkMeshSeparation}");
-            //AlternativePlay.Logger.Info($"***** linkMeshes.Count: {linkMeshes.Count}");
-            //AlternativePlay.Logger.Info($"***** chain.Count: {chain.Count}");
-
             for (int i = 0; i < linkMeshes.Count; i++)
             {
-                //AlternativePlay.Logger.Info($"***** LOOP ***** ");
-                //AlternativePlay.Logger.Info($"***** i: {i}");
-
                 // Determine positions on the chain length of the current link mesh
                 float leftLinkMeshPosition = linkMeshSeparation * i + chainSegmentLength;
                 float rightLinkMeshPosition = leftLinkMeshPosition + linkMeshSeparation;
-
-                //AlternativePlay.Logger.Info($"***** linkMeshPosition: {leftLinkMeshPosition}");
 
                 // Determine the chain links to calculate position from
                 int leftChainIndex = (int)Math.Floor(leftLinkMeshPosition / chainSegmentLength);
                 int rightChainIndex = (int)Math.Ceiling(rightLinkMeshPosition / chainSegmentLength);
                 float leftFractionalPosition = (leftLinkMeshPosition - (leftChainIndex * chainSegmentLength)) / chainSegmentLength;
                 float rightFractionalPosition = (rightLinkMeshPosition - ((rightChainIndex - 1) * chainSegmentLength)) / chainSegmentLength;
-
-                //AlternativePlay.Logger.Info($"***** leftChainIndex: {leftChainIndex}");
-                //AlternativePlay.Logger.Info($"***** rightChainIndex: {rightChainIndex}");
-                //AlternativePlay.Logger.Info($"***** leftFractionalPosition: {leftFractionalPosition}");
-                //AlternativePlay.Logger.Info($"***** rightFractionalPosition: {rightFractionalPosition}");
 
                 // Find the left and right positions and rotations
                 Vector3 leftPosition = ((chain[leftChainIndex + 1].transform.position - chain[leftChainIndex].transform.position) / 10.0f * leftFractionalPosition) + (chain[leftChainIndex].transform.position / 10.0f);
