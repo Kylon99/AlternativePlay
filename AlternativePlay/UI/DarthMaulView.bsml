@@ -3,7 +3,7 @@
 
     <!-- View Header -->
     <horizontal pad-left="10" pad-right="10" bg="panel-top" pref-height="11">
-      <img preserve-aspect="true" pref-width="5" source="AlternativePlay.Resources.DarthMaul.png" />
+      <img preserve-aspect="true" pref-width="8" source="AlternativePlay.Resources.DarthMaul.png" />
       <vertical pad-left="1" pad-top="1" pad-bottom="3" pref-height="12" vertical-fit="PreferredSize">
         <text text="Darth Maul" font-size="5"/>
         <text text="Double bladed staff for one or two hands" font-size="4" />

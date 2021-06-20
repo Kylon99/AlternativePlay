@@ -2,41 +2,44 @@
   <vertical child-control-height="false">
 
     <!-- View Header -->
-    <horizontal pad-left="15" pad-right="15" bg="panel-top" pref-height="16">
-      <img preserve-aspect="true" pref-width="12" source="AlternativePlay.Resources.BeatFlail.png" />
-      <vertical pad-left="1" pref-height="10" vertical-fit="PreferredSize">
-        <text text="Flail" font-size="6"/>
+    <horizontal pad-left="10" pad-right="10" bg="panel-top" pref-height="11">
+      <img preserve-aspect="true" pref-width="8" source="AlternativePlay.Resources.BeatFlail.png" />
+      <vertical pad-left="1" pad-top="1" pad-bottom="3" pref-height="12" vertical-fit="PreferredSize">
+        <text text="Flail" font-size="5"/>
         <text text="Play with one or two spiked balls on chains" font-size="4" />
       </vertical>
     </horizontal>
 
     <!-- Main View -->
-    <vertical pref-width="90" vertical-fit="PreferredSize">
+    <vertical pref-width="75" vertical-fit="PreferredSize">
       <checkbox-setting text="Use Left Flail For One Color" value="UseLeftFlail" apply-on-change="true"
                         on-change="OnUseLeftFlailChanged"  hover-hint="Use the left flail when playing One Color" />
       <increment-setting text="Left Flail Length" value="LeftFlailLength" integer-only="true" min="50" max="150" increment="10" formatter="LengthFormatter"
                          on-change="OnLeftFlailLengthChanged" hover-hint="The distance between the handle and the ball on the left" />
       <increment-setting text="Right Flail Length" value="RightFlailLength" integer-only="true" min="50" max="150" increment="10" formatter="LengthFormatter"
                          on-change="OnRightFlailLengthChanged" hover-hint="The distance between the handle and the ball on the right" />
+      <increment-setting text="Move Notes Back Distance" value="MoveNotesBack" integer-only="true" min="0" max="150" increment="10" formatter="LengthFormatter"
+                         on-change="OnMoveNotesBackChanged" hover-hint="Move notes back to account for chain length." />
 
-      <horizontal preferred-width="70" horizontal-fit="PreferredSize" pad-bottom="3">
-        <slider-setting text="Gravity" value="FlailGravity" integer-only="false" min="0" max="5" increment="0.1" get-event="RefreshFlailGravity"
+      <horizontal preferred-width="75" horizontal-fit="PreferredSize" pad-bottom="3">
+        <slider-setting preferred-width="55" text="Gravity" value="FlailGravity" integer-only="false" min="0" max="5" increment="0.1" get-event="RefreshFlailGravity"
                         on-change="OnFlailGravityChanged" hover-hint="Amount of G force applied to the Flail (multiple of -9.81 m/s^2)" />
-        <button pref-width="18" preferred-height="8" text="Reset" pad-left="2" hover-hint='Reset gravity to 1.0' on-click="OnResetGravity"/>
+        <button pref-width="18" preferred-height="8" text="Reset" pad-left="2" hover-hint='Reset gravity to 3.5' on-click="OnResetGravity"/>
       </horizontal>
-
     </vertical>
 
-    <vertical pref-width="95" vertical-fit="PreferredSize">
-      <!--Tracker Settings-->
+    <!--Tracker Settings-->
+    <vertical pref-width="80" vertical-fit="PreferredSize">
       <horizontal>
-        <clickable-text text="Left Hand" highlight-color="#FFFFFF" hover-hint="Use a tracker for the left hand instead of the default controller"/>
+        <clickable-text text="Left Hand" italics="true" font-size="4" highlight-color="#FFFFFF" align="MidlineLeft"
+                        hover-hint="Use a tracker for the left hand instead of the default controller"/>
         <button preferred-width="50" preferred-height="8" text="~LeftFlailTrackerSerial"
                 hover-hint="~LeftFlailTrackerHoverHint" on-click="OnShowSelectLeftTracker"/>
         <button pref-width="10" preferred-height="8" text="x" on-click="OnClearLeftTracker"/>
       </horizontal>
       <horizontal>
-        <clickable-text text="Right Hand" highlight-color="#FFFFFF" hover-hint="Use a tracker for the right hand instead of the default controller"/>
+        <clickable-text text="Right Hand" italics="true" font-size="4" highlight-color="#FFFFFF" align="MidlineLeft"
+                        hover-hint="Use a tracker for the right hand instead of the default controller"/>
         <button pref-width="50" preferred-height="8" text="~RightFlailTrackerSerial"
                 hover-hint="~RightFlailTrackerHoverHint" on-click="OnShowSelectRightTracker"/>
         <button pref-width="10" preferred-height="8" text="x" on-click="OnClearRightTracker"/>

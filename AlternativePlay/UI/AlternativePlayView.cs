@@ -121,7 +121,7 @@ namespace AlternativePlay.UI
         [UIAction("FlailClick")]
         private void OnFlailClick()
         {
-            Configuration.instance.ConfigurationData.PlayMode = PlayMode.Flail;
+            Configuration.instance.ConfigurationData.PlayMode = PlayMode.BeatFlail;
             Configuration.instance.SaveConfiguration();
 
             SetPlayModeColor(Configuration.instance.ConfigurationData.PlayMode);
@@ -160,7 +160,7 @@ namespace AlternativePlay.UI
                     this.NunchakuIcon = "AlternativePlay.Resources.NoArrows.png";
                     break;
 
-                case PlayMode.Flail:
+                case PlayMode.BeatFlail:
                     this.FlailColor = White;
                     this.FlailIcon = "AlternativePlay.Resources.NoArrows.png";
                     break;

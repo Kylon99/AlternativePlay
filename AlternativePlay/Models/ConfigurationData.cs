@@ -10,7 +10,7 @@ namespace AlternativePlay.Models
         DarthMaul = 1,
         BeatSpear = 2,
         Nunchaku = 3,
-        Flail = 4,
+        BeatFlail = 4,
     }
 
     public enum ControllerCountEnum
@@ -74,6 +74,7 @@ namespace AlternativePlay.Models
         public int LeftFlailLength { get; set; } = 80; // in centimetres
         public int RightFlailLength { get; set; } = 80; // in centimetres
         public float FlailGravity { get; set; } = 2.0f;
+        public int MoveNotesBack { get; set; } = 0; // in centimetres
         public TrackerConfigData LeftFlailTracker { get; set; } = new TrackerConfigData();
         public TrackerConfigData RightFlailTracker { get; set; } = new TrackerConfigData();
 

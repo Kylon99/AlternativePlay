@@ -13,8 +13,9 @@ namespace AlternativePlay
         public DarthMaulBehavior DarthMaulBehavior { get; private set; }
         public BeatSpearBehavior BeatSpearBehavior { get; private set; }
         public NunchakuBehavior NunchakuBehavior { get; private set; }
-        public FlailBehavior FlailBehavior { get; private set; }
+        public BeatFlailBehavior FlailBehavior { get; private set; }
         public GameModifiersBehavior GameModifiersBehavior { get; private set; }
+        public AssetLoaderBehavior AssetLoaderBehavior { get; private set; }
 
         public void LoadStartBehaviors()
         {
@@ -28,6 +29,7 @@ namespace AlternativePlay
         public void LoadMenuSceneLoadedFreshBehaviors()
         {
             if (ShowTrackersBehavior == null) ShowTrackersBehavior = new GameObject(nameof(ShowTrackersBehavior)).AddComponent<ShowTrackersBehavior>();
+            if (AssetLoaderBehavior == null) AssetLoaderBehavior = new GameObject(nameof(AssetLoaderBehavior)).AddComponent<AssetLoaderBehavior>();
         }
 
         public void LoadGameSceneLoadedBehaviors()
@@ -50,7 +52,7 @@ namespace AlternativePlay
             if (NunchakuBehavior == null) NunchakuBehavior = new GameObject(nameof(NunchakuBehavior)).AddComponent<NunchakuBehavior>();
             NunchakuBehavior.BeginGameCoreScene();
 
-            if (FlailBehavior == null) FlailBehavior = new GameObject(nameof(FlailBehavior)).AddComponent<FlailBehavior>();
+            if (FlailBehavior == null) FlailBehavior = new GameObject(nameof(FlailBehavior)).AddComponent<BeatFlailBehavior>();
             FlailBehavior.BeginGameCoreScene();
 
             if (GameModifiersBehavior == null) GameModifiersBehavior = new GameObject(nameof(GameModifiersBehavior)).AddComponent<GameModifiersBehavior>();

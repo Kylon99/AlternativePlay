@@ -137,7 +137,7 @@ namespace AlternativePlay.UI
                     viewToDisplay = this.nunchakuView;
                     break;
 
-                case PlayMode.Flail:
+                case PlayMode.BeatFlail:
                     viewToDisplay = this.beatFlailView;
                     break;
 

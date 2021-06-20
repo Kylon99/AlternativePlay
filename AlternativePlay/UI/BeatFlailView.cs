@@ -63,10 +63,19 @@ namespace AlternativePlay.UI
             Configuration.instance.SaveConfiguration();
         }
 
+        [UIValue("MoveNotesBack")]
+        private int MoveNotesBack = Configuration.instance.ConfigurationData.MoveNotesBack;
+        [UIAction("OnMoveNotesBackChanged")]
+        private void OnMoveNotesBackChanged(int value)
+        {
+            Configuration.instance.ConfigurationData.MoveNotesBack = value;
+            Configuration.instance.SaveConfiguration();
+        }
+
         [UIAction("OnResetGravity")]
         private void OnResetGravity()
         {
-            Configuration.instance.ConfigurationData.FlailGravity = 2.0f;
+            Configuration.instance.ConfigurationData.FlailGravity = 3.5f;
             Configuration.instance.SaveConfiguration();
             this.parserParams.EmitEvent("RefreshFlailGravity");
         }

@@ -57,7 +57,7 @@ namespace AlternativePlay.UI
         [UIAction("OnResetGravity")]
         private void OnResetGravity()
         {
-            Configuration.instance.ConfigurationData.NunchakuGravity = 2.0f;
+            Configuration.instance.ConfigurationData.NunchakuGravity = 3.5f;
             Configuration.instance.SaveConfiguration();
             this.parserParams.EmitEvent("RefreshNunchakuGravity");
         }

@@ -111,12 +111,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssetLoaderBehavior.cs" />
     <Compile Include="BeatSpearBehavior.cs" />
     <Compile Include="BeatSaberBehavior.cs" />
     <Compile Include="BehaviorCatalog.cs" />
     <Compile Include="DarthMaulBehavior.cs" />
+    <Compile Include="HarmonyPatches\BeatFlailNoteMoverPatch.cs" />
+    <Compile Include="HarmonyPatches\NunchakuHapticPatch.cs" />
     <Compile Include="NunchakuBehavior.cs" />
-    <Compile Include="FlailBehavior.cs" />
+    <Compile Include="BeatFlailBehavior.cs" />
     <Compile Include="HarmonyPatches\MultiplayerPatch.cs" />
     <Compile Include="HarmonyPatches\OneColorSaberPatch.cs" />
     <Compile Include="SaberDeviceManager.cs" />

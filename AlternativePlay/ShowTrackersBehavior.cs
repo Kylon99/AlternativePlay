@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using UnityEngine;
 using UnityEngine.XR;
 
@@ -15,8 +14,6 @@ namespace AlternativePlay
         private bool showTrackers;
         private TrackerConfigData selectedTracker;
 
-        private GameObject trackerPrefab;
-        private GameObject saberPrefab;
 
         private List<TrackerInstance> trackerInstances;
         private GameObject saberInstance;
@@ -30,13 +27,13 @@ namespace AlternativePlay
 
             this.trackerInstances = TrackedDeviceManager.instance.TrackedDevices.Select((t) => new TrackerInstance
             {
-                Instance = GameObject.Instantiate(this.trackerPrefab),
+                Instance = GameObject.Instantiate(BehaviorCatalog.instance.AssetLoaderBehavior.TrackerPrefab),
                 InputDevice = t,
                 Serial = t.serialNumber,
             }).ToList();
 
             this.trackerInstances.ForEach(t => t.Instance.SetActive(true));
-            this.saberInstance = GameObject.Instantiate(this.saberPrefab);
+            this.saberInstance = GameObject.Instantiate(BehaviorCatalog.instance.AssetLoaderBehavior.SaberPrefab);
             this.showTrackers = true;
             this.enabled = true;
         }
@@ -67,10 +64,6 @@ namespace AlternativePlay
         {
             this.mainSettingsModel = Resources.FindObjectsOfTypeAll<MainSettingsModelSO>().FirstOrDefault();
 
-            AssetBundle assetBundle = AssetBundle.LoadFromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream("AlternativePlay.Resources.alternativeplaymodels"));
-            this.trackerPrefab = assetBundle.LoadAsset<GameObject>("APTracker");
-            this.saberPrefab = assetBundle.LoadAsset<GameObject>("APSaber");
-            assetBundle.Unload(false);
         }
 
         private void Update()
