@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("AlternativePlay")]
-[assembly: AssemblyDescription("Darth Maul, Spear and new game play styles for Beat Saber")]
+[assembly: AssemblyDescription("Darth Maul, Spear, Nunchaku, Flail and new game play styles for Beat Saber")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Kylon99")]
 [assembly: AssemblyProduct("AlternativePlay")]
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.6.3.0")]
-[assembly: AssemblyFileVersion("0.6.3.0")]
+[assembly: AssemblyVersion("0.7.0.0")]
+[assembly: AssemblyFileVersion("0.7.0.0")]
