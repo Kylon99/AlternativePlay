@@ -2,7 +2,7 @@
   <vertical child-control-height="false">
     <!-- View Header -->
     <horizontal pad-left="12" pad-right="12" bg="panel-top" pref-height="11">
-      <img preserve-aspect="true" pref-width="5" source="AlternativePlay.Resources.BeatSpear.png" />
+      <img preserve-aspect="true" pref-width="8" source="AlternativePlay.Resources.BeatSpear.png" />
       <vertical pad-left="1" pad-top="1" pad-bottom="3" pref-height="12" vertical-fit="PreferredSize">
         <text text="Beat Spear" font-size="5"/>
         <text text="Play with a one bladed long spear" font-size="4" />

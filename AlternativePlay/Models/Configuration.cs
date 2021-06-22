@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.IO;
 using UnityEngine;
 
@@ -38,6 +39,10 @@ namespace AlternativePlay.Models
             {
                 this.ConfigurationData.RotationIncrement = ConfigurationData.DefaultRotationIncrement;
             }
+
+            int clamped = Math.Min(Configuration.instance.ConfigurationData.MoveNotesBack, 150);
+            clamped = Math.Max(clamped, 0);
+            Configuration.instance.ConfigurationData.MoveNotesBack = clamped;
         }
 
         /// <summary>

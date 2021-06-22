@@ -17,6 +17,8 @@ namespace AlternativePlay
         /// </summary>
         public void BeginGameCoreScene()
         {
+            if (BS_Utils.Plugin.LevelData.Mode == BS_Utils.Gameplay.Mode.Multiplayer) { return; }
+
             // Get the map metadata
             GameplayCoreSceneSetupData data = BS_Utils.Plugin.LevelData?.GameplayCoreSceneSetupData;
             this.currentBeatmap = data.difficultyBeatmap;
@@ -41,15 +43,7 @@ namespace AlternativePlay
             const string OneSaberModeName = "OneSaber";
 
             var config = Configuration.instance.ConfigurationData;
-
-            // No transform if nothing is selected
-            if (!config.NoArrows &&
-                !config.OneColor &&
-                !config.RemoveOtherSaber &&
-                !config.NoArrowsRandom)
-            {
-                return false;
-            }
+            if (!config.NoArrows && !config.OneColor && !config.RemoveOtherSaber && !config.NoArrowsRandom) { return false; } // No transform if nothing is selected
 
             bool IsOnlyOneColorSelected() { return config.OneColor && !config.NoArrows && !config.NoArrowsRandom && !config.TouchNotes; }
             bool AreOnlyNoArrowsOptionsSelected() { return (config.NoArrows || config.NoArrowsRandom) && !config.OneColor; }
@@ -75,6 +69,7 @@ namespace AlternativePlay
         private IEnumerator TransformMap()
         {
             yield return new WaitForSecondsRealtime(0.1f);
+            if (BS_Utils.Plugin.LevelData.Mode == BS_Utils.Gameplay.Mode.Multiplayer) { yield break; }
 
             var config = Configuration.instance.ConfigurationData;
 

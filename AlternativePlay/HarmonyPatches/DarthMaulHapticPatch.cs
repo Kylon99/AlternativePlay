@@ -6,6 +6,7 @@ namespace AlternativePlay.HarmonyPatches
 {
     [HarmonyPatch(nameof(HapticFeedbackController.PlayHapticFeedback))]
     [HarmonyPatch(typeof(HapticFeedbackController))]
+    [HarmonyPriority(Priority.VeryHigh)]
     internal class DarthMaulHapticPatch
     {
         private static void Prefix(HapticFeedbackController __instance, ref XRNode node)
