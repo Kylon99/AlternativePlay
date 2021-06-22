@@ -16,13 +16,13 @@ namespace AlternativePlay
         private bool removeLeftFlail;
         private bool removeRightFlail;
 
-        private List<GameObject> leftFlail;
-        private List<GameObject> rightFlail;
-        private List<GameObject> leftLinks;
-        private List<GameObject> rightLinks;
+        private List<GameObject> leftPhysicsFlail;
+        private List<GameObject> rightPhysicsFlail;
 
-        private GameObject leftHandle;
-        private GameObject rightHandle;
+        private List<GameObject> leftLinkMeshes;
+        private List<GameObject> rightLinkMeshes;
+        private GameObject leftHandleMesh;
+        private GameObject rightHandleMesh;
 
         /// <summary>
         /// To be invoked every time when starting the GameCore scene.
@@ -43,27 +43,25 @@ namespace AlternativePlay
                 Utilities.CheckAndDisableForTrackerTransforms(config.LeftFlailTracker);
             }
 
-            this.leftFlail.ForEach(go => go.SetActive(!this.removeLeftFlail));
-            this.leftLinks.ForEach(go => go.SetActive(!this.removeLeftFlail));
-
             if (!this.removeRightFlail)
             {
                 Utilities.CheckAndDisableForTrackerTransforms(config.RightFlailTracker);
             }
-
-            this.rightFlail.ForEach(go => go.SetActive(!this.removeRightFlail));
-            this.rightLinks.ForEach(go => go.SetActive(!this.removeRightFlail));
         }
 
         private void Awake()
         {
+            // Do nothing if we aren't playing Flail
+            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.BeatFlail) { return; }
+
+            // Create the GameObjects used for physics calculations
             var config = Configuration.instance.ConfigurationData;
-            this.leftFlail = this.CreateFlail("Left", config.LeftFlailLength / 100.0f);
-            this.rightFlail = this.CreateFlail("Right", config.RightFlailLength / 100.0f);
-            this.leftLinks = Utilities.CreateLinkMeshes(this.leftFlail.Count, config.LeftFlailLength / 100.0f);
-            this.rightLinks = Utilities.CreateLinkMeshes(this.rightFlail.Count, config.RightFlailLength / 100.0f);
-            this.leftHandle = GameObject.Instantiate(BehaviorCatalog.instance.AssetLoaderBehavior.FlailHandlePrefab);
-            this.rightHandle = GameObject.Instantiate(BehaviorCatalog.instance.AssetLoaderBehavior.FlailHandlePrefab);
+            this.leftPhysicsFlail = this.CreatePhysicsChain("Left", config.LeftFlailLength / 100.0f);
+            this.rightPhysicsFlail = this.CreatePhysicsChain("Right", config.RightFlailLength / 100.0f);
+            this.leftLinkMeshes = Utilities.CreateLinkMeshes(this.leftPhysicsFlail.Count, config.LeftFlailLength / 100.0f);
+            this.leftHandleMesh = GameObject.Instantiate(BehaviorCatalog.instance.AssetLoaderBehavior.FlailHandlePrefab);
+            this.rightLinkMeshes = Utilities.CreateLinkMeshes(this.rightPhysicsFlail.Count, config.RightFlailLength / 100.0f);
+            this.rightHandleMesh = GameObject.Instantiate(BehaviorCatalog.instance.AssetLoaderBehavior.FlailHandlePrefab);
         }
 
         private void FixedUpdate()
@@ -77,13 +75,13 @@ namespace AlternativePlay
             if (!this.removeLeftFlail)
             {
                 // Apply gravity to the left handle
-                foreach (var link in this.leftFlail.Skip(1))
+                foreach (var link in this.leftPhysicsFlail.Skip(1))
                 {
                     var rigidBody = link.GetComponent<Rigidbody>();
                     rigidBody.AddForce(new Vector3(0, gravity, 0) * rigidBody.mass);
                 }
                 // Apply motion force from the left controller
-                var leftFirstLink = this.leftFlail.First();
+                var leftFirstLink = this.leftPhysicsFlail.First();
                 Pose leftSaberPose = BehaviorCatalog.instance.SaberDeviceManager.GetLeftSaberPose(config.LeftFlailTracker);
                 leftFirstLink.transform.position = leftSaberPose.position * 10.0f;
                 leftFirstLink.transform.rotation = leftSaberPose.rotation * Quaternion.Euler(0.0f, 90.0f, 0.0f);
@@ -92,14 +90,14 @@ namespace AlternativePlay
             if (!this.removeRightFlail)
             {
                 // Apply gravity to the right handle
-                foreach (var link in this.rightFlail.Skip(1))
+                foreach (var link in this.rightPhysicsFlail.Skip(1))
                 {
                     var rigidBody = link.GetComponent<Rigidbody>();
                     rigidBody.AddForce(new Vector3(0, gravity, 0) * rigidBody.mass);
                 }
 
                 // Apply motion force from the right controller
-                var rightFirstLink = this.rightFlail.First();
+                var rightFirstLink = this.rightPhysicsFlail.First();
                 Pose rightSaberPose = BehaviorCatalog.instance.SaberDeviceManager.GetRightSaberPose(config.RightFlailTracker);
                 rightFirstLink.transform.position = rightSaberPose.position * 10.0f;
                 rightFirstLink.transform.rotation = rightSaberPose.rotation * Quaternion.Euler(0.0f, 90.0f, 0.0f);
@@ -114,37 +112,59 @@ namespace AlternativePlay
             var config = Configuration.instance.ConfigurationData;
             if (!this.removeLeftFlail)
             {
-                var lastLeftLink = this.leftFlail.Last();
+                var lastLeftLink = this.leftPhysicsFlail.Last();
                 Pose leftLastLinkPose = new Pose(lastLeftLink.transform.position / 10.0f, lastLeftLink.transform.rotation * Quaternion.Euler(0.0f, -90.0f, 180.0f));
                 BehaviorCatalog.instance.SaberDeviceManager.SetLeftSaberPose(leftLastLinkPose);
-                Utilities.MoveLinkMeshes(this.leftLinks, this.leftFlail, (float)config.LeftFlailLength / 100f);
+                Utilities.MoveLinkMeshes(this.leftLinkMeshes, this.leftPhysicsFlail, (float)config.LeftFlailLength / 100f);
 
                 Pose leftSaberPose = BehaviorCatalog.instance.SaberDeviceManager.GetLeftSaberPose(config.LeftFlailTracker);
-                float oneChainDistance = config.LeftFlailLength / 100.0f / (leftFlail.Count - 1);
+                float oneChainDistance = config.LeftFlailLength / 100.0f / (leftPhysicsFlail.Count - 1);
                 Vector3 moveHandleUp = leftSaberPose.rotation * new Vector3(0.0f, 0.0f, oneChainDistance); // Move handle forward one chain length
-                this.leftHandle.transform.position = leftSaberPose.position + moveHandleUp;
-                this.leftHandle.transform.rotation = leftSaberPose.rotation;
+                this.leftHandleMesh.transform.position = leftSaberPose.position + moveHandleUp;
+                this.leftHandleMesh.transform.rotation = leftSaberPose.rotation;
             }
 
             if (!this.removeRightFlail)
             {
-                var lastRightLink = this.rightFlail.Last();
+                var lastRightLink = this.rightPhysicsFlail.Last();
                 Pose rightLastLinkPose = new Pose(lastRightLink.transform.position / 10.0f, lastRightLink.transform.rotation * Quaternion.Euler(0.0f, -90.0f, 180.0f));
                 BehaviorCatalog.instance.SaberDeviceManager.SetRightSaberPose(rightLastLinkPose);
-                Utilities.MoveLinkMeshes(this.rightLinks, this.rightFlail, config.RightFlailLength / 100.0f);
+                Utilities.MoveLinkMeshes(this.rightLinkMeshes, this.rightPhysicsFlail, config.RightFlailLength / 100.0f);
 
                 Pose rightSaberPose = BehaviorCatalog.instance.SaberDeviceManager.GetRightSaberPose(config.RightFlailTracker);
-                float oneChainDistance = config.RightFlailLength / 100.0f / (rightFlail.Count - 1);
+                float oneChainDistance = config.RightFlailLength / 100.0f / (rightPhysicsFlail.Count - 1);
                 Vector3 moveHandleUp = rightSaberPose.rotation * new Vector3(0.0f, 0.0f, oneChainDistance); // Move handle forward one chain length
-                this.rightHandle.transform.position = rightSaberPose.position + moveHandleUp;
-                this.rightHandle.transform.rotation = rightSaberPose.rotation;
+                this.rightHandleMesh.transform.position = rightSaberPose.position + moveHandleUp;
+                this.rightHandleMesh.transform.rotation = rightSaberPose.rotation;
             }
         }
 
+        private void OnDestroy()
+        {
+            // Destroy all flail game objects
+            if (this.leftPhysicsFlail != null) this.leftPhysicsFlail.ForEach(o => GameObject.Destroy(o));
+            this.leftPhysicsFlail = null;
+
+            if (this.rightPhysicsFlail != null) this.rightPhysicsFlail.ForEach(o => GameObject.Destroy(o));
+            this.rightPhysicsFlail = null;
+
+            if (this.leftLinkMeshes != null) this.leftLinkMeshes.ForEach(o => GameObject.Destroy(o));
+            this.leftLinkMeshes = null;
+
+            if (this.rightLinkMeshes != null) this.rightLinkMeshes.ForEach(o => GameObject.Destroy(o));
+            this.rightLinkMeshes = null;
+
+            if (this.leftHandleMesh != null) GameObject.Destroy(this.leftHandleMesh);
+            this.leftHandleMesh = null;
+
+            if (this.rightHandleMesh != null) GameObject.Destroy(this.rightHandleMesh);
+            this.rightHandleMesh = null;
+        }
+
         /// <summary>
-        /// Creates a flail chain sequence and connects them
+        /// Creates a chain of GameObjects used for physics and connects them
         /// </summary>
-        private List<GameObject> CreateFlail(string prefix, float length)
+        private List<GameObject> CreatePhysicsChain(string prefix, float length)
         {
             var chain = new List<GameObject>();
             var handle = Utilities.CreateLink(prefix + "FlailHandle", HandleMass, AngularDrag, true);

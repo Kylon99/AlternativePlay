@@ -12,9 +12,9 @@ namespace AlternativePlay.UI
         private ModMainFlowCoordinator mainFlowCoordinator;
 
         [UIParams]
-#pragma warning disable CS0649 // Field 'TrackerPoseView.parserParams' is never assigned to, and will always have its default value null
+#pragma warning disable CS0649 // Field 'parserParams' is never assigned to, and will always have its default value null
         private BSMLParserParams parserParams;
-#pragma warning restore CS0649 // Field 'TrackerPoseView.parserParams' is never assigned to, and will always have its default value null
+#pragma warning restore CS0649 // Field 'parserParams' is never assigned to, and will always have its default value null
 
         public void SetMainFlowCoordinator(ModMainFlowCoordinator mainFlowCoordinator)
         {
@@ -37,7 +37,7 @@ namespace AlternativePlay.UI
         }
 
         [UIValue("LeftFlailLength")]
-        private int LeftFlailLength = Configuration.instance.ConfigurationData.LeftFlailLength;
+        private int leftFlailLength = Configuration.instance.ConfigurationData.LeftFlailLength;
         [UIAction("OnLeftFlailLengthChanged")]
         private void OnLeftFlailLengthChanged(int value)
         {
@@ -46,7 +46,7 @@ namespace AlternativePlay.UI
         }
 
         [UIValue("RightFlailLength")]
-        private int RightFlailLength = Configuration.instance.ConfigurationData.RightFlailLength;
+        private int rightFlailLength = Configuration.instance.ConfigurationData.RightFlailLength;
         [UIAction("OnRightFlailLengthChanged")]
         private void OnRightFlailLengthChanged(int value)
         {
@@ -55,7 +55,7 @@ namespace AlternativePlay.UI
         }
 
         [UIValue("FlailGravity")]
-        private float FlailGravity = Configuration.instance.ConfigurationData.FlailGravity;
+        private float flailGravity = Configuration.instance.ConfigurationData.FlailGravity;
         [UIAction("OnFlailGravityChanged")]
         private void OnFlailGravityChanged(float value)
         {
@@ -64,7 +64,7 @@ namespace AlternativePlay.UI
         }
 
         [UIValue("MoveNotesBack")]
-        private int MoveNotesBack = Configuration.instance.ConfigurationData.MoveNotesBack;
+        private int moveNotesBack = Configuration.instance.ConfigurationData.MoveNotesBack;
         [UIAction("OnMoveNotesBackChanged")]
         private void OnMoveNotesBackChanged(int value)
         {
@@ -75,6 +75,7 @@ namespace AlternativePlay.UI
         [UIAction("OnResetGravity")]
         private void OnResetGravity()
         {
+            flailGravity = 3.5f;
             Configuration.instance.ConfigurationData.FlailGravity = 3.5f;
             Configuration.instance.SaveConfiguration();
             this.parserParams.EmitEvent("RefreshFlailGravity");

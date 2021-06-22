@@ -12,9 +12,9 @@ namespace AlternativePlay.UI
         private ModMainFlowCoordinator mainFlowCoordinator;
 
         [UIParams]
-#pragma warning disable CS0649 // Field 'TrackerPoseView.parserParams' is never assigned to, and will always have its default value null
+#pragma warning disable CS0649 // Field 'parserParams' is never assigned to, and will always have its default value null
         private BSMLParserParams parserParams;
-#pragma warning restore CS0649 // Field 'TrackerPoseView.parserParams' is never assigned to, and will always have its default value null
+#pragma warning restore CS0649 // Field 'parserParams' is never assigned to, and will always have its default value null
 
         public void SetMainFlowCoordinator(ModMainFlowCoordinator mainFlowCoordinator)
         {
@@ -57,6 +57,7 @@ namespace AlternativePlay.UI
         [UIAction("OnResetGravity")]
         private void OnResetGravity()
         {
+            nunchakuGravity = 3.5f;
             Configuration.instance.ConfigurationData.NunchakuGravity = 3.5f;
             Configuration.instance.SaveConfiguration();
             this.parserParams.EmitEvent("RefreshNunchakuGravity");
