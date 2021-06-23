@@ -133,7 +133,6 @@ namespace AlternativePlay
                 if (joint != null && previousRigidbody != null)
                 {
                     // Connect the joint to the previous body if both are found
-                    joint.anchor = new Vector3(anchorPosition, 0.0f, 0.0f);
                     joint.connectedBody = chain[i - 1].GetComponent<Rigidbody>();
                 }
             }

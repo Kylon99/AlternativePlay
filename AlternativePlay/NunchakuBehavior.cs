@@ -169,17 +169,6 @@ namespace AlternativePlay
                     break;
             }
 
-            // Add an adjustment to the left saber
-            Vector3 oneChainDistance = new Vector3(0.0f, 0.0f, config.NunchakuLength / 100.0f / (this.physicsChain.Count - 1));
-            if (config.ReverseNunchaku && this.HeldState != Held.Both)
-            {
-                newRightSaberPose.position += (newRightSaberPose.rotation * oneChainDistance);
-            }
-            else
-            {
-                newLeftSaberPose.position += (newLeftSaberPose.rotation * oneChainDistance);
-            }
-
             var saberDevice = BehaviorCatalog.instance.SaberDeviceManager;
             saberDevice.SetLeftSaberPose(newLeftSaberPose);
             saberDevice.SetRightSaberPose(newRightSaberPose);
