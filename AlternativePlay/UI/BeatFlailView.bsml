@@ -11,9 +11,11 @@
     </horizontal>
 
     <!-- Main View -->
-    <vertical pref-width="75" vertical-fit="PreferredSize">
-      <checkbox-setting text="Use Left Flail For One Color" value="UseLeftFlail" apply-on-change="true"
-                        on-change="OnUseLeftFlailChanged"  hover-hint="Use the left flail when playing One Color" />
+    <vertical pref-width="75" pref-height="45" vertical-fit="PreferredSize">
+      <dropdown-list-setting text="Left Hand" value="LeftFlailMode" choices="LeftFlailModeList" apply-on-change="true"
+                             on-change="OnLeftFlailModeListChanged" hover-hint="Choose the weapon for the left hand"/>
+      <dropdown-list-setting text="Right Hand" value="RightFlailMode" choices="RightFlailModeList" apply-on-change="true"
+                             on-change="OnRightFlailModeListChanged" hover-hint="Choose the weapon for the right hand"/>
       <increment-setting text="Left Flail Length" value="LeftFlailLength" integer-only="true" min="50" max="150" increment="10" formatter="LengthFormatter"
                          on-change="OnLeftFlailLengthChanged" hover-hint="The distance between the handle and the ball on the left" />
       <increment-setting text="Right Flail Length" value="RightFlailLength" integer-only="true" min="50" max="150" increment="10" formatter="LengthFormatter"

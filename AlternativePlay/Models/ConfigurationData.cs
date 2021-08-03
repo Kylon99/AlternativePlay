@@ -19,6 +19,13 @@ namespace AlternativePlay.Models
         Two
     };
 
+    public enum BeatFlailMode
+    {
+        Flail,
+        Sword,
+        None
+    };
+
     [Serializable]
     public class ConfigurationData
     {
@@ -70,7 +77,8 @@ namespace AlternativePlay.Models
         public TrackerConfigData RightNunchakuTracker { get; set; } = new TrackerConfigData();
 
         // Flail Options
-        public bool UseLeftFlail { get; set; }
+        public BeatFlailMode LeftFlailMode { get; set; } = BeatFlailMode.Flail;
+        public BeatFlailMode RightFlailMode { get; set; } = BeatFlailMode.Flail;
         public int LeftFlailLength { get; set; } = 80; // in centimetres
         public int RightFlailLength { get; set; } = 80; // in centimetres
         public float FlailGravity { get; set; } = 3.5f;
