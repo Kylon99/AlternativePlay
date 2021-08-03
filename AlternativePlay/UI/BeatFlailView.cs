@@ -3,6 +3,7 @@ using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.Parser;
 using BeatSaberMarkupLanguage.ViewControllers;
 using System;
+using System.Collections.Generic;
 
 namespace AlternativePlay.UI
 {
@@ -27,12 +28,25 @@ namespace AlternativePlay.UI
             SetTrackerText();
         }
 
-        [UIValue("UseLeftFlail")]
-        private bool useLeftFlail = Configuration.instance.ConfigurationData.UseLeftFlail;
-        [UIAction("OnUseLeftFlailChanged")]
-        private void OnUseLeftFlailChanged(bool value)
+        [UIValue("LeftFlailMode")]
+        private string LeftFlailMode = Configuration.instance.ConfigurationData.LeftFlailMode.ToString();
+        [UIValue("LeftFlailModeList")]
+        private List<object> LeftFlailModeList = new List<object> { BeatFlailMode.Flail.ToString(), BeatFlailMode.Sword.ToString(), BeatFlailMode.None.ToString() };
+        [UIAction("OnLeftFlailModeListChanged")]
+        private void OnLeftFlailModeListChanged(string value)
         {
-            Configuration.instance.ConfigurationData.UseLeftFlail = value;
+            Configuration.instance.ConfigurationData.LeftFlailMode = (BeatFlailMode)Enum.Parse(typeof(BeatFlailMode), value);
+            Configuration.instance.SaveConfiguration();
+        }
+
+        [UIValue("RightFlailMode")]
+        private string RightFlailMode = Configuration.instance.ConfigurationData.RightFlailMode.ToString();
+        [UIValue("RightFlailModeList")]
+        private List<object> RightFlailModeList = new List<object> { BeatFlailMode.Flail.ToString(), BeatFlailMode.Sword.ToString(), BeatFlailMode.None.ToString() };
+        [UIAction("OnRightFlailModeListChanged")]
+        private void OnRightFlailModeListChanged(string value)
+        {
+            Configuration.instance.ConfigurationData.RightFlailMode = (BeatFlailMode)Enum.Parse(typeof(BeatFlailMode), value);
             Configuration.instance.SaveConfiguration();
         }
 
