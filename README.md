@@ -63,6 +63,9 @@ Drop the AlternativePlay.dll file into your Plugins folder under your BeatSaber 
 
 ## Changelog
 
+### 0.7.1
+- Added ability to play Beat Flail with only one hand or with a sword
+
 ### 0.7.0
 - Added new Nunchaku and Beat Flail play modes
 
