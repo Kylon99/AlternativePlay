@@ -1,5 +1,6 @@
 ﻿using AlternativePlay.Models;
 using BS_Utils.Utilities;
+using System;
 using System.Collections;
 using System.Linq;
 using UnityEngine;
@@ -123,18 +124,26 @@ namespace AlternativePlay
                     // Transform for One Color if this is the other note type
                     if (config.OneColor && note.colorType == this.undesiredNoteType)
                     {
-                        note.SwitchNoteColorType();
+                        this.FlipNoteType(note);
                     }
                 });
                 // Touch Notes speed detection is not handled here but in the HarmonyPatches
 
             }
-            catch
+            catch (Exception e)
             {
-                AlternativePlay.Logger.Info($"Transforming Error: {this.currentBeatmap.level.songName}");
+                AlternativePlay.Logger.Error($"Transforming Error: {this.currentBeatmap.level.songName}");
+                AlternativePlay.Logger.Error($"Error Message: {e.Message}");
+                AlternativePlay.Logger.Error($"Stack Trace: {e.StackTrace}");
             }
 
             // Touch Notes speed detection is not handled here but in the HarmonyPatches
+        }
+
+        public void FlipNoteType(NoteData noteData)
+        {
+            ColorType type = noteData.colorType.Opposite();
+            noteData.SetPrivateField("<colorType>k__BackingField", type);
         }
     }
 }
