@@ -107,28 +107,10 @@ namespace AlternativePlay
                 }
 
                 // Transform every note
-                var allNoteObjects = beatmapData.beatmapLinesData
-                    .SelectMany(line => line.beatmapObjectsData)
-                    .Where(objectData => objectData.beatmapObjectType == BeatmapObjectType.Note)
-                    .ToList();
-                allNoteObjects.ForEach(beatmapObject =>
-                {
-                    var note = beatmapObject as NoteData;
+                var newBeatmapData = this.TransformNotes(beatmapData);
+                callbackController.SetNewBeatmapData(newBeatmapData);
 
-                    // Transform for NoArrows or TouchNotes here but do not if NoArrowsRandom was already applied
-                    if ((config.NoArrows || config.TouchNotes) && !config.NoArrowsRandom)
-                    {
-                        note.SetNoteToAnyCutDirection();
-                    }
-
-                    // Transform for One Color if this is the other note type
-                    if (config.OneColor && note.colorType == this.undesiredNoteType)
-                    {
-                        this.FlipNoteType(note);
-                    }
-                });
                 // Touch Notes speed detection is not handled here but in the HarmonyPatches
-
             }
             catch (Exception e)
             {
@@ -136,11 +118,46 @@ namespace AlternativePlay
                 AlternativePlay.Logger.Error($"Error Message: {e.Message}");
                 AlternativePlay.Logger.Error($"Stack Trace: {e.StackTrace}");
             }
-
-            // Touch Notes speed detection is not handled here but in the HarmonyPatches
         }
 
-        public void FlipNoteType(NoteData noteData)
+        /// <summary>
+        /// Perform both the NoArrows and the OneColor transform here based on the 
+        /// configuration data.
+        /// </summary>
+        private BeatmapData TransformNotes(BeatmapData beatmapData)
+        {
+            var config = Configuration.instance.ConfigurationData;
+            var newBeatMap = beatmapData.GetCopy();
+
+            var allNoteObjects = newBeatMap.beatmapLinesData
+                .SelectMany(line => line.beatmapObjectsData)
+                .Where(objectData => objectData.beatmapObjectType == BeatmapObjectType.Note)
+                .ToList();
+
+            allNoteObjects.ForEach(beatmapObject =>
+            {
+                var note = beatmapObject as NoteData;
+
+                // Transform for NoArrows or TouchNotes here but do not if NoArrowsRandom was already applied
+                if ((config.NoArrows || config.TouchNotes) && !config.NoArrowsRandom)
+                {
+                    note.SetNoteToAnyCutDirection();
+                }
+
+                // Transform for One Color if this is the other note type
+                if (config.OneColor && note.colorType == this.undesiredNoteType)
+                {
+                    this.FlipNoteType(note);
+                }
+            });
+
+            return newBeatMap;
+        }
+
+        /// <summary>
+        /// Set the color type of the note to the opposite
+        /// </summary>
+        private void FlipNoteType(NoteData noteData)
         {
             ColorType type = noteData.colorType.Opposite();
             noteData.SetPrivateField("<colorType>k__BackingField", type);
