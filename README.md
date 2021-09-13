@@ -63,6 +63,9 @@ Drop the AlternativePlay.dll file into your Plugins folder under your BeatSaber 
 
 ## Changelog
 
+### 0.7.2
+- Fixed NoArrows and OneColor transform for Beat Saber 1.17.1
+
 ### 0.7.1
 - Added ability to play Beat Flail with only one hand or with a sword
 
