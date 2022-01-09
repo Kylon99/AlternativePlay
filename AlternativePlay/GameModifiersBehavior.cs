@@ -1,6 +1,5 @@
 ﻿using AlternativePlay.Models;
 using BS_Utils.Utilities;
-using IPA.Utilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -73,7 +72,7 @@ namespace AlternativePlay
 
         private IEnumerator TransformMap()
         {
-            yield return new WaitForSecondsRealtime(0.01f);
+            yield return new WaitForSecondsRealtime(0.1f);
             if (BS_Utils.Plugin.LevelData.Mode == BS_Utils.Gameplay.Mode.Multiplayer) { yield break; }
 
             var config = Configuration.instance.ConfigurationData;
@@ -92,8 +91,6 @@ namespace AlternativePlay
 
             try
             {
-
-
                 /*BeatmapObjectCallbackController callbackController = null;
                 BeatmapData beatmapData = null;
                 BeatmapObjectCallbackController[] callbackControllers = Resources.FindObjectsOfTypeAll<BeatmapObjectCallbackController>();
@@ -143,17 +140,14 @@ namespace AlternativePlay
         /// Perform both the NoArrows and the OneColor transform here based on the 
         /// configuration data.
         /// </summary>
-        private BeatmapData TransformNotes(IReadonlyBeatmapData beatmapData)
+        private BeatmapData TransformNotes(BeatmapData beatmapData)
         {
             
             var config = Configuration.instance.ConfigurationData;
             var newBeatMap = beatmapData.GetCopy();
 
             var allNoteObjects = newBeatMap.beatmapLinesData
-                .SelectMany(line => {
-                    AlternativePlay.Logger.Info($"Line: {line}");
-                    return line.beatmapObjectsData;
-                })
+                .SelectMany(line => line.beatmapObjectsData)
                 .Where(objectData => objectData.beatmapObjectType == BeatmapObjectType.Note)
                 .ToList();
 
@@ -186,6 +180,9 @@ namespace AlternativePlay
             noteData.SetPrivateField("<colorType>k__BackingField", type);
         }
 
+        /// <summary>
+        /// Set note
+        /// </summary>
         private void OnNoteWasSpawned(NoteController noteController)
         {
             float time;
@@ -200,10 +197,6 @@ namespace AlternativePlay
                 }
                 _noteList.Add(noteController);
             }
-            /*NoteData noteData = noteController.noteData;
-            noteData.SetNoteToAnyCutDirection();
-            this.FlipNoteType(noteData);
-            AlternativePlay.Logger.Info($"Note Spawned: {noteData}");*/
         }
     }
 }
