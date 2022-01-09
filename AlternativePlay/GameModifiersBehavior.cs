@@ -1,7 +1,9 @@
 ﻿using AlternativePlay.Models;
 using BS_Utils.Utilities;
+using IPA.Utilities;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -12,6 +14,8 @@ namespace AlternativePlay
         private IDifficultyBeatmap currentBeatmap;
         private bool useLeft;
         private ColorType undesiredNoteType;
+        private float _prevNoteTime;
+        private List<NoteController> _noteList = new List<NoteController>();
 
         /// <summary>
         /// To be invoked every time when starting the GameCore scene.
@@ -69,7 +73,7 @@ namespace AlternativePlay
 
         private IEnumerator TransformMap()
         {
-            yield return new WaitForSecondsRealtime(0.1f);
+            yield return new WaitForSecondsRealtime(0.01f);
             if (BS_Utils.Plugin.LevelData.Mode == BS_Utils.Gameplay.Mode.Multiplayer) { yield break; }
 
             var config = Configuration.instance.ConfigurationData;
@@ -85,9 +89,12 @@ namespace AlternativePlay
                 this.undesiredNoteType = this.useLeft ? ColorType.ColorB : ColorType.ColorA;
             }
 
+
             try
             {
-                BeatmapObjectCallbackController callbackController = null;
+
+
+                /*BeatmapObjectCallbackController callbackController = null;
                 BeatmapData beatmapData = null;
                 BeatmapObjectCallbackController[] callbackControllers = Resources.FindObjectsOfTypeAll<BeatmapObjectCallbackController>();
                 foreach (BeatmapObjectCallbackController cbc in callbackControllers)
@@ -108,7 +115,19 @@ namespace AlternativePlay
 
                 // Transform every note
                 var newBeatmapData = this.TransformNotes(beatmapData);
-                callbackController.SetNewBeatmapData(newBeatmapData);
+                callbackController.SetNewBeatmapData(newBeatmapData);*/
+
+                PauseController pauseController = Resources.FindObjectsOfTypeAll<PauseController>().FirstOrDefault();
+                BeatmapObjectManager beatmapObjectManager = pauseController.GetPrivateField<BeatmapObjectManager>("_beatmapObjectManager");
+                if (beatmapObjectManager != null)
+                {
+                    beatmapObjectManager.noteWasSpawnedEvent -= OnNoteWasSpawned;
+                    beatmapObjectManager.noteWasSpawnedEvent += OnNoteWasSpawned;
+
+                    _prevNoteTime = 0;
+                    _noteList.Clear();
+                }
+
 
                 // Touch Notes speed detection is not handled here but in the HarmonyPatches
             }
@@ -124,19 +143,23 @@ namespace AlternativePlay
         /// Perform both the NoArrows and the OneColor transform here based on the 
         /// configuration data.
         /// </summary>
-        private BeatmapData TransformNotes(BeatmapData beatmapData)
+        private BeatmapData TransformNotes(IReadonlyBeatmapData beatmapData)
         {
+            
             var config = Configuration.instance.ConfigurationData;
             var newBeatMap = beatmapData.GetCopy();
 
             var allNoteObjects = newBeatMap.beatmapLinesData
-                .SelectMany(line => line.beatmapObjectsData)
+                .SelectMany(line => {
+                    AlternativePlay.Logger.Info($"Line: {line}");
+                    return line.beatmapObjectsData;
+                })
                 .Where(objectData => objectData.beatmapObjectType == BeatmapObjectType.Note)
                 .ToList();
 
             allNoteObjects.ForEach(beatmapObject =>
             {
-                var note = beatmapObject as NoteData;
+                NoteData note = (NoteData)beatmapObject;
 
                 // Transform for NoArrows or TouchNotes here but do not if NoArrowsRandom was already applied
                 if ((config.NoArrows || config.TouchNotes) && !config.NoArrowsRandom)
@@ -161,6 +184,26 @@ namespace AlternativePlay
         {
             ColorType type = noteData.colorType.Opposite();
             noteData.SetPrivateField("<colorType>k__BackingField", type);
+        }
+
+        private void OnNoteWasSpawned(NoteController noteController)
+        {
+            float time;
+
+            if (noteController.noteData.colorType != ColorType.None)
+            {
+                time = noteController.noteData.time;
+                if (time != _prevNoteTime)
+                {
+                    _prevNoteTime = time;
+                    _noteList.Clear();
+                }
+                _noteList.Add(noteController);
+            }
+            /*NoteData noteData = noteController.noteData;
+            noteData.SetNoteToAnyCutDirection();
+            this.FlipNoteType(noteData);
+            AlternativePlay.Logger.Info($"Note Spawned: {noteData}");*/
         }
     }
 }
