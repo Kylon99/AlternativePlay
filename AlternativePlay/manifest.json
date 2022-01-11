@@ -4,7 +4,7 @@
   "description": "Darth Maul, Spear and new game play styles and modifiers for Beat Saber",
   "features": [],
   "gameVersion": "1.17.1",
-  "icon": "AlternativePlay.Resources.DarthMaulColor.png",
+  "icon": "AlternativePlay.Public.DarthMaulColor.png",
   "id": "AlternativePlay",
   "name": "AlternativePlay",
   "version": "0.7.2",
