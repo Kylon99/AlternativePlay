@@ -132,43 +132,43 @@ namespace AlternativePlay.UI
         {
             // Set everything to grey first
             this.BeatSaberColor = Grey;
-            this.BeatSaberIcon = "AlternativePlay.Resources.BeatSaberGrey.png";
+            this.BeatSaberIcon = "AlternativePlay.Public.BeatSaberGrey.png";
             this.DarthMaulColor = Grey;
-            this.DarthMaulIcon = "AlternativePlay.Resources.DarthMaulGrey.png";
+            this.DarthMaulIcon = "AlternativePlay.Public.DarthMaulGrey.png";
             this.BeatSpearColor = Grey;
-            this.BeatSpearIcon = "AlternativePlay.Resources.BeatSpearGrey.png";
+            this.BeatSpearIcon = "AlternativePlay.Public.BeatSpearGrey.png";
             this.NunchakuColor = Grey;
-            this.NunchakuIcon = "AlternativePlay.Resources.NoArrows.png";
+            this.NunchakuIcon = "AlternativePlay.Public.NoArrows.png";
             this.FlailColor = Grey;
-            this.FlailIcon = "AlternativePlay.Resources.NoArrows.png";
+            this.FlailIcon = "AlternativePlay.Public.NoArrows.png";
 
             // Set only the item we selected to white
             switch (playMode)
             {
                 case PlayMode.DarthMaul:
                     this.DarthMaulColor = White;
-                    this.DarthMaulIcon = "AlternativePlay.Resources.DarthMaul.png";
+                    this.DarthMaulIcon = "AlternativePlay.Public.DarthMaul.png";
                     break;
 
                 case PlayMode.BeatSpear:
                     this.BeatSpearColor = White;
-                    this.BeatSpearIcon = "AlternativePlay.Resources.BeatSpear.png";
+                    this.BeatSpearIcon = "AlternativePlay.Public.BeatSpear.png";
                     break;
 
                 case PlayMode.Nunchaku:
                     this.NunchakuColor = White;
-                    this.NunchakuIcon = "AlternativePlay.Resources.NoArrows.png";
+                    this.NunchakuIcon = "AlternativePlay.Public.NoArrows.png";
                     break;
 
                 case PlayMode.BeatFlail:
                     this.FlailColor = White;
-                    this.FlailIcon = "AlternativePlay.Resources.NoArrows.png";
+                    this.FlailIcon = "AlternativePlay.Public.NoArrows.png";
                     break;
 
                 case PlayMode.BeatSaber:
                 default:
                     this.BeatSaberColor = White;
-                    this.BeatSaberIcon = "AlternativePlay.Resources.BeatSaber.png";
+                    this.BeatSaberIcon = "AlternativePlay.Public.BeatSaber.png";
                     break;
             }
         }

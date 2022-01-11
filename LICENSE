@@ -1,8 +1,13 @@
                     GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
 
- Copyright (C) 2021 Kevin Kylon
+ Copyright (C) 2022 Kevin Kylon
  <https://github.com/kylon99/alternativeplay>
+
+ This license applies to all files of the AlternativePlay project and
+ all sub-directories, EXCEPT for the Public sub-directory which is
+ under MIT license.  Please refer to the LICENSE file in the Public
+ sub-directory.
  
  Everyone is permitted to copy and distribute verbatim copies
  of this license document, but changing it is not allowed.
