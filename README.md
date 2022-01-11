@@ -3,10 +3,10 @@
 ## Introduction
 This mod supports the following play styles
 
-### ![IMG](AlternativePlay/Resources/BeatSaberColor64.png) Beat Saber
+### ![IMG](AlternativePlay/Public/BeatSaberColor64.png) Beat Saber
 There are options to reverse the directions of each saber allowing for Reverse Style play.
 
-### ![IMG](AlternativePlay/Resources/DarthMaulColor64.png) Darth Maul
+### ![IMG](AlternativePlay/Public/DarthMaulColor64.png) Darth Maul
 Two controller mode allows you to play Darth Maul without a stick, or use two trackers 
 mounted on a stick to play a proper staff style Darth Maul. You can also use one controller 
 or one tracker to play one handed Darth Maul.  Reverse the Maul direction for those who 
@@ -16,7 +16,7 @@ An option allows you to use both triggers to separate the Darth Maul sabers in t
 mode, or one trigger in one controller mode.  Increase or decrease the separation amount 
 to widen or narrow the Darth Maul saber positions.
 
-### ![IMG](AlternativePlay/Resources/BeatSpearColor64.png) Beat Spear
+### ![IMG](AlternativePlay/Public/BeatSpearColor64.png) Beat Spear
 
 Demonstration Video: https://youtu.be/1ZGCbvZor1c
 
@@ -24,21 +24,21 @@ Play with one controller or tracker mounted on a stick for spear-like play.  Or 
 mode to play with a virtual spear drawn between both controllers.  Use the trigger to switch the 
 controller to be the 'front' hand. The spear can hit any notes of any color.
 
-### ![IMG](AlternativePlay/Resources/NunchakuColor64.png) Nunchaku
+### ![IMG](AlternativePlay/Public/NunchakuColor64.png) Nunchaku
 
 Swing a simulated two segment nunchaku! Use the trigger to hold the nunchaku in that hand or press
 both triggers to hold both segments in each hand.
 
-### ![IMG](AlternativePlay/Resources/BeatFlailColor64.png) Beat Flail
+### ![IMG](AlternativePlay/Public/BeatFlailColor64.png) Beat Flail
 
 Swing the saber around on a chain like a flail! Longer chains are harder to swing and control
 while shorter chains allow for less of a full arm swing.
 
-### ![IMG](AlternativePlay/Resources/NoArrowsColor64.png) No Arrows
-### ![IMG](AlternativePlay/Resources/OneColorColor64.png) One Color
-### ![IMG](AlternativePlay/Resources/NoArrowsRandomColor64.png) No Arrows Random
+### ![IMG](AlternativePlay/Public/NoArrowsColor64.png) No Arrows
+### ![IMG](AlternativePlay/Public/OneColorColor64.png) One Color
+### ![IMG](AlternativePlay/Public/NoArrowsRandomColor64.png) No Arrows Random
 This functionality was broken by Beat Saber 1.12.  It may be restored one day.
-### ![IMG](AlternativePlay/Resources/TouchNotesColor64.png) Touch Notes
+### ![IMG](AlternativePlay/Public/TouchNotesColor64.png) Touch Notes
 
 
 ## Tracker Selection
@@ -62,6 +62,11 @@ This mod depends on the following mods.  Download them at [BeatMods](https://bea
 Drop the AlternativePlay.dll file into your Plugins folder under your BeatSaber folder.
 
 ## Changelog
+
+### 0.7.3
+- Fixed Game Modifiers to work with Noodle Extensions Maps
+- Fixed early spawning notes not modified
+- Released AlternativePlay icons under MIT license
 
 ### 0.7.2
 - Fixed NoArrows and OneColor transform for Beat Saber 1.17.1
