@@ -69,7 +69,7 @@ namespace AlternativePlay
 
         private IEnumerator TransformMap()
         {
-            yield return new WaitForSecondsRealtime(0.1f);
+            yield return new WaitForSecondsRealtime(0.01f);
             if (BS_Utils.Plugin.LevelData.Mode == BS_Utils.Gameplay.Mode.Multiplayer) { yield break; }
 
             var config = Configuration.instance.ConfigurationData;
