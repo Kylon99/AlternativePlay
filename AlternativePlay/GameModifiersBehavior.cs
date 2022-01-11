@@ -107,8 +107,7 @@ namespace AlternativePlay
                 }
 
                 // Transform every note
-                var newBeatmapData = this.TransformNotes(beatmapData);
-                callbackController.SetNewBeatmapData(newBeatmapData);
+                this.TransformNotes(beatmapData);
 
                 // Touch Notes speed detection is not handled here but in the HarmonyPatches
             }
@@ -124,12 +123,11 @@ namespace AlternativePlay
         /// Perform both the NoArrows and the OneColor transform here based on the 
         /// configuration data.
         /// </summary>
-        private BeatmapData TransformNotes(BeatmapData beatmapData)
+        private void TransformNotes(BeatmapData beatmapData)
         {
             var config = Configuration.instance.ConfigurationData;
-            var newBeatMap = beatmapData.GetCopy();
 
-            var allNoteObjects = newBeatMap.beatmapLinesData
+            var allNoteObjects = beatmapData.beatmapLinesData
                 .SelectMany(line => line.beatmapObjectsData)
                 .Where(objectData => objectData.beatmapObjectType == BeatmapObjectType.Note)
                 .ToList();
@@ -150,8 +148,6 @@ namespace AlternativePlay
                     this.FlipNoteType(note);
                 }
             });
-
-            return newBeatMap;
         }
 
         /// <summary>
