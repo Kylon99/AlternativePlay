@@ -82,10 +82,10 @@ namespace AlternativePlay
                     (config.PlayMode == PlayMode.DarthMaul && config.UseLeftController) ||
                     (config.PlayMode == PlayMode.BeatSpear && config.UseLeftSpear);
 
-                this.undesiredNoteType = this.useLeft ? ColorType.ColorB : ColorType.ColorA;
+                //this.undesiredNoteType = this.useLeft ? ColorType.ColorB : ColorType.ColorA;
             }
 
-            try
+            /*try
             {
                 BeatmapObjectCallbackController callbackController = null;
                 BeatmapData beatmapData = null;
@@ -116,7 +116,7 @@ namespace AlternativePlay
                 AlternativePlay.Logger.Error($"Transforming Error: {this.currentBeatmap.level.songName}");
                 AlternativePlay.Logger.Error($"Error Message: {e.Message}");
                 AlternativePlay.Logger.Error($"Stack Trace: {e.StackTrace}");
-            }
+            }*/
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace AlternativePlay
         {
             var config = Configuration.instance.ConfigurationData;
 
-            var allNoteObjects = beatmapData.beatmapLinesData
+            /*var allNoteObjects = beatmapData.beatmapLinesData
                 .SelectMany(line => line.beatmapObjectsData)
                 .Where(objectData => objectData.beatmapObjectType == BeatmapObjectType.Note)
                 .ToList();
@@ -147,7 +147,7 @@ namespace AlternativePlay
                 {
                     this.FlipNoteType(note);
                 }
-            });
+            });*/
         }
 
         /// <summary>
@@ -155,8 +155,8 @@ namespace AlternativePlay
         /// </summary>
         private void FlipNoteType(NoteData noteData)
         {
-            ColorType type = noteData.colorType.Opposite();
-            noteData.SetPrivateField("<colorType>k__BackingField", type);
+            /*ColorType type = noteData.colorType.Opposite();
+            noteData.SetPrivateField("<colorType>k__BackingField", type);*/
         }
     }
 }
