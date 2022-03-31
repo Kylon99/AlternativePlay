@@ -82,8 +82,18 @@ namespace AlternativePlay.HarmonyPatches
 
                         if (config.OneColor)
                         {
-                            
-                            BeatmapDataTransformHelperCreateTransformedBeatmapData.SwitchNoteColorType(noteData);
+                            if (
+                                (config.PlayMode == PlayMode.BeatSaber && config.UseLeftSaber) ||
+                                (config.PlayMode == PlayMode.DarthMaul && config.UseLeftController) ||
+                                (config.PlayMode == PlayMode.BeatSpear && config.UseLeftSpear)
+                            )
+                            {
+                                BeatmapDataTransformHelperCreateTransformedBeatmapData.SetNoteColorType(noteData, ColorType.ColorB);
+                            }
+                            else
+                            {
+                                BeatmapDataTransformHelperCreateTransformedBeatmapData.SetNoteColorType(noteData, ColorType.ColorA);
+                            }
                         }
                     }
 
@@ -91,7 +101,18 @@ namespace AlternativePlay.HarmonyPatches
                     {
                         if (config.OneColor)
                         {
-                            BeatmapDataTransformHelperCreateTransformedBeatmapData.SwitchSliderColorType(sliderData);
+                            if (
+                                (config.PlayMode == PlayMode.BeatSaber && config.UseLeftSaber) ||
+                                (config.PlayMode == PlayMode.DarthMaul && config.UseLeftController) ||
+                                (config.PlayMode == PlayMode.BeatSpear && config.UseLeftSpear)
+                            )
+                            {
+                                BeatmapDataTransformHelperCreateTransformedBeatmapData.SetSliderColorType(sliderData, ColorType.ColorB);
+                            }
+                            else
+                            {
+                                BeatmapDataTransformHelperCreateTransformedBeatmapData.SetSliderColorType(sliderData, ColorType.ColorA);
+                            }
                         }
                     }
                 }
