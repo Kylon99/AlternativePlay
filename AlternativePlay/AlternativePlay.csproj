@@ -109,6 +109,9 @@
       <HintPath>$(GameDirPath)Beat Saber_Data\Managed\UnityEngine.XRModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="Zenject">
+      <HintPath>$(GameDirPath)Beat Saber_Data\Managed\Zenject.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssetLoaderBehavior.cs" />
@@ -168,6 +171,9 @@
     <Content Include="Public\NoArrowsRandom.svg" />
     <Content Include="Public\NoArrowsRandomColor64.png" />
     <EmbeddedResource Include="Public\Nunchaku.png" />
+    <EmbeddedResource Include="Public\NoSliders.png" />
+    <Content Include="Public\NoSliders.svg" />
+    <Content Include="Public\NoSlidersColor64.png" />
     <Content Include="Public\Nunchaku.svg" />
     <Content Include="Public\NunchakuColor64.png" />
     <Content Include="Public\OneColorColor64.png" />

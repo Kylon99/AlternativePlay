@@ -25,6 +25,15 @@ namespace AlternativePlay.UI
             Configuration.instance.SaveConfiguration();
         }
 
+        [UIValue("NoSliders")]
+        private bool noSliders = Configuration.instance.ConfigurationData.NoSliders;
+        [UIAction("OnNoSlidersChanged")]
+        private void OnNoSlidersChanged(bool value)
+        {
+            Configuration.instance.ConfigurationData.NoSliders = value;
+            Configuration.instance.SaveConfiguration();
+        }
+
         [UIValue("NoArrows")]
         private bool noArrows = Configuration.instance.ConfigurationData.NoArrows;
         [UIAction("OnNoArrowsChanged")]
