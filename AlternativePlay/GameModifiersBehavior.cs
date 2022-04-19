@@ -1,8 +1,7 @@
 ﻿using AlternativePlay.Models;
-using BS_Utils.Utilities;
-using System;
 using System.Collections;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 namespace AlternativePlay
@@ -10,8 +9,11 @@ namespace AlternativePlay
     public class GameModifiersBehavior : MonoBehaviour
     {
         private IDifficultyBeatmap currentBeatmap;
-        private bool useLeft;
-        private ColorType undesiredNoteType;
+        private BeatmapCallbacksController beatmapCallbacksController;
+
+        private PropertyInfo noteDataColorTypeProperty;
+        private PropertyInfo sliderDataColorTypeProperty;
+        private FieldInfo beatmapDataField;
 
         /// <summary>
         /// To be invoked every time when starting the GameCore scene.
@@ -24,6 +26,10 @@ namespace AlternativePlay
             GameplayCoreSceneSetupData data = BS_Utils.Plugin.LevelData?.GameplayCoreSceneSetupData;
             this.currentBeatmap = data.difficultyBeatmap;
 
+            // Get the DIContainer from the singular GamesScenesManager to get its BeatmapCallbacksController
+            var gameScenesManager = FindObjectOfType<GameScenesManager>();
+            this.beatmapCallbacksController = gameScenesManager.currentScenesContainer.Resolve<BeatmapCallbacksController>();
+
             if (this.IsTransformNecessary() || Configuration.instance.ConfigurationData.TouchNotes)
             {
                 // Disable scoring due to transforms
@@ -32,6 +38,14 @@ namespace AlternativePlay
 
                 this.StartCoroutine(this.TransformMap());
             }
+        }
+
+        private void Awake()
+        {
+            // Get the reflection data for classes we require later
+            this.noteDataColorTypeProperty = typeof(NoteData).GetProperty("colorType");
+            this.sliderDataColorTypeProperty = typeof(SliderData).GetProperty("colorType");
+            this.beatmapDataField = typeof(BeatmapCallbacksController).GetField("_beatmapData", BindingFlags.NonPublic | BindingFlags.Instance);
         }
 
         /// <summary>
@@ -44,7 +58,9 @@ namespace AlternativePlay
             const string OneSaberModeName = "OneSaber";
 
             var config = Configuration.instance.ConfigurationData;
-            if (!config.NoArrows && !config.OneColor && !config.RemoveOtherSaber && !config.NoArrowsRandom) { return false; } // No transform if nothing is selected
+
+            // Return no transform if no option is selected
+            if (!(config.NoArrows || config.OneColor || config.RemoveOtherSaber || config.NoArrowsRandom || config.NoSliders)) { return false; } 
 
             bool IsOnlyOneColorSelected() { return config.OneColor && !config.NoArrows && !config.NoArrowsRandom && !config.TouchNotes; }
             bool AreOnlyNoArrowsOptionsSelected() { return (config.NoArrows || config.NoArrowsRandom) && !config.OneColor; }
@@ -74,68 +90,36 @@ namespace AlternativePlay
 
             var config = Configuration.instance.ConfigurationData;
 
+            var beatmapData = this.beatmapDataField.GetValue(this.beatmapCallbacksController) as BeatmapData;
+
             // Set up for One Color
+            bool useLeft = false;
+            ColorType undesiredNoteType = ColorType.ColorA;
             if (config.OneColor && !config.NoArrowsRandom)
             {
-                this.useLeft =
+                useLeft =
                     (config.PlayMode == PlayMode.BeatSaber && config.UseLeftSaber) ||
                     (config.PlayMode == PlayMode.DarthMaul && config.UseLeftController) ||
                     (config.PlayMode == PlayMode.BeatSpear && config.UseLeftSpear);
 
-                this.undesiredNoteType = this.useLeft ? ColorType.ColorB : ColorType.ColorA;
+                undesiredNoteType = useLeft ? ColorType.ColorB : ColorType.ColorA;
             }
 
-            try
-            {
-                BeatmapObjectCallbackController callbackController = null;
-                BeatmapData beatmapData = null;
-                BeatmapObjectCallbackController[] callbackControllers = Resources.FindObjectsOfTypeAll<BeatmapObjectCallbackController>();
-                foreach (BeatmapObjectCallbackController cbc in callbackControllers)
-                {
-                    if (cbc.GetField<BeatmapData>("_beatmapData") != null)
-                    {
-                        callbackController = cbc;
-                        beatmapData = callbackController.GetField<BeatmapData>("_beatmapData");
-                    }
-                }
-                if (config.NoArrowsRandom)
-                {
-                    // Transform the map to No Arrows Random using the ingame algorithm first
-                    AlternativePlay.Logger.Info($"Transforming NoArrowsRandom for song: {this.currentBeatmap.level.songName}");
-                    var transformedBeatmap = BeatmapDataNoArrowsTransform.CreateTransformedData(beatmapData);
-                    callbackController.SetNewBeatmapData(transformedBeatmap);
-                }
+            this.TransformNotes(beatmapData, undesiredNoteType);
+            this.TransformSliders(beatmapData, undesiredNoteType);
 
-                // Transform every note
-                this.TransformNotes(beatmapData);
-
-                // Touch Notes speed detection is not handled here but in the HarmonyPatches
-            }
-            catch (Exception e)
-            {
-                AlternativePlay.Logger.Error($"Transforming Error: {this.currentBeatmap.level.songName}");
-                AlternativePlay.Logger.Error($"Error Message: {e.Message}");
-                AlternativePlay.Logger.Error($"Stack Trace: {e.StackTrace}");
-            }
+            // Touch Notes speed detection is not handled here but in the HarmonyPatches
         }
 
         /// <summary>
-        /// Perform both the NoArrows and the OneColor transform here based on the 
-        /// configuration data.
+        /// Perform both the NoArrows and the OneColor transform for NoteData
         /// </summary>
-        private void TransformNotes(BeatmapData beatmapData)
+        private void TransformNotes(BeatmapData beatmapData, ColorType undesiredNoteType)
         {
             var config = Configuration.instance.ConfigurationData;
 
-            var allNoteObjects = beatmapData.beatmapLinesData
-                .SelectMany(line => line.beatmapObjectsData)
-                .Where(objectData => objectData.beatmapObjectType == BeatmapObjectType.Note)
-                .ToList();
-
-            allNoteObjects.ForEach(beatmapObject =>
+            foreach (NoteData note in beatmapData.GetBeatmapDataItems<NoteData>())
             {
-                var note = beatmapObject as NoteData;
-
                 // Transform for NoArrows or TouchNotes here but do not if NoArrowsRandom was already applied
                 if ((config.NoArrows || config.TouchNotes) && !config.NoArrowsRandom)
                 {
@@ -143,20 +127,57 @@ namespace AlternativePlay
                 }
 
                 // Transform for One Color if this is the other note type
-                if (config.OneColor && note.colorType == this.undesiredNoteType)
+                if (config.OneColor && note.colorType == undesiredNoteType)
                 {
-                    this.FlipNoteType(note);
+                    this.SetNoteColor(note, undesiredNoteType.Opposite());
                 }
-            });
+
+                // Transform for NoSliders by converting to a regular note
+                if (config.NoSliders && note.gameplayType == NoteData.GameplayType.BurstSliderHead)
+                {
+                    note.ChangeToGameNote();
+                }
+            };
         }
 
         /// <summary>
-        /// Set the color type of the note to the opposite
+        /// Transform the SliderData based on NoSliders and OneColor
         /// </summary>
-        private void FlipNoteType(NoteData noteData)
+        private void TransformSliders(BeatmapData beatmapData, ColorType undesiredNoteType)
         {
-            ColorType type = noteData.colorType.Opposite();
-            noteData.SetPrivateField("<colorType>k__BackingField", type);
+            var config = Configuration.instance.ConfigurationData;
+
+            if (config.NoSliders)
+            {
+                // Remove all Burst Sliders from list
+                var burstSliders = beatmapData.GetBeatmapDataItems<SliderData>().Where(s => s.sliderType == SliderData.Type.Burst).ToList();
+                burstSliders.ForEach(s => beatmapData.allBeatmapDataItems.Remove(s));
+            }
+
+            foreach (SliderData slider in beatmapData.GetBeatmapDataItems<SliderData>())
+            {
+                // Transform for One Color if this is the other note type
+                if (config.OneColor && slider.colorType == undesiredNoteType)
+                {
+                    this.SetSliderColor(slider, undesiredNoteType.Opposite());
+                }
+            }
+        }
+
+        /// <summary>
+        /// Set the color type of the note
+        /// </summary>
+        private void SetNoteColor(NoteData noteData, ColorType color)
+        {
+            noteDataColorTypeProperty.SetValue(noteData, color, BindingFlags.NonPublic | BindingFlags.Instance, null, null, null);
+        }
+
+        /// <summary>
+        /// Set the color type of the slider
+        /// </summary>
+        private void SetSliderColor(SliderData sliderData, ColorType color)
+        {
+            sliderDataColorTypeProperty.SetValue(sliderData, color, BindingFlags.NonPublic | BindingFlags.Instance, null, null, null);
         }
     }
 }

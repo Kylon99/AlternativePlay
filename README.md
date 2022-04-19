@@ -36,6 +36,7 @@ while shorter chains allow for less of a full arm swing.
 
 ### ![IMG](AlternativePlay/Public/NoArrowsColor64.png) No Arrows
 ### ![IMG](AlternativePlay/Public/OneColorColor64.png) One Color
+### ![IMG](AlternativePlay/Public/NoSlidersColor64.png) No Sliders
 ### ![IMG](AlternativePlay/Public/NoArrowsRandomColor64.png) No Arrows Random
 This functionality was broken by Beat Saber 1.12.  It may be restored one day.
 ### ![IMG](AlternativePlay/Public/TouchNotesColor64.png) Touch Notes
@@ -49,6 +50,7 @@ You can now choose which trackers to use for Beat Saber, Darth Maul and Beat Spe
 
 * https://github.com/Kylon99
 * https://github.com/Snow1226
+* Special thanks to Nullpon for testing and fixes! https://github.com/nullpon16tera
 
 ## Requirements
 This mod depends on the following mods.  Download them at [BeatMods](https://beatmods.com).
@@ -62,6 +64,9 @@ This mod depends on the following mods.  Download them at [BeatMods](https://bea
 Drop the AlternativePlay.dll file into your Plugins folder under your BeatSaber folder.
 
 ## Changelog
+### 0.7.4
+- Updated to support Beat Saber 1.21
+- Added NoSliders game modifier option
 
 ### 0.7.3
 - Fixed Game Modifiers to work with Noodle Extensions Maps
@@ -169,9 +174,6 @@ Drop the AlternativePlay.dll file into your Plugins folder under your BeatSaber 
 ### 0.1.0
 * Initial build. 
 
-## Author
-* Kylon99 - Main modder
-* Snow1226 - Contributor (https://github.com/Snow1226/AlternativePlay/)
 
 ## License
 This project is licensed under the GPLv3 License as of version 0.6.2 - see the [LICENSE](LICENSE) file for details.

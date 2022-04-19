@@ -89,6 +89,7 @@ namespace AlternativePlay.Models
         // Gameplay Changes Options
         public bool NoArrowsRandom { get; set; }
         public bool OneColor { get; set; }
+        public bool NoSliders { get; set; }
         public bool NoArrows { get; set; }
         public bool TouchNotes { get; set; }
 

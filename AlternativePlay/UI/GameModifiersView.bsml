@@ -22,6 +22,11 @@
                           hover-hint="All notes become the same color and can be hit by both sabers." />
       </horizontal>
       <horizontal pad-top="1">
+        <img preserve-aspect="true" pref-width="12" preferred-height="5" source="AlternativePlay.Public.NoSliders.png" />
+        <checkbox-setting text="No Sliders" value="NoSliders" apply-on-change="true" on-change="OnNoSlidersChanged"
+                          hover-hint="Change sliders to a regular note type." />
+      </horizontal>		
+      <horizontal pad-top="1">
         <img preserve-aspect="true" pref-width="12" preferred-height="5" source="AlternativePlay.Public.NoArrowsRandom.png" />
         <horizontal>
           <checkbox-setting text="No Arrows Random" value="NoArrowsRandom" apply-on-change="true" on-change="OnNoArrowsRandomChanged"
