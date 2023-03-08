@@ -64,6 +64,10 @@ This mod depends on the following mods.  Download them at [BeatMods](https://bea
 Drop the AlternativePlay.dll file into your Plugins folder under your BeatSaber folder.
 
 ## Changelog
+
+### 0.7.5
+- Fixed GameModifiersBehavior to support Beat Saber 1.27
+
 ### 0.7.4
 - Updated to support Beat Saber 1.21
 - Added NoSliders game modifier option

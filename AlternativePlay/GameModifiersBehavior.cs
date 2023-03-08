@@ -118,7 +118,7 @@ namespace AlternativePlay
         {
             var config = Configuration.instance.ConfigurationData;
 
-            foreach (NoteData note in beatmapData.GetBeatmapDataItems<NoteData>())
+            foreach (NoteData note in beatmapData.GetBeatmapDataItems<NoteData>(0))
             {
                 // Transform for NoArrows or TouchNotes here but do not if NoArrowsRandom was already applied
                 if ((config.NoArrows || config.TouchNotes) && !config.NoArrowsRandom)
@@ -150,11 +150,11 @@ namespace AlternativePlay
             if (config.NoSliders)
             {
                 // Remove all Burst Sliders from list
-                var burstSliders = beatmapData.GetBeatmapDataItems<SliderData>().Where(s => s.sliderType == SliderData.Type.Burst).ToList();
+                var burstSliders = beatmapData.GetBeatmapDataItems<SliderData>(0).Where(s => s.sliderType == SliderData.Type.Burst).ToList();
                 burstSliders.ForEach(s => beatmapData.allBeatmapDataItems.Remove(s));
             }
 
-            foreach (SliderData slider in beatmapData.GetBeatmapDataItems<SliderData>())
+            foreach (SliderData slider in beatmapData.GetBeatmapDataItems<SliderData>(0))
             {
                 // Transform for One Color if this is the other note type
                 if (config.OneColor && slider.colorType == undesiredNoteType)
