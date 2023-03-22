@@ -142,6 +142,7 @@
     <Compile Include="UI\BeatSpearView.cs" />
     <Compile Include="UI\BeatSaberView.cs" />
     <Compile Include="UI\BeatFlailView.cs" />
+    <Compile Include="Models\IconNames.cs" />
     <Compile Include="UI\NunchakuView.cs" />
     <Compile Include="UI\GameModifiersView.cs" />
     <Compile Include="UI\DarthMaulView.cs" />

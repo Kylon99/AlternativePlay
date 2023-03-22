@@ -27,6 +27,9 @@ namespace AlternativePlay.UI
             SetTrackerText();
         }
 
+        [UIValue("NunchakuIcon")]
+        public string NunchakuIcon => IconNames.Nunchaku;
+
         [UIValue("ReverseNunchaku")]
         private bool reverseNunchaku = Configuration.instance.ConfigurationData.ReverseNunchaku;
         [UIAction("ReverseNunchakuChanged")]
