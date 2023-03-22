@@ -3,7 +3,7 @@
     <horizontal preferred-width="120">
       <vertical>
         <clickable-image pref-width="30" pref-height="30"
-            source="AlternativePlay.Public.BeatSaber.png"
+            source="~BeatSaberIcon"
             default-color="~BeatSaberColor"
             on-click="BeatSaberClick"
             hover-hint="Play regular Beat Saber with dual swords" />
@@ -18,7 +18,7 @@
       </vertical>
       <vertical>
         <clickable-image pref-width="30" pref-height="30"
-            source="AlternativePlay.Public.DarthMaul.png"
+            source="~DarthMaulIcon"
             default-color="~DarthMaulColor"
             on-click="DarthMaulClick"
             hover-hint="Play with a double bladed staff!" />
@@ -33,7 +33,7 @@
       </vertical>
       <vertical>
         <clickable-image pref-width="30" pref-height="30"
-            source="AlternativePlay.Public.BeatSpear.png"
+            source="~BeatSaberIcon"
             default-color="~BeatSpearColor"
             on-click="BeatSpearClick"
             hover-hint="Play with a one bladed spear" />
@@ -50,7 +50,7 @@
     <horizontal>
       <vertical>
         <clickable-image pref-width="30" pref-height="30"
-            source="AlternativePlay.Public.Nunchaku.png"
+            source="~NunchakuIcon"
             default-color="~NunchakuColor"
             on-click="NunchakuClick"
             hover-hint="Play with a two segment Nunchaku" />
@@ -65,7 +65,7 @@
       </vertical>
       <vertical>
         <clickable-image pref-width="30" pref-height="30"
-            source="AlternativePlay.Public.BeatFlail.png"
+            source="~FlailIcon"
             default-color="~FlailColor"
             on-click="FlailClick"
             hover-hint="Play with one or two flails in each hand" />

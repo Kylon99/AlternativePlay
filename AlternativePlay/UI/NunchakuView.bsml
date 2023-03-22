@@ -3,7 +3,7 @@
 
     <!-- View Header -->
     <horizontal pad-left="10" pad-right="10" bg="panel-top" pref-height="11">
-      <img preserve-aspect="true" pref-width="8" source="AlternativePlay.Public.Nunchaku.png" />
+      <img preserve-aspect="true" pref-width="8" source="~NunchakuIcon" />
       <vertical pad-left="1" pad-top="1" pad-bottom="3" pref-height="12" vertical-fit="PreferredSize">
         <text text="Nunchaku" font-size="5" />
         <text text="Play with two segments connected by a chain" font-size="4" />
@@ -12,8 +12,8 @@
 
     <!-- Main View -->
     <vertical pref-width="75" vertical-fit="PreferredSize">
-      <checkbox-setting text="Swap Sabers" value="ReverseNunchaku" apply-on-change='true' on-change='ReverseNunchakuChanged'
-                        hover-hint='Reverse the held and swinging saber' />
+      <checkbox-setting text="Reverse Sabers" value="ReverseNunchaku" apply-on-change='true' on-change='ReverseNunchakuChanged'
+                        hover-hint='Reverse the colors of the saber held on the left and right' />
       <increment-setting text="Chain Length" value="NunchakuLength" integer-only="true" min="10" max="100" increment="10" formatter="LengthFormatter"
                          on-change="OnNunchakuLengthChanged" hover-hint="The distance between the handles" />
       <horizontal  pad-bottom="3">

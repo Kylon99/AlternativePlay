@@ -21,6 +21,9 @@ namespace AlternativePlay.UI
             SetTrackerText();
         }
 
+        [UIValue("BeatSaberIcon")]
+        public string BeatSaberIcon => IconNames.BeatSaber;
+
         [UIValue("ReverseLeftSaber")]
         private bool reverseLeftSaber = Configuration.instance.ConfigurationData.ReverseLeftSaber;
         [UIAction("OnReverseLeftSaberChanged")]

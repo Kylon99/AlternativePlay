@@ -22,6 +22,9 @@ namespace AlternativePlay.UI
             SetTrackerText();
         }
 
+        [UIValue("BeatSpearIcon")]
+        public string BeatSpearIcon => IconNames.BeatSpear;
+
         [UIValue("ControllerChoice")]
         private string controllerChoice = Configuration.instance.ConfigurationData.SpearControllerCount.ToString();
         [UIValue("ControllerChoiceList")]
