@@ -22,6 +22,9 @@ namespace AlternativePlay.UI
             SetTrackerText();
         }
 
+        [UIValue("DarthMaulIcon")]
+        public string DarthMaulIcon => IconNames.DarthMaul;
+
         [UIValue("ControllerChoice")]
         private string controllerChoice = Configuration.instance.ConfigurationData.DarthMaulControllerCount.ToString();
         [UIValue("ControllerChoiceList")]

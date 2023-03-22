@@ -7,6 +7,9 @@ namespace AlternativePlay.UI
     [HotReload]
     public class GameModifiersView : BSMLAutomaticViewController
     {
+        [UIValue("NoArrowsRandomIcon")]
+        public string NoArrowsRandomIcon => IconNames.NoArrowsRandom;
+
         [UIValue("NoArrowsRandom")]
         private bool noArrowsRandom = Configuration.instance.ConfigurationData.NoArrowsRandom;
         [UIAction("OnNoArrowsRandomChanged")]
@@ -15,6 +18,9 @@ namespace AlternativePlay.UI
             Configuration.instance.ConfigurationData.NoArrowsRandom = value;
             Configuration.instance.SaveConfiguration();
         }
+
+        [UIValue("OneColorIcon")]
+        public string OneColorIcon => IconNames.OneColor;
 
         [UIValue("OneColor")]
         private bool oneColor = Configuration.instance.ConfigurationData.OneColor;
@@ -25,6 +31,9 @@ namespace AlternativePlay.UI
             Configuration.instance.SaveConfiguration();
         }
 
+        [UIValue("NoSlidersIcon")]
+        public string NoSlidersIcon => IconNames.NoSliders;
+
         [UIValue("NoSliders")]
         private bool noSliders = Configuration.instance.ConfigurationData.NoSliders;
         [UIAction("OnNoSlidersChanged")]
@@ -34,6 +43,9 @@ namespace AlternativePlay.UI
             Configuration.instance.SaveConfiguration();
         }
 
+        [UIValue("NoArrowsIcon")]
+        public string NoArrowsIcon => IconNames.NoArrows;
+
         [UIValue("NoArrows")]
         private bool noArrows = Configuration.instance.ConfigurationData.NoArrows;
         [UIAction("OnNoArrowsChanged")]
@@ -42,6 +54,9 @@ namespace AlternativePlay.UI
             Configuration.instance.ConfigurationData.NoArrows = value;
             Configuration.instance.SaveConfiguration();
         }
+
+        [UIValue("TouchNotesIcon")]
+        public string TouchNotesIcon => IconNames.TouchNotes;
 
         [UIValue("TouchNotes")]
         private bool touchNotes = Configuration.instance.ConfigurationData.TouchNotes;

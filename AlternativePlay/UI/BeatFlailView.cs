@@ -28,6 +28,9 @@ namespace AlternativePlay.UI
             SetTrackerText();
         }
 
+        [UIValue("FlailIcon")]
+        public string FlailIcon => IconNames.BeatFlail;
+
         [UIValue("LeftFlailMode")]
         private string LeftFlailMode = Configuration.instance.ConfigurationData.LeftFlailMode.ToString();
         [UIValue("LeftFlailModeList")]
