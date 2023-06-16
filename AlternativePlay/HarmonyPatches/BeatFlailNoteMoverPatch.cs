@@ -17,10 +17,10 @@ namespace AlternativePlay.HarmonyPatches
         [HarmonyPriority(Priority.High)]
         private static void NoteMovementPrefix(ref Vector3 moveStartPos, ref Vector3 moveEndPos, ref Vector3 jumpEndPos)
         {
-            if (Configuration.instance.ConfigurationData.PlayMode == PlayMode.BeatFlail &&
-                Configuration.instance.ConfigurationData.MoveNotesBack > 0)
+            if (Configuration.Current.PlayMode == PlayMode.BeatFlail &&
+                Configuration.Current.MoveNotesBack > 0)
             {
-                float realMoveNote = Configuration.instance.ConfigurationData.MoveNotesBack / 100.0f;
+                float realMoveNote = Configuration.Current.MoveNotesBack / 100.0f;
                 moveStartPos.z -= realMoveNote;
                 moveEndPos.z -= realMoveNote;
                 jumpEndPos.z -= realMoveNote;
@@ -32,10 +32,10 @@ namespace AlternativePlay.HarmonyPatches
         [HarmonyPriority(Priority.High)]
         private static void ObstacleControllerPrefix(ref Vector3 startPos, ref Vector3 midPos, ref Vector3 endPos)
         {
-            if (Configuration.instance.ConfigurationData.PlayMode == PlayMode.BeatFlail &&
-                Configuration.instance.ConfigurationData.MoveNotesBack > 0)
+            if (Configuration.Current.PlayMode == PlayMode.BeatFlail &&
+                Configuration.Current.MoveNotesBack > 0)
             {
-                float realMoveNote = Configuration.instance.ConfigurationData.MoveNotesBack / 100.0f;
+                float realMoveNote = Configuration.Current.MoveNotesBack / 100.0f;
                 startPos.z -= realMoveNote;
                 midPos.z -= realMoveNote;
                 endPos.z -= realMoveNote;

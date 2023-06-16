@@ -12,30 +12,37 @@
 
     <!-- Main View -->
     <vertical pref-width="70" vertical-fit="PreferredSize">
-      <checkbox-setting text="Reverse Left Saber" value="ReverseLeftSaber" apply-on-change="true"
-                        on-change="OnReverseLeftSaberChanged" hover-hint="Reverse the direction of the left saber" />
-      <checkbox-setting text="Reverse Right Saber" value="ReverseRightSaber" apply-on-change="true"
-                        on-change="OnReverseRightSaberChanged" hover-hint="Reverse the direction of the right saber" />
-      <checkbox-setting text="Remove Other Saber for One Color" value="RemoveOtherSaber" apply-on-change="true" on-change="OnRemoveOtherSaberChanged"
-                        hover-hint="Remove the other saber when playing with One Color" />
-      <checkbox-setting text="Use Left Saber for One Color" value="UseLeftSaber" apply-on-change="true"
-                        on-change="OnUseLeftSaberChanged" hover-hint="Use the left saber instead of the right when playing One Color" />
+      <horizontal>
+        <horizontal pad-right="1">
+          <img preserve-aspect="true" pref-width="8" pref-height="8" source="~ReverseLeftSaberIcon" />
+        </horizontal>
+        <checkbox-setting text="Reverse Left Saber" value="ReverseLeftSaber" bind-value="true" apply-on-change="true" hover-hint="Reverse the direction of the left saber" />
+      </horizontal>
+      <horizontal>
+        <horizontal pad-right="1">
+          <img preserve-aspect="true" pref-width="8" pref-height="8" source="~ReverseRightSaberIcon" />
+        </horizontal>
+        <checkbox-setting text="Reverse Right Saber" value="ReverseRightSaber" bind-value="true" apply-on-change="true" hover-hint="Reverse the direction of the right saber" />
+      </horizontal>
+      <checkbox-setting text="Remove Other Saber for One Color" value="RemoveOtherSaber" bind-value="true" apply-on-change="true" hover-hint="Remove the other saber when playing with One Color" />
+      <horizontal>
+        <horizontal pad-right="1">
+          <img preserve-aspect="true" pref-width="8" pref-height="8" source="~UseLeftSaberIcon" />
+        </horizontal>
+        <checkbox-setting text="Use Left Saber for One Color" value="UseLeftSaber" bind-value="true" apply-on-change="true" hover-hint="Use the left saber instead of the right when playing One Color" />
+      </horizontal>
     </vertical>
 
     <!--Tracker Selection-->
     <vertical pref-width="80" vertical-fit="PreferredSize">
       <horizontal>
-        <clickable-text text="Left Hand" italics="true" font-size="4" highlight-color="#FFFFFF" align="MidlineLeft"
-                        hover-hint="Choose a tracker for the left hand instead of the default controller"/>
-        <button preferred-width="50" preferred-height="8" text="~LeftSaberTrackerSerial"
-                hover-hint="~LeftSaberTrackerHoverHint" on-click="OnShowSelectLeftTracker"/>
+        <clickable-text text="Left Hand" italics="true" font-size="4" highlight-color="#FFFFFF" align="MidlineLeft" hover-hint="Choose a tracker for the left hand instead of the default controller"/>
+        <button preferred-width="50" preferred-height="8" text="~LeftTrackerSerial" hover-hint="~LeftTrackerHoverHint" on-click="OnShowSelectLeftTracker"/>
         <button pref-width="10" preferred-height="8" text="x" on-click="OnClearLeftTracker"/>
       </horizontal>
       <horizontal>
-        <clickable-text text="Right Hand" italics="true" font-size="4" highlight-color="#FFFFFF" align="MidlineLeft"
-                        hover-hint="Choose a tracker for the right hand instead of the default controller"/>
-        <button pref-width="50" preferred-height="8" text="~RightSaberTrackerSerial"
-                hover-hint="~RightSaberTrackerHoverHint" on-click="OnShowSelectRightTracker"/>
+        <clickable-text text="Right Hand" italics="true" font-size="4" highlight-color="#FFFFFF" align="MidlineLeft" hover-hint="Choose a tracker for the right hand instead of the default controller"/>
+        <button pref-width="50" preferred-height="8" text="~RightTrackerSerial" hover-hint="~RightTrackerHoverHint" on-click="OnShowSelectRightTracker"/>
         <button pref-width="10" preferred-height="8" text="x" on-click="OnClearRightTracker"/>
       </horizontal>
     </vertical>

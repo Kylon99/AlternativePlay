@@ -13,32 +13,23 @@
     <vertical preferred-width="70" vertical-fit="PreferredSize">
       <horizontal>
         <img preserve-aspect="true" pref-width="12" preferred-height="5" source="~NoArrowsIcon" />
-        <checkbox-setting text="No Arrows" value="NoArrows" apply-on-change="true" on-change="OnNoArrowsChanged"
-                          hover-hint="All notes can be hit from any direction." />
+        <checkbox-setting text="No Arrows" value="NoArrows" bind-value="true" apply-on-change="true" hover-hint="All notes can be hit from any direction." />
       </horizontal>
       <horizontal pad-top="1">
         <img preserve-aspect="true" pref-width="12" preferred-height="5" source="~OneColorIcon" />
-        <checkbox-setting text="One Color" value="OneColor" apply-on-change="true" on-change="OnOneColorChanged"
-                          hover-hint="All notes become the same color and can be hit by both sabers." />
+        <checkbox-setting text="One Color" value="OneColor" bind-value="true" apply-on-change="true" hover-hint="All notes become the same color and can be hit by both sabers." />
       </horizontal>
       <horizontal pad-top="1">
         <img preserve-aspect="true" pref-width="12" preferred-height="5" source="~NoSlidersIcon" />
-        <checkbox-setting text="No Sliders" value="NoSliders" apply-on-change="true" on-change="OnNoSlidersChanged"
-                          hover-hint="Change sliders to a regular note type." />
+        <checkbox-setting text="No Sliders" value="NoSliders" bind-value="true" apply-on-change="true" hover-hint="Change sliders to a regular note type." />
       </horizontal>		
       <horizontal pad-top="1">
         <img preserve-aspect="true" pref-width="12" preferred-height="5" source="~NoArrowsRandomIcon" />
-        <horizontal>
-          <checkbox-setting text="No Arrows Random" value="NoArrowsRandom" apply-on-change="true" on-change="OnNoArrowsRandomChanged"
-            hover-hint="BEAT SABER 1.13 BROKE THIS! This is No Arrows but the left and right are sometimes swapped making gameplay harder. Similar to No Arrows maps in the Original Sound Tracks." />
-        </horizontal>
+        <checkbox-setting text="No Arrows Random" value="NoArrowsRandom" bind-value="true" apply-on-change="true" hover-hint="BEAT SABER 1.13 BROKE THIS! This is No Arrows but the left and right are sometimes swapped making gameplay harder. Similar to No Arrows maps in the Original Sound Tracks." />
       </horizontal>
       <horizontal pad-top="1">
         <img preserve-aspect="true" pref-width="12" preferred-height="5" source="~TouchNotesIcon" />
-        <horizontal>
-          <checkbox-setting text="Touch Notes" value="TouchNotes" apply-on-change="true" on-change="OnTouchNotesChanged"
-            hover-hint="All notes no longer require direction or speed to cut. You can touch, shoot or stab them." />
-        </horizontal>
+        <checkbox-setting text="Touch Notes" value="TouchNotes" bind-value="true" apply-on-change="true" hover-hint="All notes no longer require direction or speed to cut. You can touch, shoot or stab them." />
       </horizontal>
     </vertical>
 

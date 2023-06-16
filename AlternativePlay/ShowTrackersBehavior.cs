@@ -23,7 +23,7 @@ namespace AlternativePlay
         /// </summary>
         public void EnableShowTrackers()
         {
-            RemoveAllInstances();
+            this.RemoveAllInstances();
 
             this.trackerInstances = TrackedDeviceManager.instance.TrackedDevices.Select((t) => new TrackerInstance
             {
@@ -44,7 +44,7 @@ namespace AlternativePlay
         public void DisableShowTrackers()
         {
             this.showTrackers = false;
-            RemoveAllInstances();
+            this.RemoveAllInstances();
 
             this.enabled = false;
         }

@@ -30,19 +30,18 @@ namespace AlternativePlay
         public void BeginGameCoreScene()
         {
             // Do nothing if we aren't playing Flail
-            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.BeatFlail) { return; }
+            if (Configuration.Current.PlayMode != PlayMode.BeatFlail) { return; }
 
             TrackedDeviceManager.instance.LoadTrackedDevices();
 
-            var config = Configuration.instance.ConfigurationData;
-            if (config.LeftFlailMode != BeatFlailMode.None)
+            if (Configuration.Current.LeftFlailMode != BeatFlailMode.None)
             {
-                Utilities.CheckAndDisableForTrackerTransforms(config.LeftFlailTracker);
+                Utilities.CheckAndDisableForTrackerTransforms(Configuration.Current.LeftTracker);
             }
 
-            if (config.RightFlailMode != BeatFlailMode.None)
+            if (Configuration.Current.RightFlailMode != BeatFlailMode.None)
             {
-                Utilities.CheckAndDisableForTrackerTransforms(config.RightFlailTracker);
+                Utilities.CheckAndDisableForTrackerTransforms(Configuration.Current.RightTracker);
             }
 
             this.StartCoroutine(this.DisableSaberMeshes());
@@ -51,27 +50,25 @@ namespace AlternativePlay
         private void Awake()
         {
             // Do nothing if we aren't playing Flail
-            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.BeatFlail) { return; }
+            if (Configuration.Current.PlayMode != PlayMode.BeatFlail) { return; }
 
             // Create the GameObjects used for physics calculations
-            var config = Configuration.instance.ConfigurationData;
-            this.leftPhysicsFlail = this.CreatePhysicsChain("Left", config.LeftFlailLength / 100.0f);
-            this.rightPhysicsFlail = this.CreatePhysicsChain("Right", config.RightFlailLength / 100.0f);
-            this.leftLinkMeshes = Utilities.CreateLinkMeshes(this.leftPhysicsFlail.Count, config.LeftFlailLength / 100.0f);
+            this.leftPhysicsFlail = this.CreatePhysicsChain("Left", Configuration.Current.LeftFlailLength / 100.0f);
+            this.rightPhysicsFlail = this.CreatePhysicsChain("Right", Configuration.Current.RightFlailLength / 100.0f);
+            this.leftLinkMeshes = Utilities.CreateLinkMeshes(this.leftPhysicsFlail.Count, Configuration.Current.LeftFlailLength / 100.0f);
             this.leftHandleMesh = GameObject.Instantiate(BehaviorCatalog.instance.AssetLoaderBehavior.FlailHandlePrefab);
-            this.rightLinkMeshes = Utilities.CreateLinkMeshes(this.rightPhysicsFlail.Count, config.RightFlailLength / 100.0f);
+            this.rightLinkMeshes = Utilities.CreateLinkMeshes(this.rightPhysicsFlail.Count, Configuration.Current.RightFlailLength / 100.0f);
             this.rightHandleMesh = GameObject.Instantiate(BehaviorCatalog.instance.AssetLoaderBehavior.FlailHandlePrefab);
         }
 
         private void FixedUpdate()
         {
             // Do nothing if we aren't playing Flail
-            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.BeatFlail) { return; }
+            if (Configuration.Current.PlayMode != PlayMode.BeatFlail) { return; }
 
-            var config = Configuration.instance.ConfigurationData;
-            float gravity = config.FlailGravity * -9.81f;
+            float gravity = Configuration.Current.Gravity * -9.81f;
 
-            switch(config.LeftFlailMode)
+            switch(Configuration.Current.LeftFlailMode)
             {
                 default:
                 case BeatFlailMode.Flail:
@@ -84,7 +81,7 @@ namespace AlternativePlay
 
                     // Apply motion force from the left controller
                     var leftFirstLink = this.leftPhysicsFlail.First();
-                    Pose leftSaberPose = BehaviorCatalog.instance.SaberDeviceManager.GetLeftSaberPose(config.LeftFlailTracker);
+                    Pose leftSaberPose = BehaviorCatalog.instance.SaberDeviceManager.GetLeftSaberPose(Configuration.Current.LeftTracker);
                     leftFirstLink.transform.position = leftSaberPose.position * 10.0f;
                     leftFirstLink.transform.rotation = leftSaberPose.rotation * Quaternion.Euler(0.0f, 90.0f, 0.0f);
                     break;
@@ -95,7 +92,7 @@ namespace AlternativePlay
                     break;
             }
 
-            switch (config.RightFlailMode)
+            switch (Configuration.Current.RightFlailMode)
             {
                 default:
                 case BeatFlailMode.Flail:
@@ -108,7 +105,7 @@ namespace AlternativePlay
 
                     // Apply motion force from the right controller
                     var rightFirstLink = this.rightPhysicsFlail.First();
-                    Pose rightSaberPose = BehaviorCatalog.instance.SaberDeviceManager.GetRightSaberPose(config.RightFlailTracker);
+                    Pose rightSaberPose = BehaviorCatalog.instance.SaberDeviceManager.GetRightSaberPose(Configuration.Current.RightTracker);
                     rightFirstLink.transform.position = rightSaberPose.position * 10.0f;
                     rightFirstLink.transform.rotation = rightSaberPose.rotation * Quaternion.Euler(0.0f, 90.0f, 0.0f);
                     break;
@@ -123,10 +120,9 @@ namespace AlternativePlay
         private void Update()
         {
             // Do nothing if we aren't playing Flail
-            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.BeatFlail) { return; }
+            if (Configuration.Current.PlayMode != PlayMode.BeatFlail) { return; }
 
-            var config = Configuration.instance.ConfigurationData;
-            switch (config.LeftFlailMode)
+            switch (Configuration.Current.LeftFlailMode)
             {
                 default:
                 case BeatFlailMode.Flail:
@@ -136,11 +132,11 @@ namespace AlternativePlay
                     BehaviorCatalog.instance.SaberDeviceManager.SetLeftSaberPose(leftLastLinkPose);
 
                     // Move all links into place
-                    Utilities.MoveLinkMeshes(this.leftLinkMeshes, this.leftPhysicsFlail, (float)config.LeftFlailLength / 100f);
+                    Utilities.MoveLinkMeshes(this.leftLinkMeshes, this.leftPhysicsFlail, (float)Configuration.Current.LeftFlailLength / 100f);
 
                     // Move handle based on the original saber position
-                    Pose leftSaberPose = BehaviorCatalog.instance.SaberDeviceManager.GetLeftSaberPose(config.LeftFlailTracker);
-                    float oneChainDistance = config.LeftFlailLength / 100.0f / (leftPhysicsFlail.Count - 1);
+                    Pose leftSaberPose = BehaviorCatalog.instance.SaberDeviceManager.GetLeftSaberPose(Configuration.Current.LeftTracker);
+                    float oneChainDistance = Configuration.Current.LeftFlailLength / 100.0f / (this.leftPhysicsFlail.Count - 1);
                     Vector3 moveHandleUp = leftSaberPose.rotation * new Vector3(0.0f, 0.0f, oneChainDistance); // Move handle forward one chain length
                     this.leftHandleMesh.transform.position = leftSaberPose.position + moveHandleUp;
                     this.leftHandleMesh.transform.rotation = leftSaberPose.rotation;
@@ -152,11 +148,11 @@ namespace AlternativePlay
 
                 case BeatFlailMode.None:
                     // Remove the sword
-                    BehaviorCatalog.instance.SaberDeviceManager.SetLeftSaberPose(leftHiddenPose);
+                    BehaviorCatalog.instance.SaberDeviceManager.SetLeftSaberPose(this.leftHiddenPose);
                     break;
             }
 
-            switch (config.RightFlailMode)
+            switch (Configuration.Current.RightFlailMode)
             {
                 default:
                 case BeatFlailMode.Flail:
@@ -166,11 +162,11 @@ namespace AlternativePlay
                     BehaviorCatalog.instance.SaberDeviceManager.SetRightSaberPose(rightLastLinkPose);
 
                     // Move all links into place
-                    Utilities.MoveLinkMeshes(this.rightLinkMeshes, this.rightPhysicsFlail, config.RightFlailLength / 100.0f);
+                    Utilities.MoveLinkMeshes(this.rightLinkMeshes, this.rightPhysicsFlail, Configuration.Current.RightFlailLength / 100.0f);
 
                     // Move handle based on the original saber position
-                    Pose rightSaberPose = BehaviorCatalog.instance.SaberDeviceManager.GetRightSaberPose(config.RightFlailTracker);
-                    float oneChainDistance = config.RightFlailLength / 100.0f / (rightPhysicsFlail.Count - 1);
+                    Pose rightSaberPose = BehaviorCatalog.instance.SaberDeviceManager.GetRightSaberPose(Configuration.Current.RightTracker);
+                    float oneChainDistance = Configuration.Current.RightFlailLength / 100.0f / (this.rightPhysicsFlail.Count - 1);
                     Vector3 moveHandleUp = rightSaberPose.rotation * new Vector3(0.0f, 0.0f, oneChainDistance); // Move handle forward one chain length
                     this.rightHandleMesh.transform.position = rightSaberPose.position + moveHandleUp;
                     this.rightHandleMesh.transform.rotation = rightSaberPose.rotation;
@@ -182,7 +178,7 @@ namespace AlternativePlay
 
                 case BeatFlailMode.None:
                     // Remove the sword
-                    BehaviorCatalog.instance.SaberDeviceManager.SetRightSaberPose(rightHiddenPose);
+                    BehaviorCatalog.instance.SaberDeviceManager.SetRightSaberPose(this.rightHiddenPose);
                     break;
             }
         }
@@ -238,13 +234,12 @@ namespace AlternativePlay
         {
             yield return new WaitForSecondsRealtime(0.1f);
 
-            var config = Configuration.instance.ConfigurationData;
-            if (config.LeftFlailMode == BeatFlailMode.None)
+            if (Configuration.Current.LeftFlailMode == BeatFlailMode.None)
             {
                 BehaviorCatalog.instance.SaberDeviceManager.DisableLeftSaberMesh();
             }
 
-            if (config.RightFlailMode == BeatFlailMode.None)
+            if (Configuration.Current.RightFlailMode == BeatFlailMode.None)
             {
                 BehaviorCatalog.instance.SaberDeviceManager.DisableRightSaberMesh();
             }

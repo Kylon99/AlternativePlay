@@ -1,6 +1,5 @@
 ﻿using AlternativePlay.Models;
 using BeatSaberMarkupLanguage.Attributes;
-using BeatSaberMarkupLanguage.Parser;
 using BeatSaberMarkupLanguage.ViewControllers;
 using System;
 using System.Collections.Generic;
@@ -12,183 +11,234 @@ namespace AlternativePlay.UI
     {
         private ModMainFlowCoordinator mainFlowCoordinator;
 
-        [UIParams]
-#pragma warning disable CS0649 // Field 'parserParams' is never assigned to, and will always have its default value null
-        private BSMLParserParams parserParams;
-#pragma warning restore CS0649 // Field 'parserParams' is never assigned to, and will always have its default value null
+        private PlayModeSettings settings;
 
         public void SetMainFlowCoordinator(ModMainFlowCoordinator mainFlowCoordinator)
         {
             this.mainFlowCoordinator = mainFlowCoordinator;
         }
 
+        public void SetPlayModeSettings(PlayModeSettings Settings)
+        {
+            this.settings = Settings;
+        }
+
         protected override void DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling)
         {
             base.DidActivate(firstActivation, addedToHierarchy, screenSystemEnabling);
-            SetTrackerText();
+            this.UpdateAllValues();
+            this.SetTrackerText();
         }
 
-        [UIValue("FlailIcon")]
+        [UIValue(nameof(FlailIcon))]
         public string FlailIcon => IconNames.BeatFlail;
 
-        [UIValue("LeftFlailMode")]
-        private string LeftFlailMode = Configuration.instance.ConfigurationData.LeftFlailMode.ToString();
-        [UIValue("LeftFlailModeList")]
+        [UIValue(nameof(LeftFlailModeIcon))]
+        public string LeftFlailModeIcon 
+        {
+            get
+            {
+                switch (this.settings.LeftFlailMode)
+                {
+                    default:
+                    case BeatFlailMode.Flail:
+                        return IconNames.LeftFlail;
+                    case BeatFlailMode.Sword:
+                        return IconNames.LeftSaber;
+                    case BeatFlailMode.None:
+                        return IconNames.Empty;
+                }
+            }
+        }
+
+        [UIValue(nameof(LeftFlailMode))]
+        private string LeftFlailMode
+        {
+            get => this.settings.LeftFlailMode.ToString();
+            set
+            {
+                this.settings.LeftFlailMode = (BeatFlailMode)Enum.Parse(typeof(BeatFlailMode), value);
+                Configuration.instance.SaveConfiguration();
+                this.NotifyPropertyChanged(nameof(this.LeftFlailModeIcon));
+            }
+        }
+
+        [UIValue(nameof(LeftFlailModeList))]
         private List<object> LeftFlailModeList = new List<object> { BeatFlailMode.Flail.ToString(), BeatFlailMode.Sword.ToString(), BeatFlailMode.None.ToString() };
-        [UIAction("OnLeftFlailModeListChanged")]
-        private void OnLeftFlailModeListChanged(string value)
+
+        [UIValue(nameof(RightFlailModeIcon))]
+        public string RightFlailModeIcon
         {
-            Configuration.instance.ConfigurationData.LeftFlailMode = (BeatFlailMode)Enum.Parse(typeof(BeatFlailMode), value);
-            Configuration.instance.SaveConfiguration();
+            get
+            {
+                switch (this.settings.RightFlailMode)
+                {
+                    default:
+                    case BeatFlailMode.Flail:
+                        return IconNames.RightFlail;
+                    case BeatFlailMode.Sword:
+                        return IconNames.RightSaber;
+                    case BeatFlailMode.None:
+                        return IconNames.Empty;
+                }
+            }
         }
 
-        [UIValue("RightFlailMode")]
-        private string RightFlailMode = Configuration.instance.ConfigurationData.RightFlailMode.ToString();
-        [UIValue("RightFlailModeList")]
+        [UIValue(nameof(RightFlailMode))]
+        private string RightFlailMode
+        {
+            get => this.settings.RightFlailMode.ToString();
+            set
+            {
+                this.settings.RightFlailMode = (BeatFlailMode)Enum.Parse(typeof(BeatFlailMode), value);
+                Configuration.instance.SaveConfiguration();
+                this.NotifyPropertyChanged(nameof(this.RightFlailModeIcon));
+            }
+        }
+
+        [UIValue(nameof(RightFlailModeList))]
         private List<object> RightFlailModeList = new List<object> { BeatFlailMode.Flail.ToString(), BeatFlailMode.Sword.ToString(), BeatFlailMode.None.ToString() };
-        [UIAction("OnRightFlailModeListChanged")]
-        private void OnRightFlailModeListChanged(string value)
+
+        [UIValue(nameof(LeftFlailLength))]
+        private int LeftFlailLength
         {
-            Configuration.instance.ConfigurationData.RightFlailMode = (BeatFlailMode)Enum.Parse(typeof(BeatFlailMode), value);
-            Configuration.instance.SaveConfiguration();
+            get => this.settings.LeftFlailLength;
+            set
+            {
+                this.settings.LeftFlailLength = value;
+                Configuration.instance.SaveConfiguration();
+            }
         }
 
-        [UIValue("LeftFlailLength")]
-        private int leftFlailLength = Configuration.instance.ConfigurationData.LeftFlailLength;
-        [UIAction("OnLeftFlailLengthChanged")]
-        private void OnLeftFlailLengthChanged(int value)
+        [UIValue(nameof(RightFlailLength))]
+        private int RightFlailLength
         {
-            Configuration.instance.ConfigurationData.LeftFlailLength = value;
-            Configuration.instance.SaveConfiguration();
+            get => this.settings.RightFlailLength;
+            set
+            {
+                this.settings.RightFlailLength = value;
+                Configuration.instance.SaveConfiguration();
+            }
         }
 
-        [UIValue("RightFlailLength")]
-        private int rightFlailLength = Configuration.instance.ConfigurationData.RightFlailLength;
-        [UIAction("OnRightFlailLengthChanged")]
-        private void OnRightFlailLengthChanged(int value)
+        [UIValue(nameof(Gravity))]
+        private float Gravity
         {
-            Configuration.instance.ConfigurationData.RightFlailLength = value;
-            Configuration.instance.SaveConfiguration();
+            get => this.settings.Gravity;
+            set
+            {
+                this.settings.Gravity = value;
+                Configuration.instance.SaveConfiguration();
+            }
         }
 
-        [UIValue("FlailGravity")]
-        private float flailGravity = Configuration.instance.ConfigurationData.FlailGravity;
-        [UIAction("OnFlailGravityChanged")]
-        private void OnFlailGravityChanged(float value)
+        [UIValue(nameof(MoveNotesBack))]
+        private int MoveNotesBack
         {
-            Configuration.instance.ConfigurationData.FlailGravity = value;
-            Configuration.instance.SaveConfiguration();
+            get => this.settings.MoveNotesBack;
+            set
+            {
+                this.settings.MoveNotesBack = value;
+                Configuration.instance.SaveConfiguration();
+            }
         }
 
-        [UIValue("MoveNotesBack")]
-        private int moveNotesBack = Configuration.instance.ConfigurationData.MoveNotesBack;
-        [UIAction("OnMoveNotesBackChanged")]
-        private void OnMoveNotesBackChanged(int value)
-        {
-            Configuration.instance.ConfigurationData.MoveNotesBack = value;
-            Configuration.instance.SaveConfiguration();
-        }
-
-        [UIAction("OnResetGravity")]
+        [UIAction(nameof(OnResetGravity))]
         private void OnResetGravity()
         {
-            flailGravity = 3.5f;
-            Configuration.instance.ConfigurationData.FlailGravity = 3.5f;
+            this.settings.Gravity = 3.5f;
             Configuration.instance.SaveConfiguration();
-            this.parserParams.EmitEvent("RefreshFlailGravity");
+            this.NotifyPropertyChanged(nameof(this.Gravity));
         }
 
-        [UIAction("LengthFormatter")]
+        [UIAction(nameof(LengthFormatter))]
         private string LengthFormatter(int value)
         {
             return $"{value} cm";
         }
 
-        #region SelectTracker Modal Members
+        private void UpdateAllValues()
+        {
+            this.NotifyPropertyChanged(nameof(this.LeftFlailMode));
+            this.NotifyPropertyChanged(nameof(this.RightFlailMode));
+            this.NotifyPropertyChanged(nameof(this.LeftFlailLength));
+            this.NotifyPropertyChanged(nameof(this.RightFlailLength));
+            this.NotifyPropertyChanged(nameof(this.Gravity));
+            this.NotifyPropertyChanged(nameof(this.MoveNotesBack));
+        }
+
+        #region Tracker Selection Members
 
         // Text Displays for the Main View
-        private string leftFlailTrackerSerial;
-        [UIValue("LeftFlailTrackerSerial")]
-        public string LeftFlailTrackerSerial { get => this.leftFlailTrackerSerial; set { this.leftFlailTrackerSerial = value; this.NotifyPropertyChanged(nameof(this.LeftFlailTrackerSerial)); } }
+        private string leftTrackerSerial;
+        [UIValue(nameof(LeftTrackerSerial))]
+        public string LeftTrackerSerial { get => this.leftTrackerSerial; set { this.leftTrackerSerial = value; this.NotifyPropertyChanged(); } }
 
-        private string leftFlailTrackerHoverHint;
-        [UIValue("LeftFlailTrackerHoverHint")]
-        public string LeftFlailTrackerHoverHint { get => this.leftFlailTrackerHoverHint; set { this.leftFlailTrackerHoverHint = value; this.NotifyPropertyChanged(nameof(this.LeftFlailTrackerHoverHint)); } }
+        private string leftTrackerHoverHint;
+        [UIValue(nameof(LeftTrackerHoverHint))]
+        public string LeftTrackerHoverHint { get => this.leftTrackerHoverHint; set { this.leftTrackerHoverHint = value; this.NotifyPropertyChanged(); } }
 
-        private string rightFlailTrackerSerial;
-        [UIValue("RightFlailTrackerSerial")]
-        public string RightFlailTrackerSerial { get => this.rightFlailTrackerSerial; set { this.rightFlailTrackerSerial = value; this.NotifyPropertyChanged(nameof(this.RightFlailTrackerSerial)); } }
+        private string rightTrackerSerial;
+        [UIValue(nameof(RightTrackerSerial))]
+        public string RightTrackerSerial { get => this.rightTrackerSerial; set { this.rightTrackerSerial = value; this.NotifyPropertyChanged(); } }
 
-        private string rightFlailTrackerHoverHint;
-        [UIValue("RightFlailTrackerHoverHint")]
-        public string RightFlailTrackerHoverHint { get => this.rightFlailTrackerHoverHint; set { this.rightFlailTrackerHoverHint = value; this.NotifyPropertyChanged(nameof(this.RightFlailTrackerHoverHint)); } }
+        private string rightTrackerHoverHint;
+        [UIValue(nameof(RightTrackerHoverHint))]
+        public string RightTrackerHoverHint { get => this.rightTrackerHoverHint; set { this.rightTrackerHoverHint = value; this.NotifyPropertyChanged(); } }
 
         // Text Display for the Current Tracker in the Tracker Select Modal
         private string currentTrackerText;
-        [UIValue("CurrentTrackerText")]
-        public string CurrentTrackerText { get => this.currentTrackerText; set { this.currentTrackerText = value; this.NotifyPropertyChanged(nameof(this.CurrentTrackerText)); } }
+
+        [UIValue(nameof(CurrentTrackerText))]
+        public string CurrentTrackerText { get => this.currentTrackerText; set { this.currentTrackerText = value; this.NotifyPropertyChanged(); } }
 
         // Events
-        [UIAction("OnShowSelectLeftTracker")]
+
+        [UIAction(nameof(OnShowSelectLeftTracker))]
         private void OnShowSelectLeftTracker()
         {
-            this.mainFlowCoordinator.ShowTrackerSelect(Configuration.instance.ConfigurationData.LeftFlailTracker);
+            this.mainFlowCoordinator.ShowTrackerSelect(this.settings.LeftTracker);
         }
 
-        [UIAction("OnShowSelectRightTracker")]
+        [UIAction(nameof(OnShowSelectRightTracker))]
         private void OnShowSelectRightTracker()
         {
-            this.mainFlowCoordinator.ShowTrackerSelect(Configuration.instance.ConfigurationData.RightFlailTracker);
+            this.mainFlowCoordinator.ShowTrackerSelect(this.settings.RightTracker);
         }
 
-        [UIAction("OnClearLeftTracker")]
+        [UIAction(nameof(OnClearLeftTracker))]
         private void OnClearLeftTracker()
         {
-            Configuration.instance.ConfigurationData.LeftFlailTracker = new TrackerConfigData();
+            this.settings.LeftTracker = new TrackerConfigData();
             Configuration.instance.SaveConfiguration();
-            this.LeftFlailTrackerSerial = TrackerConfigData.NoTrackerText;
-            this.LeftFlailTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
+            this.LeftTrackerSerial = TrackerConfigData.NoTrackerText;
+            this.LeftTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
         }
 
-        [UIAction("OnClearRightTracker")]
+        [UIAction(nameof(OnClearRightTracker))]
         private void OnClearRightTracker()
         {
-            Configuration.instance.ConfigurationData.RightFlailTracker = new TrackerConfigData();
+            this.settings.RightTracker = new TrackerConfigData();
             Configuration.instance.SaveConfiguration();
-            this.RightFlailTrackerSerial = TrackerConfigData.NoTrackerText;
-            this.RightFlailTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
+            this.RightTrackerSerial = TrackerConfigData.NoTrackerText;
+            this.RightTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
         }
 
         /// <summary>
-        /// Initializes the bound variables for the fields on this view
+        /// Initializes the tracker text buttons
         /// </summary>
         private void SetTrackerText()
         {
-            var config = Configuration.instance.ConfigurationData;
-            if (String.IsNullOrWhiteSpace(config.LeftFlailTracker.Serial))
-            {
-                this.LeftFlailTrackerSerial = TrackerConfigData.NoTrackerText;
-                this.LeftFlailTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
-            }
-            else
-            {
-                this.LeftFlailTrackerSerial = config.LeftFlailTracker.Serial;
-                this.LeftFlailTrackerHoverHint = config.LeftFlailTracker.FullName;
-            }
+            bool isLeftEmpty = String.IsNullOrWhiteSpace(this.settings.LeftTracker.Serial);
+            bool isRightEmpty = String.IsNullOrWhiteSpace(this.settings.RightTracker.Serial);
 
-            if (String.IsNullOrWhiteSpace(config.RightFlailTracker.Serial))
-            {
-                this.RightFlailTrackerSerial = TrackerConfigData.NoTrackerText;
-                this.RightFlailTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
-            }
-            else
-            {
-                this.RightFlailTrackerSerial = config.RightFlailTracker.Serial;
-                this.RightFlailTrackerHoverHint = config.RightFlailTracker.FullName;
-            }
+            this.LeftTrackerSerial = isLeftEmpty ? TrackerConfigData.NoTrackerText : this.settings.LeftTracker.Serial;
+            this.LeftTrackerHoverHint = isLeftEmpty ? TrackerConfigData.NoTrackerHoverHint : this.settings.LeftTracker.FullName;
+
+            this.RightTrackerSerial = isRightEmpty ? TrackerConfigData.NoTrackerText : this.settings.RightTracker.Serial;
+            this.RightTrackerHoverHint = isRightEmpty ? TrackerConfigData.NoTrackerHoverHint : this.settings.RightTracker.FullName;
         }
 
         #endregion
-
     }
 }
