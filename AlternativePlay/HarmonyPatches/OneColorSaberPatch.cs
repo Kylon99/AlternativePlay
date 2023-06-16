@@ -15,11 +15,10 @@ namespace AlternativePlay.HarmonyPatches
     {
         private static void Postfix(ref bool saberTypeOK)
         {
-            var config = Configuration.instance.ConfigurationData;
-            if (config.PlayMode == PlayMode.BeatSpear ||
+            if (Configuration.Current.PlayMode == PlayMode.BeatSpear ||
                 // Allow multicutting if playing a one handed style
-                (config.PlayMode == PlayMode.BeatFlail && (config.LeftFlailMode == BeatFlailMode.None || config.RightFlailMode == BeatFlailMode.None)) || 
-                (Configuration.instance.ConfigurationData.OneColor && BS_Utils.Plugin.LevelData.Mode != BS_Utils.Gameplay.Mode.Multiplayer))
+                (Configuration.Current.PlayMode == PlayMode.BeatFlail && (Configuration.Current.LeftFlailMode == BeatFlailMode.None || Configuration.Current.RightFlailMode == BeatFlailMode.None)) || 
+                (Configuration.Current.OneColor && BS_Utils.Plugin.LevelData.Mode != BS_Utils.Gameplay.Mode.Multiplayer))
             {
                 // Always allow saber hits from any type for OneColor or Spear
                 saberTypeOK = true;

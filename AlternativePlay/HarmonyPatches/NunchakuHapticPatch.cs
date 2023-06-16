@@ -11,7 +11,7 @@ namespace AlternativePlay.HarmonyPatches
     {
         private static void Prefix(ref XRNode node)
         {
-            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.Nunchaku ||
+            if (Configuration.Current.PlayMode != PlayMode.Nunchaku ||
                 BehaviorCatalog.instance.NunchakuBehavior == null ||
                 BehaviorCatalog.instance.NunchakuBehavior.HeldState == NunchakuBehavior.Held.Both)
             {

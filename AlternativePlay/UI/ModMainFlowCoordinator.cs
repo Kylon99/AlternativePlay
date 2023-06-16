@@ -4,10 +4,18 @@ using HMUI;
 
 namespace AlternativePlay.UI
 {
+    /// <summary>
+    /// The flow of the UI will consist of 3 layers:
+    /// 
+    /// 1. <see cref="AlternativePlayView"/> - The main view allowing you to select from a list of configurations
+    /// 2. <see cref="PlayModeSelectView"/> - For configuring the settings of a play mode (<see cref="BeatSaberView"/>, <see cref="DarthMaulView"/>, etc) and the <see cref="GameModifiersView"/> on the right
+    /// 3. <see cref="TrackerSelectView"/> - For setting trackers and options with a <see cref="TrackerPoseView"/> on the right
+    /// </summary>
     public class ModMainFlowCoordinator : FlowCoordinator
     {
         private const string titleString = "Alternative Play";
         private AlternativePlayView alternativePlayView;
+        private PlayModeSelectView playModeSelectView;
         private GameModifiersView gameModifiersView;
 
         private BeatSaberView beatSaberSettingsView;
@@ -56,6 +64,42 @@ namespace AlternativePlay.UI
             this.IsBusy = false;
         }
 
+        public void ShowPlayModeSelect(PlayModeSettings settings, int index)
+        {
+            this.IsBusy = true;
+
+            // Give the settings to all the views first
+            this.playModeSelectView.SetPlayModeSettings(settings, index);
+            this.beatSaberSettingsView.SetPlayModeSettings(settings);
+            this.darthMaulSettingsView.SetPlayModeSettings(settings);
+            this.beatSpearSettingsView.SetPlayModeSettings(settings);
+            this.beatFlailView.SetPlayModeSettings(settings);
+            this.nunchakuView.SetPlayModeSettings(settings);
+            this.trackerPoseView.SetPlayModeSettings(settings);
+            this.gameModifiersView.SetPlayModeSettings(settings);
+
+            // Display the views
+            this.SetTitle("Edit Play Modes");
+            this.ReplaceTopViewController(this.playModeSelectView, null, ViewController.AnimationType.In, ViewController.AnimationDirection.Vertical);
+            this.SetLeftScreenViewController(this.DecideLeftMainView(this.playModeSelectView.Settings), ViewController.AnimationType.In);
+            this.SetRightScreenViewController(this.gameModifiersView, ViewController.AnimationType.In);
+
+            this.IsBusy = false;
+        }
+
+        public void DismissPlayModeSelect()
+        {
+            this.IsBusy = true;
+
+            this.alternativePlayView.RefreshConfigurations(this.playModeSelectView.index);
+
+            this.ReplaceTopViewController(this.alternativePlayView);
+            this.SetLeftScreenViewController(null, ViewController.AnimationType.Out);
+            this.SetRightScreenViewController(null, ViewController.AnimationType.Out);
+
+            this.IsBusy = false;
+        }
+
         public void ShowTrackerSelect(TrackerConfigData trackerConfigData)
         {
             this.IsBusy = true;
@@ -77,8 +121,8 @@ namespace AlternativePlay.UI
             this.IsBusy = true;
             this.SetTitle(titleString);
 
-            this.ReplaceTopViewController(this.alternativePlayView);
-            var viewToDisplay = DecideLeftMainView();
+            this.ReplaceTopViewController(this.playModeSelectView);
+            var viewToDisplay = this.DecideLeftMainView(this.playModeSelectView.Settings);
             this.SetLeftScreenViewController(viewToDisplay, ViewController.AnimationType.Out);
             this.SetRightScreenViewController(this.gameModifiersView, ViewController.AnimationType.Out);
             this.IsBusy = false;
@@ -87,7 +131,9 @@ namespace AlternativePlay.UI
         private void Awake()
         {
             this.alternativePlayView = BeatSaberUI.CreateViewController<AlternativePlayView>();
-            this.alternativePlayView.MainFlowCoordinator = this;
+            this.alternativePlayView.SetMainFlowCoordinator(this);
+            this.playModeSelectView = BeatSaberUI.CreateViewController<PlayModeSelectView>();
+            this.playModeSelectView.SetMainFlowCoordinator(this);
             this.gameModifiersView = BeatSaberUI.CreateViewController<GameModifiersView>();
 
             this.beatSaberSettingsView = BeatSaberUI.CreateViewController<BeatSaberView>();
@@ -111,52 +157,47 @@ namespace AlternativePlay.UI
             this.SetTitle(titleString);
             this.showBackButton = true;
 
-            var viewToDisplay = DecideLeftMainView();
-
             this.IsBusy = true;
             this.trackerSelectView.SetSelectingTracker(new TrackerConfigData());
-            ProvideInitialViewControllers(this.alternativePlayView, viewToDisplay, this.gameModifiersView);
+            this.ProvideInitialViewControllers(this.alternativePlayView);
             this.IsBusy = false;
         }
 
-        private ViewController DecideLeftMainView()
+        private ViewController DecideLeftMainView(PlayModeSettings settings)
         {
-            ViewController viewToDisplay;
-
-            switch (Configuration.instance.ConfigurationData.PlayMode)
+            switch (settings.PlayMode)
             {
                 case PlayMode.DarthMaul:
-                    viewToDisplay = this.darthMaulSettingsView;
-                    break;
+                    return this.darthMaulSettingsView;
 
                 case PlayMode.BeatSpear:
-                    viewToDisplay = this.beatSpearSettingsView;
-                    break;
+                    return this.beatSpearSettingsView;
 
                 case PlayMode.Nunchaku:
-                    viewToDisplay = this.nunchakuView;
-                    break;
+                    return this.nunchakuView;
 
                 case PlayMode.BeatFlail:
-                    viewToDisplay = this.beatFlailView;
-                    break;
+                    return this.beatFlailView;
 
                 case PlayMode.BeatSaber:
                 default:
-                    viewToDisplay = this.beatSaberSettingsView;
-                    break;
+                    return this.beatSaberSettingsView;
             }
-
-            return viewToDisplay;
         }
 
         protected override void BackButtonWasPressed(ViewController topViewController)
         {
             if (this.IsBusy) return;
 
+            if (topViewController == this.playModeSelectView)
+            {
+                this.DismissPlayModeSelect();
+                return;
+            }
+
             if (topViewController == this.trackerSelectView)
             {
-                DismissTrackerSelect();
+                this.DismissTrackerSelect();
                 return;
             }
 

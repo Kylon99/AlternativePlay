@@ -10,153 +10,179 @@ namespace AlternativePlay.UI
     public class DarthMaulView : BSMLAutomaticViewController
     {
         private ModMainFlowCoordinator mainFlowCoordinator;
+        private PlayModeSettings settings;
 
         public void SetMainFlowCoordinator(ModMainFlowCoordinator mainFlowCoordinator)
         {
             this.mainFlowCoordinator = mainFlowCoordinator;
         }
+        public void SetPlayModeSettings(PlayModeSettings Settings)
+        {
+            this.settings = Settings;
+        }
 
         protected override void DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling)
         {
             base.DidActivate(firstActivation, addedToHierarchy, screenSystemEnabling);
-            SetTrackerText();
+            this.UpdateAllValues();
+            this.SetTrackerText();
         }
 
-        [UIValue("DarthMaulIcon")]
+        [UIValue(nameof(DarthMaulIcon))]
         public string DarthMaulIcon => IconNames.DarthMaul;
 
-        [UIValue("ControllerChoice")]
-        private string controllerChoice = Configuration.instance.ConfigurationData.DarthMaulControllerCount.ToString();
-        [UIValue("ControllerChoiceList")]
-        private List<object> controllerChoiceList = new List<object> { "One", "Two" };
-        [UIAction("OnControllersChanged")]
-        private void OnControllersChanged(string value)
+        [UIValue(nameof(ControllerChoiceIcon))]
+        public string ControllerChoiceIcon => this.settings.ControllerCount == ControllerCountEnum.One ? IconNames.OneController: IconNames.TwoController;
+
+        [UIValue(nameof(ControllerChoice))]
+        private string ControllerChoice
         {
-            Configuration.instance.ConfigurationData.DarthMaulControllerCount = (ControllerCountEnum)Enum.Parse(typeof(ControllerCountEnum), value);
-            Configuration.instance.SaveConfiguration();
+            get => this.settings.ControllerCount.ToString();
+            set
+            {
+                this.settings.ControllerCount = (ControllerCountEnum)Enum.Parse(typeof(ControllerCountEnum), value);
+                Configuration.instance.SaveConfiguration();
+                this.NotifyPropertyChanged(nameof(this.ControllerChoiceIcon));
+            }
         }
 
-        [UIValue("UseLeftController")]
-        private bool useLeftController = Configuration.instance.ConfigurationData.UseLeftController;
-        [UIAction("OnUseLeftControllerChanged")]
-        private void OnUseLeftControllerChanged(bool value)
+        [UIValue(nameof(ControllerChoiceList))]
+        private List<object> ControllerChoiceList => new List<object> { ControllerCountEnum.One.ToString(), ControllerCountEnum.Two.ToString() };
+
+        [UIValue(nameof(UseLeftControllerIcon))]
+        public string UseLeftControllerIcon => this.settings.UseLeft ? IconNames.LeftController : IconNames.RightController;
+
+        [UIValue(nameof(UseLeftController))]
+        private bool UseLeftController
         {
-            Configuration.instance.ConfigurationData.UseLeftController = value;
-            Configuration.instance.SaveConfiguration();
+            get => this.settings.UseLeft;
+            set
+            {
+                this.settings.UseLeft = value;
+                Configuration.instance.SaveConfiguration();
+                this.NotifyPropertyChanged(nameof(this.UseLeftControllerIcon));
+            }
         }
 
-        [UIValue("ReverseMaulDirection")]
-        private bool reverseSaberDirection = Configuration.instance.ConfigurationData.ReverseMaulDirection;
-        [UIAction("OnReverseMaulDirectionChanged")]
-        private void OnReverseMaulDirectionChanged(bool value)
+        [UIValue(nameof(ReverseDarthMaulIcon))]
+        public string ReverseDarthMaulIcon => IconNames.ReverseMaulDirection;
+
+        [UIValue(nameof(ReverseDarthMaul))]
+        private bool ReverseDarthMaul
         {
-            Configuration.instance.ConfigurationData.ReverseMaulDirection = value;
-            Configuration.instance.SaveConfiguration();
+            get => this.settings.ReverseMaulDirection;
+            set
+            {
+                this.settings.ReverseMaulDirection = value;
+                Configuration.instance.SaveConfiguration();
+            }
         }
 
-        [UIValue("UseTriggerToSeparate")]
-        private bool useTriggerToSeparate = Configuration.instance.ConfigurationData.UseTriggerToSeparate;
-        [UIAction("OnUseTriggerToSeparateChanged")]
-        private void OnUseTriggerToSeparateChanged(bool value)
+        [UIValue(nameof(UseTriggerToSeparate))]
+        private bool UseTriggerToSeparate
         {
-            Configuration.instance.ConfigurationData.UseTriggerToSeparate = value;
-            Configuration.instance.SaveConfiguration();
+            get => this.settings.UseTriggerToSeparate;
+            set
+            {
+                this.settings.UseTriggerToSeparate = value;
+                Configuration.instance.SaveConfiguration();
+            }
         }
 
-        [UIValue("SeparationAmount")]
-        private int separationAmount = Configuration.instance.ConfigurationData.MaulDistance;
-        [UIAction("OnSeparationAmountChanged")]
-        private void OnSeparationAmountChanged(int value)
+        [UIValue(nameof(SeparationAmount))]
+        private int SeparationAmount
         {
-            Configuration.instance.ConfigurationData.MaulDistance = value;
-            Configuration.instance.SaveConfiguration();
+            get => this.settings.MaulDistance;
+            set
+            {
+                this.settings.MaulDistance = value;
+                Configuration.instance.SaveConfiguration();
+            }
         }
 
-        #region SelectTracker Modal Members
+        private void UpdateAllValues()
+        {
+            this.NotifyPropertyChanged(nameof(this.ControllerChoice));
+            this.NotifyPropertyChanged(nameof(this.UseLeftController));
+            this.NotifyPropertyChanged(nameof(this.ReverseDarthMaul));
+            this.NotifyPropertyChanged(nameof(this.UseTriggerToSeparate));
+            this.NotifyPropertyChanged(nameof(this.SeparationAmount));
+
+            this.SetTrackerText();
+        }
+
+        #region Tracker Selection Members
 
         // Text Displays for the Main View
-        private string leftMaulTrackerSerial;
-        [UIValue("LeftMaulTrackerSerial")]
-        public string LeftMaulTrackerSerial { get => this.leftMaulTrackerSerial; set { this.leftMaulTrackerSerial = value; this.NotifyPropertyChanged(nameof(this.LeftMaulTrackerSerial)); } }
+        private string leftTrackerSerial;
+        [UIValue(nameof(LeftTrackerSerial))]
+        public string LeftTrackerSerial { get => this.leftTrackerSerial; set { this.leftTrackerSerial = value; this.NotifyPropertyChanged(); } }
 
-        private string leftMaulTrackerHoverHint;
-        [UIValue("LeftMaulTrackerHoverHint")]
-        public string LeftMaulTrackerHoverHint { get => this.leftMaulTrackerHoverHint; set { this.leftMaulTrackerHoverHint = value; this.NotifyPropertyChanged(nameof(this.LeftMaulTrackerHoverHint)); } }
+        private string leftTrackerHoverHint;
+        [UIValue(nameof(LeftTrackerHoverHint))]
+        public string LeftTrackerHoverHint { get => this.leftTrackerHoverHint; set { this.leftTrackerHoverHint = value; this.NotifyPropertyChanged(); } }
 
-        private string rightMaulTrackerSerial;
-        [UIValue("RightMaulTrackerSerial")]
-        public string RightMaulTrackerSerial { get => this.rightMaulTrackerSerial; set { this.rightMaulTrackerSerial = value; this.NotifyPropertyChanged(nameof(this.RightMaulTrackerSerial)); } }
+        private string rightTrackerSerial;
+        [UIValue(nameof(RightTrackerSerial))]
+        public string RightTrackerSerial { get => this.rightTrackerSerial; set { this.rightTrackerSerial = value; this.NotifyPropertyChanged(); } }
 
-        private string rightMaulTrackerHoverHint;
-        [UIValue("RightMaulTrackerHoverHint")]
-        public string RightMaulTrackerHoverHint { get => this.rightMaulTrackerHoverHint; set { this.rightMaulTrackerHoverHint = value; this.NotifyPropertyChanged(nameof(this.RightMaulTrackerHoverHint)); } }
+        private string rightTrackerHoverHint;
+        [UIValue(nameof(RightTrackerHoverHint))]
+        public string RightTrackerHoverHint { get => this.rightTrackerHoverHint; set { this.rightTrackerHoverHint = value; this.NotifyPropertyChanged(); } }
 
         // Text Display for the Current Tracker in the Tracker Select Modal
         private string currentTrackerText;
-        [UIValue("CurrentTrackerText")]
-        public string CurrentTrackerText { get => this.currentTrackerText; set { this.currentTrackerText = value; this.NotifyPropertyChanged(nameof(this.CurrentTrackerText)); } }
+
+        [UIValue(nameof(CurrentTrackerText))]
+        public string CurrentTrackerText { get => this.currentTrackerText; set { this.currentTrackerText = value; this.NotifyPropertyChanged(); } }
 
         // Events
-        [UIAction("OnShowSelectLeftTracker")]
+
+        [UIAction(nameof(OnShowSelectLeftTracker))]
         private void OnShowSelectLeftTracker()
         {
-            this.mainFlowCoordinator.ShowTrackerSelect(Configuration.instance.ConfigurationData.LeftMaulTracker);
+            this.mainFlowCoordinator.ShowTrackerSelect(this.settings.LeftTracker);
         }
 
-        [UIAction("OnShowSelectRightTracker")]
+        [UIAction(nameof(OnShowSelectRightTracker))]
         private void OnShowSelectRightTracker()
         {
-            this.mainFlowCoordinator.ShowTrackerSelect(Configuration.instance.ConfigurationData.RightMaulTracker);
+            this.mainFlowCoordinator.ShowTrackerSelect(this.settings.RightTracker);
         }
 
-        [UIAction("OnClearLeftTracker")]
+        [UIAction(nameof(OnClearLeftTracker))]
         private void OnClearLeftTracker()
         {
-            Configuration.instance.ConfigurationData.LeftMaulTracker = new TrackerConfigData();
+            this.settings.LeftTracker = new TrackerConfigData();
             Configuration.instance.SaveConfiguration();
-            this.LeftMaulTrackerSerial = TrackerConfigData.NoTrackerText;
-            this.LeftMaulTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
+            this.LeftTrackerSerial = TrackerConfigData.NoTrackerText;
+            this.LeftTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
         }
 
-        [UIAction("OnClearRightTracker")]
+        [UIAction(nameof(OnClearRightTracker))]
         private void OnClearRightTracker()
         {
-            Configuration.instance.ConfigurationData.RightMaulTracker = new TrackerConfigData();
+            this.settings.RightTracker = new TrackerConfigData();
             Configuration.instance.SaveConfiguration();
-            this.RightMaulTrackerSerial = TrackerConfigData.NoTrackerText;
-            this.RightMaulTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
+            this.RightTrackerSerial = TrackerConfigData.NoTrackerText;
+            this.RightTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
         }
 
         /// <summary>
-        /// Initializes the bound variables for the fields on this view
+        /// Initializes the tracker text buttons
         /// </summary>
         private void SetTrackerText()
         {
-            var config = Configuration.instance.ConfigurationData;
-            if (String.IsNullOrWhiteSpace(config.LeftMaulTracker.Serial))
-            {
-                this.LeftMaulTrackerSerial = TrackerConfigData.NoTrackerText;
-                this.LeftMaulTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
-            }
-            else
-            {
-                this.LeftMaulTrackerSerial = config.LeftMaulTracker.Serial;
-                this.LeftMaulTrackerHoverHint = config.LeftMaulTracker.FullName;
-            }
+            bool isLeftEmpty = String.IsNullOrWhiteSpace(this.settings.LeftTracker.Serial);
+            bool isRightEmpty = String.IsNullOrWhiteSpace(this.settings.RightTracker.Serial);
 
-            if (String.IsNullOrWhiteSpace(config.RightMaulTracker.Serial))
-            {
-                this.RightMaulTrackerSerial = TrackerConfigData.NoTrackerText;
-                this.RightMaulTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
-            }
-            else
-            {
-                this.RightMaulTrackerSerial = config.RightMaulTracker.Serial;
-                this.RightMaulTrackerHoverHint = config.RightMaulTracker.FullName;
-            }
+            this.LeftTrackerSerial = isLeftEmpty ? TrackerConfigData.NoTrackerText : this.settings.LeftTracker.Serial;
+            this.LeftTrackerHoverHint = isLeftEmpty ? TrackerConfigData.NoTrackerHoverHint : this.settings.LeftTracker.FullName;
+
+            this.RightTrackerSerial = isRightEmpty ? TrackerConfigData.NoTrackerText : this.settings.RightTracker.Serial;
+            this.RightTrackerHoverHint = isRightEmpty ? TrackerConfigData.NoTrackerHoverHint : this.settings.RightTracker.FullName;
         }
 
         #endregion
-
     }
 }

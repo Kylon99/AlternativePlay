@@ -12,33 +12,35 @@
 
     <!-- Main View -->
     <vertical pref-width="75" vertical-fit="PreferredSize">
-      <checkbox-setting text="Reverse Sabers" value="ReverseNunchaku" apply-on-change='true' on-change='ReverseNunchakuChanged'
-                        hover-hint='Reverse the colors of the saber held on the left and right' />
-      <increment-setting text="Chain Length" value="NunchakuLength" integer-only="true" min="10" max="100" increment="10" formatter="LengthFormatter"
-                         on-change="OnNunchakuLengthChanged" hover-hint="The distance between the handles" />
+      <horizontal>
+        <horizontal pad-right="1">
+          <img preserve-aspect="true" pref-width="8" pref-height="8" source="~ReverseNunchakuIcon" />
+        </horizontal>
+        <checkbox-setting text="Reverse Nunchaku" value="ReverseNunchaku" bind-value="true" apply-on-change='true'
+              hover-hint='Reverse the colors of the saber held on the left and right' />
+      </horizontal>
+      <increment-setting text="Chain Length" value="NunchakuLength" bind-value="true" apply-on-change='true' integer-only="true" min="10" max="100" increment="10"
+						 formatter="LengthFormatter" hover-hint="The distance between the handles" />
       <horizontal  pad-bottom="3">
-        <slider-setting text="Gravity" value="NunchakuGravity" integer-only="false" min="0" max="5" increment="0.1" get-event="RefreshNunchakuGravity"
-                        on-change="OnNunchakuGravityChanged" hover-hint="Amount of G force applied to the nunchaku (multiple of -9.81 m/s^2)" />
+        <slider-setting text="Gravity" value="Gravity" bind-value="true" apply-on-change='true' integer-only="false" min="0" max="5" increment="0.1"
+						get-event="RefreshGravity" hover-hint="Amount of G force applied to the nunchaku (multiple of -9.81 m/s^2)" />
         <button pref-width="15" preferred-height="8" text="Reset" hover-hint='Reset gravity to 1.0' on-click="OnResetGravity" />
       </horizontal>
     </vertical>
 
-    <!--Tracker Settings-->
+    <!--Tracker Selection-->
     <vertical pref-width="80" vertical-fit="PreferredSize">
       <horizontal>
-        <clickable-text text="Left Hand" italics="true" font-size="4" highlight-color="#FFFFFF" align="MidlineLeft"
-                        hover-hint="Use a tracker for the left hand instead of the default controller" />
-        <button preferred-width="50" preferred-height="8" text="~LeftNunchakuTrackerSerial"
-                hover-hint="~LeftNunchakuTrackerHoverHint" on-click="OnShowSelectLeftTracker" />
-        <button pref-width="10" preferred-height="8" text="x" on-click="OnClearLeftTracker" />
+        <clickable-text text="Left Hand" italics="true" font-size="4" highlight-color="#FFFFFF" align="MidlineLeft" hover-hint="Choose a tracker for the left hand instead of the default controller"/>
+        <button preferred-width="50" preferred-height="8" text="~LeftTrackerSerial" hover-hint="~LeftTrackerHoverHint" on-click="OnShowSelectLeftTracker"/>
+        <button pref-width="10" preferred-height="8" text="x" on-click="OnClearLeftTracker"/>
       </horizontal>
       <horizontal>
-        <clickable-text text="Right Hand" italics="true" font-size="4" highlight-color="#FFFFFF" align="MidlineLeft"
-                        hover-hint="Use a tracker for the right hand instead of the default controller" />
-        <button pref-width="50" preferred-height="8" text="~RightNunchakuTrackerSerial"
-                hover-hint="~RightNunchakuTrackerHoverHint" on-click="OnShowSelectRightTracker" />
-        <button pref-width="10" preferred-height="8" text="x" on-click="OnClearRightTracker" />
+        <clickable-text text="Right Hand" italics="true" font-size="4" highlight-color="#FFFFFF" align="MidlineLeft" hover-hint="Choose a tracker for the right hand instead of the default controller"/>
+        <button pref-width="50" preferred-height="8" text="~RightTrackerSerial" hover-hint="~RightTrackerHoverHint" on-click="OnShowSelectRightTracker"/>
+        <button pref-width="10" preferred-height="8" text="x" on-click="OnClearRightTracker"/>
       </horizontal>
     </vertical>
+
   </vertical>
 </bg>

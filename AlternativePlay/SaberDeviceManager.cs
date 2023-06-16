@@ -26,7 +26,7 @@ namespace AlternativePlay
 
         public void BeginGameCoreScene()
         {
-            calibrated = false;
+            this.calibrated = false;
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace AlternativePlay
             }
             else
             {
-                if (!calibrated || !this.leftController.isValid) return new Pose();
+                if (!this.calibrated || !this.leftController.isValid) return new Pose();
 
                 // Return adjusted position from the saber
                 Pose controllerPose = TrackedDeviceManager.GetDevicePose(this.leftController) ?? new Pose();
@@ -72,7 +72,7 @@ namespace AlternativePlay
             }
             else
             {
-                if (!calibrated || !this.rightController.isValid) return new Pose();
+                if (!this.calibrated || !this.rightController.isValid) return new Pose();
 
                 // Return adjusted position from the saber
                 Pose controllerPose = TrackedDeviceManager.GetDevicePose(this.rightController) ?? new Pose();
@@ -167,7 +167,7 @@ namespace AlternativePlay
         /// </summary>
         private void CalibrateSaberPositions()
         {
-            calibrated = true;
+            this.calibrated = true;
 
             // Save current controller position
             this.savedLeftController = TrackedDeviceManager.GetDevicePose(this.leftController) ?? new Pose();
@@ -177,11 +177,11 @@ namespace AlternativePlay
             this.savedRightController = this.AdjustForPlayerOrigin(this.savedRightController);
 
             // Save current game saber positions
-            this.savedLeftSaber.position = saberManager.leftSaber.transform.position;
-            this.savedLeftSaber.rotation = saberManager.leftSaber.transform.rotation;
+            this.savedLeftSaber.position = this.saberManager.leftSaber.transform.position;
+            this.savedLeftSaber.rotation = this.saberManager.leftSaber.transform.rotation;
 
-            this.savedRightSaber.position = saberManager.rightSaber.transform.position;
-            this.savedRightSaber.rotation = saberManager.rightSaber.transform.rotation;
+            this.savedRightSaber.position = this.saberManager.rightSaber.transform.position;
+            this.savedRightSaber.rotation = this.saberManager.rightSaber.transform.rotation;
         }
 
         /// <summary>
@@ -192,15 +192,15 @@ namespace AlternativePlay
         private Pose AdjustForPlayerOrigin(Pose pose)
         {
             Pose newDevicePose = pose;
-            if (playerOrigin != null)
+            if (this.playerOrigin != null)
             {
                 // Adjust for room rotation and noodle extensions player movement as well
-                newDevicePose.position = playerOrigin.transform.rotation * pose.position;
-                newDevicePose.position += playerOrigin.transform.position;
-                newDevicePose.position.x *= playerOrigin.transform.localScale.x;
-                newDevicePose.position.y *= playerOrigin.transform.localScale.y;
-                newDevicePose.position.z *= playerOrigin.transform.localScale.z;
-                newDevicePose.rotation = playerOrigin.transform.rotation * pose.rotation;
+                newDevicePose.position = this.playerOrigin.transform.rotation * pose.position;
+                newDevicePose.position += this.playerOrigin.transform.position;
+                newDevicePose.position.x *= this.playerOrigin.transform.localScale.x;
+                newDevicePose.position.y *= this.playerOrigin.transform.localScale.y;
+                newDevicePose.position.z *= this.playerOrigin.transform.localScale.z;
+                newDevicePose.rotation = this.playerOrigin.transform.rotation * pose.rotation;
             }
 
             return newDevicePose;

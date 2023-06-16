@@ -7,64 +7,96 @@ namespace AlternativePlay.UI
     [HotReload]
     public class GameModifiersView : BSMLAutomaticViewController
     {
-        [UIValue("NoArrowsRandomIcon")]
+        private PlayModeSettings settings;
+
+        public void SetPlayModeSettings(PlayModeSettings Settings)
+        {
+            this.settings = Settings;
+        }
+
+        protected override void DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling)
+        {
+            base.DidActivate(firstActivation, addedToHierarchy, screenSystemEnabling);
+            this.UpdateAllValues();
+        }
+
+        [UIValue(nameof(NoArrowsRandomIcon))]
         public string NoArrowsRandomIcon => IconNames.NoArrowsRandom;
 
-        [UIValue("NoArrowsRandom")]
-        private bool noArrowsRandom = Configuration.instance.ConfigurationData.NoArrowsRandom;
-        [UIAction("OnNoArrowsRandomChanged")]
-        private void OnNoArrowsRandomChanged(bool value)
+        [UIValue(nameof(NoArrowsRandom))]
+        private bool NoArrowsRandom
         {
-            Configuration.instance.ConfigurationData.NoArrowsRandom = value;
-            Configuration.instance.SaveConfiguration();
+            get => this.settings.NoArrowsRandom;
+            set
+            {
+                this.settings.NoArrowsRandom = value;
+                Configuration.instance.SaveConfiguration();
+            }
         }
 
-        [UIValue("OneColorIcon")]
+        [UIValue(nameof(OneColorIcon))]
         public string OneColorIcon => IconNames.OneColor;
 
-        [UIValue("OneColor")]
-        private bool oneColor = Configuration.instance.ConfigurationData.OneColor;
-        [UIAction("OnOneColorChanged")]
-        private void OnOneColorChanged(bool value)
+        [UIValue(nameof(OneColor))]
+        private bool OneColor
         {
-            Configuration.instance.ConfigurationData.OneColor = value;
-            Configuration.instance.SaveConfiguration();
+            get => this.settings.OneColor;
+            set
+            {
+                this.settings.OneColor = value;
+                Configuration.instance.SaveConfiguration();
+            }
         }
 
-        [UIValue("NoSlidersIcon")]
+        [UIValue(nameof(NoSlidersIcon))]
         public string NoSlidersIcon => IconNames.NoSliders;
 
-        [UIValue("NoSliders")]
-        private bool noSliders = Configuration.instance.ConfigurationData.NoSliders;
-        [UIAction("OnNoSlidersChanged")]
-        private void OnNoSlidersChanged(bool value)
+        [UIValue(nameof(NoSliders))]
+        private bool NoSliders
         {
-            Configuration.instance.ConfigurationData.NoSliders = value;
-            Configuration.instance.SaveConfiguration();
+            get => this.settings.NoSliders;
+            set
+            {
+                this.settings.NoSliders = value;
+                Configuration.instance.SaveConfiguration();
+            }
         }
 
-        [UIValue("NoArrowsIcon")]
+        [UIValue(nameof(NoArrowsIcon))]
         public string NoArrowsIcon => IconNames.NoArrows;
 
-        [UIValue("NoArrows")]
-        private bool noArrows = Configuration.instance.ConfigurationData.NoArrows;
-        [UIAction("OnNoArrowsChanged")]
-        private void OnNoArrowsChanged(bool value)
+        [UIValue(nameof(NoArrows))]
+        private bool NoArrows
         {
-            Configuration.instance.ConfigurationData.NoArrows = value;
-            Configuration.instance.SaveConfiguration();
+            get => this.settings.NoArrows;
+            set
+            {
+                this.settings.NoArrows = value;
+                Configuration.instance.SaveConfiguration();
+            }
         }
 
-        [UIValue("TouchNotesIcon")]
+        [UIValue(nameof(TouchNotesIcon))]
         public string TouchNotesIcon => IconNames.TouchNotes;
 
-        [UIValue("TouchNotes")]
-        private bool touchNotes = Configuration.instance.ConfigurationData.TouchNotes;
-        [UIAction("OnTouchNotesChanged")]
-        private void OnTouchNotesChanged(bool value)
+        [UIValue(nameof(TouchNotes))]
+        private bool TouchNotes
         {
-            Configuration.instance.ConfigurationData.TouchNotes = value;
-            Configuration.instance.SaveConfiguration();
+            get => this.settings.TouchNotes;
+            set
+            {
+                this.settings.TouchNotes = value;
+                Configuration.instance.SaveConfiguration();
+            }
+        }
+
+        private void UpdateAllValues()
+        {
+            this.NotifyPropertyChanged(nameof(this.NoArrowsRandom));
+            this.NotifyPropertyChanged(nameof(this.OneColor));
+            this.NotifyPropertyChanged(nameof(this.NoSliders));
+            this.NotifyPropertyChanged(nameof(this.NoArrows));
+            this.NotifyPropertyChanged(nameof(this.TouchNotes));
         }
     }
 }

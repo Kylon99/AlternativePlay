@@ -9,7 +9,7 @@ namespace AlternativePlay.HarmonyPatches
     {
         private static void Prefix(ref float saberBladeSpeed)
         {
-            if (Configuration.instance.ConfigurationData.TouchNotes && BS_Utils.Plugin.LevelData.Mode != BS_Utils.Gameplay.Mode.Multiplayer)
+            if (Configuration.Current.TouchNotes && BS_Utils.Plugin.LevelData.Mode != BS_Utils.Gameplay.Mode.Multiplayer)
             {
                 // Set the saber speed artificially to 3.0f, which is greater than the minimum 2.0f 
                 // constant in the NoteBasicCutInfo class.
