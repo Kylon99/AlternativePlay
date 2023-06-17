@@ -65,6 +65,9 @@ Drop the AlternativePlay.dll file into your Plugins folder under your BeatSaber 
 
 ## Changelog
 
+### 0.7.6
+- Added Updated UI to support multiple play mode settings
+ 
 ### 0.7.5
 - Fixed GameModifiersBehavior to support Beat Saber 1.27
 
