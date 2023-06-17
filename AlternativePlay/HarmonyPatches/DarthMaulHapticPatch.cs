@@ -11,7 +11,7 @@ namespace AlternativePlay.HarmonyPatches
     {
         private static void Prefix(HapticFeedbackController __instance, ref XRNode node)
         {
-            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.DarthMaul ||
+            if (Configuration.Current.PlayMode != PlayMode.DarthMaul ||
                 BehaviorCatalog.instance.DarthMaulBehavior == null ||
                 BehaviorCatalog.instance.DarthMaulBehavior.Split)
             {
@@ -19,15 +19,15 @@ namespace AlternativePlay.HarmonyPatches
                 return;
             }
 
-            if (Configuration.instance.ConfigurationData.DarthMaulControllerCount == ControllerCountEnum.One)
+            if (Configuration.Current.ControllerCount == ControllerCountEnum.One)
             {
-                if (!Configuration.instance.ConfigurationData.UseLeftController && node == XRNode.LeftHand)
+                if (!Configuration.Current.UseLeft && node == XRNode.LeftHand)
                 {
                     // Using right controller, move left hits to right hand
                     node = XRNode.RightHand;
                 }
 
-                if (Configuration.instance.ConfigurationData.UseLeftController && node == XRNode.RightHand)
+                if (Configuration.Current.UseLeft && node == XRNode.RightHand)
                 {
                     // Using left controller, move right hits to left hand
                     node = XRNode.LeftHand;
@@ -36,7 +36,7 @@ namespace AlternativePlay.HarmonyPatches
                 return;
             }
 
-            if (Configuration.instance.ConfigurationData.DarthMaulControllerCount == ControllerCountEnum.Two && Configuration.instance.ConfigurationData.ReverseMaulDirection)
+            if (Configuration.Current.ControllerCount == ControllerCountEnum.Two && Configuration.Current.ReverseMaulDirection)
             {
                 // If reversing direction with two controller then always swap hands
                 if (node == XRNode.LeftHand)

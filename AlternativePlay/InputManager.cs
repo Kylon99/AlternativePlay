@@ -91,8 +91,8 @@ namespace AlternativePlay
             this.RightTriggerDown = rightTriggerValue > pulled;
             this.BothTriggerDown = this.LeftTriggerDown && this.RightTriggerDown;
 
-            if (leftTriggerValue < released) { leftTriggerCanClick = true; }
-            if (rightTriggerValue < released) { rightTriggerCanClick = true; }
+            if (leftTriggerValue < released) { this.leftTriggerCanClick = true; }
+            if (rightTriggerValue < released) { this.rightTriggerCanClick = true; }
             if (leftTriggerValue < released && rightTriggerValue < released) { this.bothTriggerCanClick = true; }
         }
 

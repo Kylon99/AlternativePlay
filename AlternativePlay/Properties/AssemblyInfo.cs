@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("AlternativePlay")]
 [assembly: AssemblyDescription("Darth Maul, Spear, Nunchaku, Flail and new game play styles for Beat Saber")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Kylon99")]
+[assembly: AssemblyCompany("KevinKylon")]
 [assembly: AssemblyProduct("AlternativePlay")]
 [assembly: AssemblyCopyright("Copyright © 2023")]
 [assembly: AssemblyTrademark("")]
@@ -31,5 +31,5 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("0.7.5.0")]
-[assembly: AssemblyFileVersion("0.7.5.0")]
+[assembly: AssemblyVersion("0.7.6.0")]
+[assembly: AssemblyFileVersion("0.7.6.0")]

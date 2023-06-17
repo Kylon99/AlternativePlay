@@ -15,19 +15,17 @@ namespace AlternativePlay
         public void BeginGameCoreScene()
         {
             // Do nothing if we aren't playing Beat Saber
-            var config = Configuration.instance.ConfigurationData;
-            if (config.PlayMode != PlayMode.BeatSaber) { return; }
+            if (Configuration.Current.PlayMode != PlayMode.BeatSaber) { return; }
 
-            Utilities.CheckAndDisableForTrackerTransforms(Configuration.instance.ConfigurationData.LeftSaberTracker);
-            Utilities.CheckAndDisableForTrackerTransforms(Configuration.instance.ConfigurationData.RightSaberTracker);
+            Utilities.CheckAndDisableForTrackerTransforms(Configuration.Current.LeftTracker);
+            Utilities.CheckAndDisableForTrackerTransforms(Configuration.Current.RightTracker);
 
             this.StartCoroutine(this.DisableOtherSaberMesh());
         }
 
         private void Update()
         {
-            var config = Configuration.instance.ConfigurationData;
-            if (config.PlayMode != PlayMode.BeatSaber) return;
+            if (Configuration.Current.PlayMode != PlayMode.BeatSaber) return;
 
             this.UpdateLeftSaber();
             this.UpdateRightSaber();
@@ -35,43 +33,41 @@ namespace AlternativePlay
 
         private void UpdateLeftSaber()
         {
-            var config = Configuration.instance.ConfigurationData;
             var saberDeviceManager = BehaviorCatalog.instance.SaberDeviceManager;
 
-            if (config.OneColor && config.RemoveOtherSaber && !config.UseLeftSaber)
+            if (Configuration.Current.OneColor && Configuration.Current.RemoveOtherSaber && !Configuration.Current.UseLeft)
             {
                 // Move the other saber away since there's a bug in the base game which makes it
                 // able to cut bombs still
-                saberDeviceManager.SetLeftSaberPose(hiddenPose);
+                saberDeviceManager.SetLeftSaberPose(this.hiddenPose);
                 return;
             }
 
             // Move the left saber if we are reversing it or it was assigned a tracker
-            if (config.ReverseLeftSaber || !String.IsNullOrWhiteSpace(config.LeftSaberTracker.Serial))
+            if (Configuration.Current.ReverseLeftSaber || !String.IsNullOrWhiteSpace(Configuration.Current.LeftTracker.Serial))
             {
-                Pose leftSaberPose = saberDeviceManager.GetLeftSaberPose(config.LeftSaberTracker);
-                saberDeviceManager.SetLeftSaberPose(config.ReverseLeftSaber ? leftSaberPose.Reverse() : leftSaberPose);
+                Pose leftSaberPose = saberDeviceManager.GetLeftSaberPose(Configuration.Current.LeftTracker);
+                saberDeviceManager.SetLeftSaberPose(Configuration.Current.ReverseLeftSaber ? leftSaberPose.Reverse() : leftSaberPose);
             }
         }
 
         private void UpdateRightSaber()
         {
-            var config = Configuration.instance.ConfigurationData;
             var saberDeviceManager = BehaviorCatalog.instance.SaberDeviceManager;
 
-            if (config.OneColor && config.RemoveOtherSaber && config.UseLeftSaber)
+            if (Configuration.Current.OneColor && Configuration.Current.RemoveOtherSaber && Configuration.Current.UseLeft)
             {
                 // Move the other saber away since there's a bug in the base game which makes it
                 // able to cut bombs still
-                saberDeviceManager.SetRightSaberPose(hiddenPose);
+                saberDeviceManager.SetRightSaberPose(this.hiddenPose);
                 return;
             }
 
             // Move the right saber if we are reversing it or it was assigned a tracker
-            if (config.ReverseRightSaber || !String.IsNullOrWhiteSpace(config.RightSaberTracker.Serial))
+            if (Configuration.Current.ReverseRightSaber || !String.IsNullOrWhiteSpace(Configuration.Current.RightTracker.Serial))
             {
-                Pose rightSaberPose = saberDeviceManager.GetRightSaberPose(config.RightSaberTracker);
-                saberDeviceManager.SetRightSaberPose(config.ReverseRightSaber ? rightSaberPose.Reverse() : rightSaberPose);
+                Pose rightSaberPose = saberDeviceManager.GetRightSaberPose(Configuration.Current.RightTracker);
+                saberDeviceManager.SetRightSaberPose(Configuration.Current.ReverseRightSaber ? rightSaberPose.Reverse() : rightSaberPose);
             }
         }
 
@@ -82,10 +78,9 @@ namespace AlternativePlay
         {
             yield return new WaitForSecondsRealtime(0.1f);
 
-            var config = Configuration.instance.ConfigurationData;
-            if (!(config.OneColor && config.RemoveOtherSaber)) { yield break; }
+            if (!(Configuration.Current.OneColor && Configuration.Current.RemoveOtherSaber)) { yield break; }
 
-            if (config.UseLeftSaber)
+            if (Configuration.Current.UseLeft)
             {
                 BehaviorCatalog.instance.SaberDeviceManager.DisableRightSaberMesh();
             }

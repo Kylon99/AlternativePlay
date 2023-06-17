@@ -18,7 +18,7 @@ namespace AlternativePlay.Models
         public void LoadTrackedDevices()
         {
             var desiredCharacteristics = InputDeviceCharacteristics.TrackedDevice;
-            InputDevices.GetDevicesWithCharacteristics(desiredCharacteristics, TrackedDevices);
+            InputDevices.GetDevicesWithCharacteristics(desiredCharacteristics, this.TrackedDevices);
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace AlternativePlay.Models
         /// <returns>A <see cref="InputDevice"/> if found or otherwise null</returns>
         public InputDevice GetInputDeviceFromSerial(string serial)
         {
-            return TrackedDevices.FirstOrDefault(i => i.serialNumber == serial);
+            return this.TrackedDevices.FirstOrDefault(i => i.serialNumber == serial);
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace AlternativePlay.Models
         /// <returns>A <see cref="Vector3"/> containing the position the tracked device</returns>
         public Vector3? GetPositionFromSerial(string serial)
         {
-            var device = TrackedDevices.FirstOrDefault(i => i.serialNumber == serial);
+            var device = this.TrackedDevices.FirstOrDefault(i => i.serialNumber == serial);
             if (device == null) { return null; }
 
             bool positionSuccess = device.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position);
@@ -85,7 +85,7 @@ namespace AlternativePlay.Models
         /// <returns>A pose containing the position and rotation of the tracked device</returns>
         public Pose? GetPoseFromSerial(string serial)
         {
-            var device = TrackedDevices.FirstOrDefault(i => i.serialNumber == serial);
+            var device = this.TrackedDevices.FirstOrDefault(i => i.serialNumber == serial);
             if (device == null) { return null; }
 
             bool positionSuccess = device.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position);

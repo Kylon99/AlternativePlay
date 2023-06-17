@@ -1,45 +1,52 @@
 ﻿<bg xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd">
-  <vertical child-control-height="false">
+	<vertical child-control-height="false">
 
-    <!-- View Header -->
-    <horizontal pad-left="10" pad-right="10" bg="panel-top" pref-height="11">
-      <img preserve-aspect="true" pref-width="8" source="~DarthMaulIcon" />
-      <vertical pad-left="1" pad-top="1" pad-bottom="3" pref-height="12" vertical-fit="PreferredSize">
-        <text text="Darth Maul" font-size="5"/>
-        <text text="Double bladed staff for one or two hands" font-size="4" />
-      </vertical>
-    </horizontal>
+		<!-- View Header -->
+		<horizontal pad-left="10" pad-right="10" bg="panel-top" pref-height="11">
+			<img preserve-aspect="true" pref-width="8" source="~DarthMaulIcon" />
+			<vertical pad-left="1" pad-top="1" pad-bottom="3" pref-height="12" vertical-fit="PreferredSize">
+				<text text="Darth Maul" font-size="5"/>
+				<text text="Double bladed staff for one or two hands" font-size="4" />
+			</vertical>
+		</horizontal>
 
-    <!-- Main View -->
-    <vertical pref-width="75" vertical-fit="PreferredSize">
-      <dropdown-list-setting text="Controllers" value="ControllerChoice" choices="ControllerChoiceList" apply-on-change="true"
-                             on-change="OnControllersChanged" hover-hint="Two controllers or trackers for Darth Maul versus one controller or tracker"/>
-      <checkbox-setting text="Use Left Controller" value="UseLeftController" apply-on-change="true"
-                        on-change="OnUseLeftControllerChanged" hover-hint="Move the sabers to the left controller for one controller mode only" />
-      <checkbox-setting text="Reverse Maul Direction" value="ReverseMaulDirection" apply-on-change="true"
-                        on-change="OnReverseMaulDirectionChanged" hover-hint="Invert the saber directions, useful for one controller mode" />
-      <checkbox-setting text="Use Trigger to Separate" value="UseTriggerToSeparate" apply-on-change="true"
-                        on-change="OnUseTriggerToSeparateChanged" hover-hint="Press any trigger to separate split the sabers" />
-      <increment-setting text="Separation Amount" value="SeparationAmount" integer-only="true" min="0" max="50" increment="1"
-                         on-change="OnSeparationAmountChanged" hover-hint="The distance between sabers" />
-    </vertical>
+		<!-- Main View -->
+		<vertical pref-width="75" vertical-fit="PreferredSize">
+			<horizontal>
+				<horizontal pad-right="1">
+					<img preserve-aspect="true" pref-width="8" pref-height="8" source="~ControllerChoiceIcon" />
+				</horizontal>
+				<dropdown-list-setting text="Controllers" value="ControllerChoice" choices="ControllerChoiceList" bind-value="true" apply-on-change="true" hover-hint="Two controllers or trackers for Darth Maul versus one controller or tracker"/>
+			</horizontal>
+			<horizontal>
+				<horizontal pad-right="1">
+					<img preserve-aspect="true" pref-width="8" pref-height="8" source="~UseLeftControllerIcon" />
+				</horizontal>
+				<checkbox-setting text="Use Left Controller" value="UseLeftController" bind-value="true" apply-on-change="true" hover-hint="Move the sabers to the left controller for one controller mode only" />
+			</horizontal>
+			<horizontal>
+				<horizontal pad-right="1">
+					<img preserve-aspect="true" pref-width="8" pref-height="8" source="~ReverseDarthMaulIcon" />
+				</horizontal>
+				<checkbox-setting text="Reverse Maul Direction" value="ReverseDarthMaul" bind-value="true" apply-on-change="true" hover-hint="Invert the saber directions, useful for one controller mode" />
+			</horizontal>
+			<checkbox-setting text="Use Trigger to Separate" value="UseTriggerToSeparate" bind-value="true" apply-on-change="true" hover-hint="Press any trigger to separate split the sabers" />
+			<increment-setting text="Separation Amount" value="SeparationAmount" bind-value="true" apply-on-change="true" integer-only="true" min="0" max="50" increment="1" hover-hint="The distance between sabers" />
+		</vertical>
 
     <!--Tracker Selection-->
     <vertical pref-width="80" vertical-fit="PreferredSize">
       <horizontal>
-        <clickable-text text="Left Hand" italics="true" font-size="4" highlight-color="#FFFFFF" align="MidlineLeft"
-                        hover-hint="Choose a tracker for the left hand instead of the default controller"/>
-        <button preferred-width="50" preferred-height="8" text="~LeftMaulTrackerSerial"
-                hover-hint="~LeftMaulTrackerHoverHint" on-click="OnShowSelectLeftTracker"/>
+        <clickable-text text="Left Hand" italics="true" font-size="4" highlight-color="#FFFFFF" align="MidlineLeft" hover-hint="Choose a tracker for the left hand instead of the default controller"/>
+        <button preferred-width="50" preferred-height="8" text="~LeftTrackerSerial" hover-hint="~LeftTrackerHoverHint" on-click="OnShowSelectLeftTracker"/>
         <button pref-width="10" preferred-height="8" text="x" on-click="OnClearLeftTracker"/>
       </horizontal>
       <horizontal>
-        <clickable-text text="Right Hand" italics="true" font-size="4" highlight-color="#FFFFFF" align="MidlineLeft"
-                        hover-hint="Choose a tracker for the right hand instead of the default controller"/>
-        <button pref-width="50" preferred-height="8" text="~RightMaulTrackerSerial"
-                hover-hint="~RightMaulTrackerHoverHint" on-click="OnShowSelectRightTracker"/>
+        <clickable-text text="Right Hand" italics="true" font-size="4" highlight-color="#FFFFFF" align="MidlineLeft" hover-hint="Choose a tracker for the right hand instead of the default controller"/>
+        <button pref-width="50" preferred-height="8" text="~RightTrackerSerial" hover-hint="~RightTrackerHoverHint" on-click="OnShowSelectRightTracker"/>
         <button pref-width="10" preferred-height="8" text="x" on-click="OnClearRightTracker"/>
       </horizontal>
     </vertical>
-  </vertical>
+    
+	</vertical>
 </bg>

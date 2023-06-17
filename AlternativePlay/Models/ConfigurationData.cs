@@ -29,6 +29,17 @@ namespace AlternativePlay.Models
     [Serializable]
     public class ConfigurationData
     {
+        public string Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        public int Selected { get; set; }
+        public List<PlayModeSettings> PlayModeSettings { get; set; }
+    }
+
+    /// <summary>
+    /// Represents one configuration in the list, which consists of options for one play mode.
+    /// </summary>
+    [Serializable]
+    public class PlayModeSettings
+    {
         public const string DefaultPositionIncrement = "1.0";
         public const string DefaultRotationIncrement = "10.0f";
 
@@ -40,51 +51,37 @@ namespace AlternativePlay.Models
         [NonSerialized]
         public static readonly List<string> RotationIncrementList = new List<string> { "0.1", "1", "5", "10", "30" };
 
-        public string Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-
         public PlayMode PlayMode { get; set; } = PlayMode.BeatSaber;
+
+        // Common Options
+        public bool UseLeft { get; set; }
+        public ControllerCountEnum ControllerCount { get; set; } = ControllerCountEnum.One;
+        public float Gravity { get; set; } = 3.5f;
 
         // Beat Saber Options
         public bool ReverseLeftSaber { get; set; }
         public bool ReverseRightSaber { get; set; }
-        public bool UseLeftSaber { get; set; }
         public bool RemoveOtherSaber { get; set; }
-        public TrackerConfigData LeftSaberTracker { get; set; } = new TrackerConfigData();
-        public TrackerConfigData RightSaberTracker { get; set; } = new TrackerConfigData();
 
         // Darth Maul Options
-        public ControllerCountEnum DarthMaulControllerCount { get; set; } = ControllerCountEnum.One;
-        public bool UseLeftController { get; set; }
         public bool ReverseMaulDirection { get; set; }
         public bool UseTriggerToSeparate { get; set; }
         public int MaulDistance { get; set; } = 15;
-        public TrackerConfigData LeftMaulTracker { get; set; } = new TrackerConfigData();
-        public TrackerConfigData RightMaulTracker { get; set; } = new TrackerConfigData();
 
         // Spear Options
-        public ControllerCountEnum SpearControllerCount { get; set; } = ControllerCountEnum.One;
-        public bool UseLeftSpear { get; set; }
         public bool UseTriggerToSwitchHands { get; set; }
         public bool ReverseSpearDirection { get; set; }
-        public TrackerConfigData LeftSpearTracker { get; set; } = new TrackerConfigData();
-        public TrackerConfigData RightSpearTracker { get; set; } = new TrackerConfigData();
 
         // Nunchaku Options
         public bool ReverseNunchaku { get; set; }
         public int NunchakuLength { get; set; } = 50; // in centimetres
-        public float NunchakuGravity { get; set; } = 3.5f;
-        public TrackerConfigData LeftNunchakuTracker { get; set; } = new TrackerConfigData();
-        public TrackerConfigData RightNunchakuTracker { get; set; } = new TrackerConfigData();
 
         // Flail Options
         public BeatFlailMode LeftFlailMode { get; set; } = BeatFlailMode.Flail;
         public BeatFlailMode RightFlailMode { get; set; } = BeatFlailMode.Flail;
         public int LeftFlailLength { get; set; } = 80; // in centimetres
         public int RightFlailLength { get; set; } = 80; // in centimetres
-        public float FlailGravity { get; set; } = 3.5f;
         public int MoveNotesBack { get; set; } = 0; // in centimetres
-        public TrackerConfigData LeftFlailTracker { get; set; } = new TrackerConfigData();
-        public TrackerConfigData RightFlailTracker { get; set; } = new TrackerConfigData();
 
         // Gameplay Changes Options
         public bool NoArrowsRandom { get; set; }
@@ -94,6 +91,8 @@ namespace AlternativePlay.Models
         public bool TouchNotes { get; set; }
 
         // Tracker Select Options
+        public TrackerConfigData LeftTracker { get; set; } = new TrackerConfigData();
+        public TrackerConfigData RightTracker { get; set; } = new TrackerConfigData();
         public string PositionIncrement { get; set; } = DefaultPositionIncrement;
         public string RotationIncrement { get; set; } = DefaultRotationIncrement;
 
@@ -104,6 +103,28 @@ namespace AlternativePlay.Models
             if (!success) result = 0.1f;
 
             return result;
+        }
+
+        public static string PlayModeDescription(PlayMode playMode)
+        {
+            switch(playMode)
+            {
+                default:
+                case PlayMode.BeatSaber:
+                    return "Beat Saber";
+
+                case PlayMode.DarthMaul:
+                    return "Darth Maul";
+
+                case PlayMode.BeatSpear:
+                    return "Beat Spear";
+
+                case PlayMode.BeatFlail:
+                    return "Beat Flail";
+
+                case PlayMode.Nunchaku:
+                    return "Nunchaku";
+            }
         }
     }
 }

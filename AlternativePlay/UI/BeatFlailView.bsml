@@ -1,4 +1,4 @@
-﻿<bg xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd">
+﻿<bg xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
   <vertical child-control-height="false">
 
     <!-- View Header -->
@@ -12,40 +12,48 @@
 
     <!-- Main View -->
     <vertical pref-width="75" pref-height="45" vertical-fit="PreferredSize">
-      <dropdown-list-setting text="Left Hand" value="LeftFlailMode" choices="LeftFlailModeList" apply-on-change="true"
-                             on-change="OnLeftFlailModeListChanged" hover-hint="Choose the weapon for the left hand"/>
-      <dropdown-list-setting text="Right Hand" value="RightFlailMode" choices="RightFlailModeList" apply-on-change="true"
-                             on-change="OnRightFlailModeListChanged" hover-hint="Choose the weapon for the right hand"/>
-      <increment-setting text="Left Flail Length" value="LeftFlailLength" integer-only="true" min="50" max="150" increment="10" formatter="LengthFormatter"
-                         on-change="OnLeftFlailLengthChanged" hover-hint="The distance between the handle and the ball on the left" />
-      <increment-setting text="Right Flail Length" value="RightFlailLength" integer-only="true" min="50" max="150" increment="10" formatter="LengthFormatter"
-                         on-change="OnRightFlailLengthChanged" hover-hint="The distance between the handle and the ball on the right" />
-      <increment-setting text="Move Notes Back Distance" value="MoveNotesBack" integer-only="true" min="0" max="150" increment="10" formatter="LengthFormatter"
-                         on-change="OnMoveNotesBackChanged" hover-hint="Move notes back to account for chain length." />
+      <horizontal>
+        <horizontal pad-right="1">
+          <img preserve-aspect="true" pref-width="8" pref-height="8" source="~LeftFlailModeIcon" />
+        </horizontal>
+        <dropdown-list-setting text="Left Hand" value="LeftFlailMode" choices="LeftFlailModeList" bind-value="true" apply-on-change="true"
+                 hover-hint="Choose the weapon for the left hand"/>
+      </horizontal>
+      
+      <horizontal>
+        <horizontal pad-right="1">
+          <img preserve-aspect="true" pref-width="8" pref-height="8" source="~RightFlailModeIcon" />
+        </horizontal>
+        <dropdown-list-setting text="Right Hand" value="RightFlailMode" choices="RightFlailModeList" bind-value="true" apply-on-change="true"
+                 hover-hint="Choose the weapon for the right hand"/>
+      </horizontal>
+      
+      <increment-setting text="Left Flail Length" value="LeftFlailLength" bind-value="true" apply-on-change="true" integer-only="true" min="50" max="150" increment="10"
+						 formatter="LengthFormatter" hover-hint="The distance between the handle and the ball on the left" />
+      <increment-setting text="Right Flail Length" value="RightFlailLength" bind-value="true" apply-on-change="true" integer-only="true" min="50" max="150" increment="10"
+						 formatter="LengthFormatter" hover-hint="The distance between the handle and the ball on the right" />
+      <increment-setting text="Move Notes Back Distance" value="MoveNotesBack" bind-value="true" apply-on-change="true" integer-only="true" min="0" max="150" increment="10"
+						 formatter="LengthFormatter" hover-hint="Move notes back to account for chain length." />
 
       <horizontal preferred-width="75" horizontal-fit="PreferredSize" pad-bottom="3">
-        <slider-setting preferred-width="55" text="Gravity" value="FlailGravity" integer-only="false" min="0" max="5" increment="0.1" get-event="RefreshFlailGravity"
-                        on-change="OnFlailGravityChanged" hover-hint="Amount of G force applied to the Flail (multiple of -9.81 m/s^2)" />
+        <slider-setting preferred-width="55" text="Gravity" value="Gravity" bind-value="true" apply-on-change="true" integer-only="false" min="0" max="5" increment="0.1" get-event="RefreshGravity" hover-hint="Amount of G force applied to the Flail (multiple of -9.81 m/s^2)" />
         <button pref-width="18" preferred-height="8" text="Reset" pad-left="2" hover-hint='Reset gravity to 3.5' on-click="OnResetGravity"/>
       </horizontal>
     </vertical>
 
-    <!--Tracker Settings-->
+    <!--Tracker Selection-->
     <vertical pref-width="80" vertical-fit="PreferredSize">
       <horizontal>
-        <clickable-text text="Left Hand" italics="true" font-size="4" highlight-color="#FFFFFF" align="MidlineLeft"
-                        hover-hint="Use a tracker for the left hand instead of the default controller"/>
-        <button preferred-width="50" preferred-height="8" text="~LeftFlailTrackerSerial"
-                hover-hint="~LeftFlailTrackerHoverHint" on-click="OnShowSelectLeftTracker"/>
+        <clickable-text text="Left Hand" italics="true" font-size="4" highlight-color="#FFFFFF" align="MidlineLeft" hover-hint="Choose a tracker for the left hand instead of the default controller"/>
+        <button preferred-width="50" preferred-height="8" text="~LeftTrackerSerial" hover-hint="~LeftTrackerHoverHint" on-click="OnShowSelectLeftTracker"/>
         <button pref-width="10" preferred-height="8" text="x" on-click="OnClearLeftTracker"/>
       </horizontal>
       <horizontal>
-        <clickable-text text="Right Hand" italics="true" font-size="4" highlight-color="#FFFFFF" align="MidlineLeft"
-                        hover-hint="Use a tracker for the right hand instead of the default controller"/>
-        <button pref-width="50" preferred-height="8" text="~RightFlailTrackerSerial"
-                hover-hint="~RightFlailTrackerHoverHint" on-click="OnShowSelectRightTracker"/>
+        <clickable-text text="Right Hand" italics="true" font-size="4" highlight-color="#FFFFFF" align="MidlineLeft" hover-hint="Choose a tracker for the right hand instead of the default controller"/>
+        <button pref-width="50" preferred-height="8" text="~RightTrackerSerial" hover-hint="~RightTrackerHoverHint" on-click="OnShowSelectRightTracker"/>
         <button pref-width="10" preferred-height="8" text="x" on-click="OnClearRightTracker"/>
       </horizontal>
     </vertical>
+
   </vertical>
 </bg>
