@@ -223,7 +223,7 @@
     <EmbeddedResource Include="Public\NoArrowsRandom.png" />
     <EmbeddedResource Include="Public\OneColor.png" />
     <Content Include="Public\OneColor.svg" />
-    <None Include="UI\AlternativePlayView.bsml" />
+    <EmbeddedResource Include="UI\AlternativePlayView.bsml" />
     <EmbeddedResource Include="UI\PlayModeSelectTab.bsml" />
   </ItemGroup>
   <ItemGroup>
