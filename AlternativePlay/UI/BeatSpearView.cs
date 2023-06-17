@@ -10,144 +10,166 @@ namespace AlternativePlay.UI
     public class BeatSpearView : BSMLAutomaticViewController
     {
         private ModMainFlowCoordinator mainFlowCoordinator;
+        private PlayModeSettings settings;
 
         public void SetMainFlowCoordinator(ModMainFlowCoordinator mainFlowCoordinator)
         {
             this.mainFlowCoordinator = mainFlowCoordinator;
         }
 
+        public void SetPlayModeSettings(PlayModeSettings Settings)
+        {
+            this.settings = Settings;
+        }
+
         protected override void DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling)
         {
             base.DidActivate(firstActivation, addedToHierarchy, screenSystemEnabling);
-            SetTrackerText();
+            this.UpdateAllValues();
+            this.SetTrackerText();
         }
 
-        [UIValue("BeatSpearIcon")]
+        [UIValue(nameof(BeatSpearIcon))]
         public string BeatSpearIcon => IconNames.BeatSpear;
 
-        [UIValue("ControllerChoice")]
-        private string controllerChoice = Configuration.instance.ConfigurationData.SpearControllerCount.ToString();
-        [UIValue("ControllerChoiceList")]
-        private List<object> controllerChoiceList = new List<object> { "One", "Two" };
-        [UIAction("OnControllersChanged")]
-        private void OnControllersChanged(string value)
-        {
-            Configuration.instance.ConfigurationData.SpearControllerCount = (ControllerCountEnum)Enum.Parse(typeof(ControllerCountEnum), value);
-            Configuration.instance.SaveConfiguration();
+        [UIValue(nameof(ControllerChoiceIcon))]
+        public string ControllerChoiceIcon => this.settings.ControllerCount == ControllerCountEnum.One ? IconNames.OneController : IconNames.TwoController;
+
+        [UIValue(nameof(ControllerChoice))]
+        private string ControllerChoice
+        { 
+            get => this.settings.ControllerCount.ToString();
+            set
+            {
+                this.settings.ControllerCount = (ControllerCountEnum)Enum.Parse(typeof(ControllerCountEnum), value);
+                Configuration.instance.SaveConfiguration();
+                this.NotifyPropertyChanged(nameof(this.ControllerChoiceIcon));
+            }
         }
 
-        [UIValue("UseLeftSpear")]
-        private bool useLeftSpear = Configuration.instance.ConfigurationData.UseLeftSpear;
-        [UIAction("OnUseLeftSpearChanged")]
-        private void OnUseLeftSpearChanged(bool value)
+        [UIValue(nameof(ControllerChoiceList))]
+        private List<object> ControllerChoiceList => new List<object> { ControllerCountEnum.One.ToString(), ControllerCountEnum.Two.ToString() };
+
+        [UIValue(nameof(UseLeftSpearIcon))]
+        public string UseLeftSpearIcon => this.settings.UseLeft ? IconNames.LeftSaber : IconNames.RightSaber;
+
+        [UIValue(nameof(UseLeftSpear))]
+        private bool UseLeftSpear
         {
-            Configuration.instance.ConfigurationData.UseLeftSpear = value;
-            Configuration.instance.SaveConfiguration();
+            get => this.settings.UseLeft;
+            set
+            {
+                this.settings.UseLeft = value;
+                Configuration.instance.SaveConfiguration();
+                this.NotifyPropertyChanged(nameof(this.UseLeftSpearIcon));
+            }
         }
 
-        [UIValue("UseTriggerToSwitchHands")]
-        private bool useTriggerToSwitchHands = Configuration.instance.ConfigurationData.UseTriggerToSwitchHands;
-        [UIAction("OnUseTriggerToSwitchHands")]
-        private void OnUseTriggerToSwitchHands(bool value)
+        [UIValue(nameof(UseTriggerToSwitchHands))]
+        private bool UseTriggerToSwitchHands
         {
-            Configuration.instance.ConfigurationData.UseTriggerToSwitchHands = value;
-            Configuration.instance.SaveConfiguration();
+            get => this.settings.UseTriggerToSwitchHands;
+            set
+            {
+                this.settings.UseTriggerToSwitchHands = value;
+                Configuration.instance.SaveConfiguration();
+            }
         }
 
-        [UIValue("ReverseSpearDirection")]
-        private bool reverseSpearDirection = Configuration.instance.ConfigurationData.ReverseSpearDirection;
-        [UIAction("OnReverseSpearDirectionChanged")]
-        private void OnReverseSpearDirectionChanged(bool value)
+        [UIValue(nameof(ReverseSpearDirectionIcon))]
+        public string ReverseSpearDirectionIcon => IconNames.ReverseSpearDirection;
+
+        [UIValue(nameof(ReverseSpearDirection))]
+        private bool ReverseSpearDirection
         {
-            Configuration.instance.ConfigurationData.ReverseSpearDirection = value;
-            Configuration.instance.SaveConfiguration();
+            get => this.settings.ReverseSpearDirection;
+            set
+            {
+                this.settings.ReverseSpearDirection = value;
+                Configuration.instance.SaveConfiguration();
+            }
         }
 
-        #region SelectTracker Modal Members
+        private void UpdateAllValues()
+        {
+            this.NotifyPropertyChanged(nameof(this.ControllerChoice));
+            this.NotifyPropertyChanged(nameof(this.UseLeftSpear));
+            this.NotifyPropertyChanged(nameof(this.UseTriggerToSwitchHands));
+            this.NotifyPropertyChanged(nameof(this.ReverseSpearDirection));
+        }
+
+        #region Tracker Selection Members
 
         // Text Displays for the Main View
-        private string leftSpearTrackerSerial;
-        [UIValue("LeftSpearTrackerSerial")]
-        public string LeftSpearTrackerSerial { get => this.leftSpearTrackerSerial; set { this.leftSpearTrackerSerial = value; this.NotifyPropertyChanged(nameof(this.LeftSpearTrackerSerial)); } }
+        private string leftTrackerSerial;
+        [UIValue(nameof(LeftTrackerSerial))]
+        public string LeftTrackerSerial { get => this.leftTrackerSerial; set { this.leftTrackerSerial = value; this.NotifyPropertyChanged(); } }
 
-        private string leftSpearTrackerHoverHint;
-        [UIValue("LeftSpearTrackerHoverHint")]
-        public string LeftSpearTrackerHoverHint { get => this.leftSpearTrackerHoverHint; set { this.leftSpearTrackerHoverHint = value; this.NotifyPropertyChanged(nameof(this.LeftSpearTrackerHoverHint)); } }
+        private string leftTrackerHoverHint;
+        [UIValue(nameof(LeftTrackerHoverHint))]
+        public string LeftTrackerHoverHint { get => this.leftTrackerHoverHint; set { this.leftTrackerHoverHint = value; this.NotifyPropertyChanged(); } }
 
-        private string rightSpearTrackerSerial;
-        [UIValue("RightSpearTrackerSerial")]
-        public string RightSpearTrackerSerial { get => this.rightSpearTrackerSerial; set { this.rightSpearTrackerSerial = value; this.NotifyPropertyChanged(nameof(this.RightSpearTrackerSerial)); } }
+        private string rightTrackerSerial;
+        [UIValue(nameof(RightTrackerSerial))]
+        public string RightTrackerSerial { get => this.rightTrackerSerial; set { this.rightTrackerSerial = value; this.NotifyPropertyChanged(); } }
 
-        private string rightSpearTrackerHoverHint;
-        [UIValue("RightSpearTrackerHoverHint")]
-        public string RightSpearTrackerHoverHint { get => this.rightSpearTrackerHoverHint; set { this.rightSpearTrackerHoverHint = value; this.NotifyPropertyChanged(nameof(this.RightSpearTrackerHoverHint)); } }
+        private string rightTrackerHoverHint;
+        [UIValue(nameof(RightTrackerHoverHint))]
+        public string RightTrackerHoverHint { get => this.rightTrackerHoverHint; set { this.rightTrackerHoverHint = value; this.NotifyPropertyChanged(); } }
 
         // Text Display for the Current Tracker in the Tracker Select Modal
         private string currentTrackerText;
-        [UIValue("CurrentTrackerText")]
-        public string CurrentTrackerText { get => this.currentTrackerText; set { this.currentTrackerText = value; this.NotifyPropertyChanged(nameof(this.CurrentTrackerText)); } }
+
+        [UIValue(nameof(CurrentTrackerText))]
+        public string CurrentTrackerText { get => this.currentTrackerText; set { this.currentTrackerText = value; this.NotifyPropertyChanged(); } }
 
         // Events
-        [UIAction("OnShowSelectLeftTracker")]
+
+        [UIAction(nameof(OnShowSelectLeftTracker))]
         private void OnShowSelectLeftTracker()
         {
-            this.mainFlowCoordinator.ShowTrackerSelect(Configuration.instance.ConfigurationData.LeftSpearTracker);
+            this.mainFlowCoordinator.ShowTrackerSelect(this.settings.LeftTracker);
         }
 
-        [UIAction("OnShowSelectRightTracker")]
+        [UIAction(nameof(OnShowSelectRightTracker))]
         private void OnShowSelectRightTracker()
         {
-            this.mainFlowCoordinator.ShowTrackerSelect(Configuration.instance.ConfigurationData.RightSpearTracker);
+            this.mainFlowCoordinator.ShowTrackerSelect(this.settings.RightTracker);
         }
 
-        [UIAction("OnClearLeftTracker")]
+        [UIAction(nameof(OnClearLeftTracker))]
         private void OnClearLeftTracker()
         {
-            Configuration.instance.ConfigurationData.LeftSpearTracker = new TrackerConfigData();
+            this.settings.LeftTracker = new TrackerConfigData();
             Configuration.instance.SaveConfiguration();
-            this.LeftSpearTrackerSerial = TrackerConfigData.NoTrackerText;
-            this.LeftSpearTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
+            this.LeftTrackerSerial = TrackerConfigData.NoTrackerText;
+            this.LeftTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
         }
 
-        [UIAction("OnClearRightTracker")]
+        [UIAction(nameof(OnClearRightTracker))]
         private void OnClearRightTracker()
         {
-            Configuration.instance.ConfigurationData.RightSpearTracker = new TrackerConfigData();
+            this.settings.RightTracker = new TrackerConfigData();
             Configuration.instance.SaveConfiguration();
-            this.RightSpearTrackerSerial = TrackerConfigData.NoTrackerText;
-            this.RightSpearTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
+            this.RightTrackerSerial = TrackerConfigData.NoTrackerText;
+            this.RightTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
         }
 
         /// <summary>
-        /// Initializes the bound variables for the fields on this view
+        /// Initializes the tracker text buttons
         /// </summary>
         private void SetTrackerText()
         {
-            var config = Configuration.instance.ConfigurationData;
-            if (String.IsNullOrWhiteSpace(config.LeftSpearTracker.Serial))
-            {
-                this.LeftSpearTrackerSerial = TrackerConfigData.NoTrackerText;
-                this.LeftSpearTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
-            }
-            else
-            {
-                this.LeftSpearTrackerSerial = config.LeftSpearTracker.Serial;
-                this.LeftSpearTrackerHoverHint = config.LeftSpearTracker.FullName;
-            }
+            bool isLeftEmpty = String.IsNullOrWhiteSpace(this.settings.LeftTracker.Serial);
+            bool isRightEmpty = String.IsNullOrWhiteSpace(this.settings.RightTracker.Serial);
 
-            if (String.IsNullOrWhiteSpace(config.RightSpearTracker.Serial))
-            {
-                this.RightSpearTrackerSerial = TrackerConfigData.NoTrackerText;
-                this.RightSpearTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
-            }
-            else
-            {
-                this.RightSpearTrackerSerial = config.RightSpearTracker.Serial;
-                this.RightSpearTrackerHoverHint = config.RightSpearTracker.FullName;
-            }
+            this.LeftTrackerSerial = isLeftEmpty ? TrackerConfigData.NoTrackerText : this.settings.LeftTracker.Serial;
+            this.LeftTrackerHoverHint = isLeftEmpty ? TrackerConfigData.NoTrackerHoverHint : this.settings.LeftTracker.FullName;
+
+            this.RightTrackerSerial = isRightEmpty ? TrackerConfigData.NoTrackerText : this.settings.RightTracker.Serial;
+            this.RightTrackerHoverHint = isRightEmpty ? TrackerConfigData.NoTrackerHoverHint : this.settings.RightTracker.FullName;
         }
 
         #endregion
-
     }
 }

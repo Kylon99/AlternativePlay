@@ -16,52 +16,54 @@ namespace AlternativePlay
         public BeatFlailBehavior FlailBehavior { get; private set; }
         public GameModifiersBehavior GameModifiersBehavior { get; private set; }
         public AssetLoaderBehavior AssetLoaderBehavior { get; private set; }
+        public PlayModeSelectTab PlayModeSelectTab { get; private set; }
 
         public void LoadStartBehaviors()
         {
-            if (AlternativePlayUI == null) AlternativePlayUI = new GameObject(nameof(AlternativePlayUI)).AddComponent<AlternativePlayUI>();
+            if (this.AlternativePlayUI == null) this.AlternativePlayUI = new GameObject(nameof(this.AlternativePlayUI)).AddComponent<AlternativePlayUI>();
+            if (this.PlayModeSelectTab == null) this.PlayModeSelectTab = new GameObject(nameof(this.PlayModeSelectTab)).AddComponent<PlayModeSelectTab>();
         }
 
         public void LoadMenuBehaviors()
         {
-            if (FlailBehavior != null) GameObject.Destroy(FlailBehavior);
-            FlailBehavior = null;
+            if (this.FlailBehavior != null) GameObject.Destroy(this.FlailBehavior);
+            this.FlailBehavior = null;
 
-            if (NunchakuBehavior != null) GameObject.Destroy(NunchakuBehavior);
-            NunchakuBehavior = null;
+            if (this.NunchakuBehavior != null) GameObject.Destroy(this.NunchakuBehavior);
+            this.NunchakuBehavior = null;
         }
 
         public void LoadMenuSceneLoadedFreshBehaviors()
         {
-            if (ShowTrackersBehavior == null) ShowTrackersBehavior = new GameObject(nameof(ShowTrackersBehavior)).AddComponent<ShowTrackersBehavior>();
-            if (AssetLoaderBehavior == null) AssetLoaderBehavior = new GameObject(nameof(AssetLoaderBehavior)).AddComponent<AssetLoaderBehavior>();
+            if (this.ShowTrackersBehavior == null) this.ShowTrackersBehavior = new GameObject(nameof(this.ShowTrackersBehavior)).AddComponent<ShowTrackersBehavior>();
+            if (this.AssetLoaderBehavior == null) this.AssetLoaderBehavior = new GameObject(nameof(this.AssetLoaderBehavior)).AddComponent<AssetLoaderBehavior>();
         }
 
         public void LoadGameSceneLoadedBehaviors()
         {
-            if (InputManager == null) InputManager = new GameObject(nameof(InputManager)).AddComponent<InputManager>();
-            InputManager.BeginPolling();
+            if (this.InputManager == null) this.InputManager = new GameObject(nameof(this.InputManager)).AddComponent<InputManager>();
+            this.InputManager.BeginPolling();
 
-            if (SaberDeviceManager == null) SaberDeviceManager = new GameObject(nameof(SaberDeviceManager)).AddComponent<SaberDeviceManager>();
-            SaberDeviceManager.BeginGameCoreScene();
+            if (this.SaberDeviceManager == null) this.SaberDeviceManager = new GameObject(nameof(this.SaberDeviceManager)).AddComponent<SaberDeviceManager>();
+            this.SaberDeviceManager.BeginGameCoreScene();
 
-            if (BeatSaberBehavior == null) BeatSaberBehavior = new GameObject(nameof(BeatSaberBehavior)).AddComponent<BeatSaberBehavior>();
-            BeatSaberBehavior.BeginGameCoreScene();
+            if (this.BeatSaberBehavior == null) this.BeatSaberBehavior = new GameObject(nameof(this.BeatSaberBehavior)).AddComponent<BeatSaberBehavior>();
+            this.BeatSaberBehavior.BeginGameCoreScene();
 
-            if (DarthMaulBehavior == null) DarthMaulBehavior = new GameObject(nameof(DarthMaulBehavior)).AddComponent<DarthMaulBehavior>();
-            DarthMaulBehavior.BeginGameCoreScene();
+            if (this.DarthMaulBehavior == null) this.DarthMaulBehavior = new GameObject(nameof(this.DarthMaulBehavior)).AddComponent<DarthMaulBehavior>();
+            this.DarthMaulBehavior.BeginGameCoreScene();
 
-            if (BeatSpearBehavior == null) BeatSpearBehavior = new GameObject(nameof(BeatSpearBehavior)).AddComponent<BeatSpearBehavior>();
-            BeatSpearBehavior.BeginGameCoreScene();
+            if (this.BeatSpearBehavior == null) this.BeatSpearBehavior = new GameObject(nameof(this.BeatSpearBehavior)).AddComponent<BeatSpearBehavior>();
+            this.BeatSpearBehavior.BeginGameCoreScene();
 
-            if (NunchakuBehavior == null) NunchakuBehavior = new GameObject(nameof(NunchakuBehavior)).AddComponent<NunchakuBehavior>();
-            NunchakuBehavior.BeginGameCoreScene();
+            if (this.NunchakuBehavior == null) this.NunchakuBehavior = new GameObject(nameof(this.NunchakuBehavior)).AddComponent<NunchakuBehavior>();
+            this.NunchakuBehavior.BeginGameCoreScene();
 
-            if (FlailBehavior == null) FlailBehavior = new GameObject(nameof(FlailBehavior)).AddComponent<BeatFlailBehavior>();
-            FlailBehavior.BeginGameCoreScene();
+            if (this.FlailBehavior == null) this.FlailBehavior = new GameObject(nameof(this.FlailBehavior)).AddComponent<BeatFlailBehavior>();
+            this.FlailBehavior.BeginGameCoreScene();
 
-            if (GameModifiersBehavior == null) GameModifiersBehavior = new GameObject(nameof(GameModifiersBehavior)).AddComponent<GameModifiersBehavior>();
-            GameModifiersBehavior.BeginGameCoreScene();
+            if (this.GameModifiersBehavior == null) this.GameModifiersBehavior = new GameObject(nameof(this.GameModifiersBehavior)).AddComponent<GameModifiersBehavior>();
+            this.GameModifiersBehavior.BeginGameCoreScene();
         }
     }
 }

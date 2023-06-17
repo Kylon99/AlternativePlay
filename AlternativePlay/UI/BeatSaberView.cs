@@ -9,143 +9,166 @@ namespace AlternativePlay.UI
     public class BeatSaberView : BSMLAutomaticViewController
     {
         private ModMainFlowCoordinator mainFlowCoordinator;
+        private PlayModeSettings settings;
 
         public void SetMainFlowCoordinator(ModMainFlowCoordinator mainFlowCoordinator)
         {
             this.mainFlowCoordinator = mainFlowCoordinator;
         }
 
+        public void SetPlayModeSettings(PlayModeSettings Settings)
+        {
+            this.settings = Settings;
+        }
+
         protected override void DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling)
         {
             base.DidActivate(firstActivation, addedToHierarchy, screenSystemEnabling);
-            SetTrackerText();
+            this.UpdateAllValues();
+            this.SetTrackerText();
         }
 
-        [UIValue("BeatSaberIcon")]
+        [UIValue(nameof(BeatSaberIcon))]
         public string BeatSaberIcon => IconNames.BeatSaber;
 
-        [UIValue("ReverseLeftSaber")]
-        private bool reverseLeftSaber = Configuration.instance.ConfigurationData.ReverseLeftSaber;
-        [UIAction("OnReverseLeftSaberChanged")]
-        private void OnReverseLeftSaberChanged(bool value)
+        [UIValue(nameof(ReverseLeftSaberIcon))]
+        public string ReverseLeftSaberIcon => this.settings.ReverseLeftSaber && this.settings.ReverseRightSaber ? IconNames.ReverseBoth : IconNames.ReverseLeft;
+
+        [UIValue(nameof(ReverseLeftSaber))]
+        private bool ReverseLeftSaber
         {
-            Configuration.instance.ConfigurationData.ReverseLeftSaber = value;
-            Configuration.instance.SaveConfiguration();
+            get => this.settings.ReverseLeftSaber;
+            set
+            {
+                this.settings.ReverseLeftSaber = value;
+                Configuration.instance.SaveConfiguration();
+                this.NotifyPropertyChanged(nameof(this.ReverseLeftSaberIcon));
+                this.NotifyPropertyChanged(nameof(this.ReverseRightSaberIcon));
+            }
         }
 
-        [UIValue("ReverseRightSaber")]
-        private bool reverseRightSaber = Configuration.instance.ConfigurationData.ReverseRightSaber;
-        [UIAction("OnReverseRightSaberChanged")]
-        private void OnReverseRightSaberChanged(bool value)
+        [UIValue(nameof(ReverseRightSaberIcon))]
+        public string ReverseRightSaberIcon => this.settings.ReverseLeftSaber && this.settings.ReverseRightSaber ? IconNames.ReverseBoth : IconNames.ReverseRight;
+
+        [UIValue(nameof(ReverseRightSaber))]
+        private bool ReverseRightSaber
         {
-            Configuration.instance.ConfigurationData.ReverseRightSaber = value;
-            Configuration.instance.SaveConfiguration();
+            get => this.settings.ReverseRightSaber;
+            set
+            {
+                this.settings.ReverseRightSaber = value;
+                Configuration.instance.SaveConfiguration();
+                this.NotifyPropertyChanged(nameof(this.ReverseLeftSaberIcon));
+                this.NotifyPropertyChanged(nameof(this.ReverseRightSaberIcon));
+            }
         }
 
-        [UIValue("RemoveOtherSaber")]
-        private bool removeOtherSaber = Configuration.instance.ConfigurationData.RemoveOtherSaber;
-        [UIAction("OnRemoveOtherSaberChanged")]
-        private void OnRemoveOtherSaberChanged(bool value)
+        [UIValue(nameof(RemoveOtherSaber))]
+        private bool RemoveOtherSaber
         {
-            Configuration.instance.ConfigurationData.RemoveOtherSaber = value;
-            Configuration.instance.SaveConfiguration();
+            get => this.settings.RemoveOtherSaber;
+            set
+            {
+                this.settings.RemoveOtherSaber = value;
+                Configuration.instance.SaveConfiguration();
+            }
         }
 
-        [UIValue("UseLeftSaber")]
-        private bool useLeftSaber = Configuration.instance.ConfigurationData.UseLeftSaber;
-        [UIAction("OnUseLeftSaberChanged")]
-        private void OnUseLeftSaberChanged(bool value)
+        [UIValue(nameof(UseLeftSaberIcon))]
+        public string UseLeftSaberIcon => this.settings.UseLeft ? IconNames.LeftSaber : IconNames.RightSaber;
+
+        [UIValue(nameof(UseLeftSaber))]
+        private bool UseLeftSaber
         {
-            Configuration.instance.ConfigurationData.UseLeftSaber = value;
-            Configuration.instance.SaveConfiguration();
+            get => this.settings.UseLeft;
+            set
+            {
+                this.settings.UseLeft = value;
+                Configuration.instance.SaveConfiguration();
+                this.NotifyPropertyChanged(nameof(this.UseLeftSaberIcon));
+            }
         }
 
-        #region SelectTracker Modal Members
+        private void UpdateAllValues()
+        {
+            this.NotifyPropertyChanged(nameof(this.ReverseLeftSaber));
+            this.NotifyPropertyChanged(nameof(this.ReverseRightSaber));
+            this.NotifyPropertyChanged(nameof(this.RemoveOtherSaber));
+            this.NotifyPropertyChanged(nameof(this.UseLeftSaber));
+        }
+
+        #region Tracker Selection Members
 
         // Text Displays for the Main View
-        private string leftSaberTrackerSerial;
-        [UIValue("LeftSaberTrackerSerial")]
-        public string LeftSaberTrackerSerial { get => this.leftSaberTrackerSerial; set { this.leftSaberTrackerSerial = value; this.NotifyPropertyChanged(nameof(this.LeftSaberTrackerSerial)); } }
+        private string leftTrackerSerial;
+        [UIValue(nameof(LeftTrackerSerial))]
+        public string LeftTrackerSerial { get => this.leftTrackerSerial; set { this.leftTrackerSerial = value; this.NotifyPropertyChanged(); } }
 
-        private string leftSaberTrackerHoverHint;
-        [UIValue("LeftSaberTrackerHoverHint")]
-        public string LeftSaberTrackerHoverHint { get => this.leftSaberTrackerHoverHint; set { this.leftSaberTrackerHoverHint = value; this.NotifyPropertyChanged(nameof(this.LeftSaberTrackerHoverHint)); } }
+        private string leftTrackerHoverHint;
+        [UIValue(nameof(LeftTrackerHoverHint))]
+        public string LeftTrackerHoverHint { get => this.leftTrackerHoverHint; set { this.leftTrackerHoverHint = value; this.NotifyPropertyChanged(); } }
 
-        private string rightSaberTrackerSerial;
-        [UIValue("RightSaberTrackerSerial")]
-        public string RightSaberTrackerSerial { get => this.rightSaberTrackerSerial; set { this.rightSaberTrackerSerial = value; this.NotifyPropertyChanged(nameof(this.RightSaberTrackerSerial)); } }
+        private string rightTrackerSerial;
+        [UIValue(nameof(RightTrackerSerial))]
+        public string RightTrackerSerial { get => this.rightTrackerSerial; set { this.rightTrackerSerial = value; this.NotifyPropertyChanged(); } }
 
-        private string rightSaberTrackerHoverHint;
-        [UIValue("RightSaberTrackerHoverHint")]
-        public string RightSaberTrackerHoverHint { get => this.rightSaberTrackerHoverHint; set { this.rightSaberTrackerHoverHint = value; this.NotifyPropertyChanged(nameof(this.RightSaberTrackerHoverHint)); } }
+        private string rightTrackerHoverHint;
+        [UIValue(nameof(RightTrackerHoverHint))]
+        public string RightTrackerHoverHint { get => this.rightTrackerHoverHint; set { this.rightTrackerHoverHint = value; this.NotifyPropertyChanged(); } }
 
         // Text Display for the Current Tracker in the Tracker Select Modal
         private string currentTrackerText;
-        [UIValue("CurrentTrackerText")]
-        public string CurrentTrackerText { get => this.currentTrackerText; set { this.currentTrackerText = value; this.NotifyPropertyChanged(nameof(this.CurrentTrackerText)); } }
+
+        [UIValue(nameof(CurrentTrackerText))]
+        public string CurrentTrackerText { get => this.currentTrackerText; set { this.currentTrackerText = value; this.NotifyPropertyChanged(); } }
 
         // Events
 
-        [UIAction("OnShowSelectLeftTracker")]
+        [UIAction(nameof(OnShowSelectLeftTracker))]
         private void OnShowSelectLeftTracker()
         {
-            this.mainFlowCoordinator.ShowTrackerSelect(Configuration.instance.ConfigurationData.LeftSaberTracker);
+            this.mainFlowCoordinator.ShowTrackerSelect(this.settings.LeftTracker);
         }
 
-        [UIAction("OnShowSelectRightTracker")]
+        [UIAction(nameof(OnShowSelectRightTracker))]
         private void OnShowSelectRightTracker()
         {
-            this.mainFlowCoordinator.ShowTrackerSelect(Configuration.instance.ConfigurationData.RightSaberTracker);
+            this.mainFlowCoordinator.ShowTrackerSelect(this.settings.RightTracker);
         }
 
-        [UIAction("OnClearLeftTracker")]
+        [UIAction(nameof(OnClearLeftTracker))]
         private void OnClearLeftTracker()
         {
-            Configuration.instance.ConfigurationData.LeftSaberTracker = new TrackerConfigData();
+            this.settings.LeftTracker = new TrackerConfigData();
             Configuration.instance.SaveConfiguration();
-            this.LeftSaberTrackerSerial = TrackerConfigData.NoTrackerText;
-            this.LeftSaberTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
+            this.LeftTrackerSerial = TrackerConfigData.NoTrackerText;
+            this.LeftTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
         }
 
-        [UIAction("OnClearRightTracker")]
+        [UIAction(nameof(OnClearRightTracker))]
         private void OnClearRightTracker()
         {
-            Configuration.instance.ConfigurationData.RightSaberTracker = new TrackerConfigData();
+            this.settings.RightTracker = new TrackerConfigData();
             Configuration.instance.SaveConfiguration();
-            this.RightSaberTrackerSerial = TrackerConfigData.NoTrackerText;
-            this.RightSaberTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
+            this.RightTrackerSerial = TrackerConfigData.NoTrackerText;
+            this.RightTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
         }
 
         /// <summary>
-        /// Initializes the bound variables for the fields on this view
+        /// Initializes the tracker text buttons
         /// </summary>
         private void SetTrackerText()
         {
-            var config = Configuration.instance.ConfigurationData;
-            if (String.IsNullOrWhiteSpace(config.LeftSaberTracker.Serial))
-            {
-                this.LeftSaberTrackerSerial = TrackerConfigData.NoTrackerText;
-                this.LeftSaberTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
-            }
-            else
-            {
-                this.LeftSaberTrackerSerial = config.LeftSaberTracker.Serial;
-                this.LeftSaberTrackerHoverHint = config.LeftSaberTracker.FullName;
-            }
+            bool isLeftEmpty = String.IsNullOrWhiteSpace(this.settings.LeftTracker.Serial);
+            bool isRightEmpty = String.IsNullOrWhiteSpace(this.settings.RightTracker.Serial);
 
-            if (String.IsNullOrWhiteSpace(config.RightSaberTracker.Serial))
-            {
-                this.RightSaberTrackerSerial = TrackerConfigData.NoTrackerText;
-                this.RightSaberTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
-            }
-            else
-            {
-                this.RightSaberTrackerSerial = config.RightSaberTracker.Serial;
-                this.RightSaberTrackerHoverHint = config.RightSaberTracker.FullName;
-            }
+            this.LeftTrackerSerial = isLeftEmpty ? TrackerConfigData.NoTrackerText : this.settings.LeftTracker.Serial;
+            this.LeftTrackerHoverHint = isLeftEmpty ? TrackerConfigData.NoTrackerHoverHint : this.settings.LeftTracker.FullName;
+
+            this.RightTrackerSerial = isRightEmpty ? TrackerConfigData.NoTrackerText : this.settings.RightTracker.Serial;
+            this.RightTrackerHoverHint = isRightEmpty ? TrackerConfigData.NoTrackerHoverHint : this.settings.RightTracker.FullName;
         }
 
         #endregion
-
     }
 }

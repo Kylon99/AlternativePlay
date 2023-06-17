@@ -16,37 +16,35 @@ namespace AlternativePlay
         public void BeginGameCoreScene()
         {
             // Do nothing if we aren't playing Beat Spear
-            var config = Configuration.instance.ConfigurationData;
-            if (config.PlayMode != PlayMode.BeatSpear) { return; }
+            if (Configuration.Current.PlayMode != PlayMode.BeatSpear) { return; }
 
             TrackedDeviceManager.instance.LoadTrackedDevices();
 
-            if (Configuration.instance.ConfigurationData.SpearControllerCount == ControllerCountEnum.Two)
+            if (Configuration.Current.ControllerCount == ControllerCountEnum.Two)
             {
-                this.useLeftHandForward = !Configuration.instance.ConfigurationData.UseLeftSpear;
+                this.useLeftHandForward = !Configuration.Current.UseLeft;
             }
 
-            Utilities.CheckAndDisableForTrackerTransforms(Configuration.instance.ConfigurationData.LeftSpearTracker);
-            Utilities.CheckAndDisableForTrackerTransforms(Configuration.instance.ConfigurationData.RightSpearTracker);
+            Utilities.CheckAndDisableForTrackerTransforms(Configuration.Current.LeftTracker);
+            Utilities.CheckAndDisableForTrackerTransforms(Configuration.Current.RightTracker);
 
             this.StartCoroutine(this.DisableOtherSaberMesh());
         }
 
         private void Awake()
         {
-            this.useLeftHandForward = !Configuration.instance.ConfigurationData.UseLeftSpear;
+            this.useLeftHandForward = !Configuration.Current.UseLeft;
         }
 
         private void Update()
         {
-            var config = Configuration.instance.ConfigurationData;
-            if (config.PlayMode != PlayMode.BeatSpear)
+            if (Configuration.Current.PlayMode != PlayMode.BeatSpear)
             {
                 // Do nothing if we aren't playing Beat Spear or if we can't find the player controller
                 return;
             }
 
-            switch (config.SpearControllerCount)
+            switch (Configuration.Current.ControllerCount)
             {
                 case ControllerCountEnum.One:
                     this.TransformForOneControllerSpear();
@@ -63,10 +61,10 @@ namespace AlternativePlay
             // Move the other saber away since there's a bug in the base game which makes it
             // able to cut bombs still
             SaberDeviceManager saberDeviceManager = BehaviorCatalog.instance.SaberDeviceManager;
-            if (config.UseLeftSpear)
-                saberDeviceManager.SetRightSaberPose(hiddenPose);
+            if (Configuration.Current.UseLeft)
+                saberDeviceManager.SetRightSaberPose(this.hiddenPose);
             else
-                saberDeviceManager.SetLeftSaberPose(hiddenPose);
+                saberDeviceManager.SetLeftSaberPose(this.hiddenPose);
         }
 
         /// <summary>
@@ -74,17 +72,15 @@ namespace AlternativePlay
         /// </summary>
         private void TransformForOneControllerSpear()
         {
-            var config = Configuration.instance.ConfigurationData;
-
             // Get the spear pose and correct spear method
             SaberDeviceManager saberDeviceManager = BehaviorCatalog.instance.SaberDeviceManager;
             Action<Pose> setSpearPose = this.GetSpearPoseAction();
-            Pose spearPose = config.UseLeftSpear
-                ? saberDeviceManager.GetLeftSaberPose(config.LeftSpearTracker)
-                : saberDeviceManager.GetRightSaberPose(config.RightSpearTracker);
+            Pose spearPose = Configuration.Current.UseLeft
+                ? saberDeviceManager.GetLeftSaberPose(Configuration.Current.LeftTracker)
+                : saberDeviceManager.GetRightSaberPose(Configuration.Current.RightTracker);
 
             // Check for reversing saber direction
-            if (config.ReverseSpearDirection)
+            if (Configuration.Current.ReverseSpearDirection)
             {
                 spearPose = spearPose.Reverse();
             }
@@ -99,18 +95,17 @@ namespace AlternativePlay
         {
             const float handleLength = 0.75f;
             const float handleLengthSquared = 0.5625f;
-            var config = Configuration.instance.ConfigurationData;
 
             // Determine the forward hand
-            if (Configuration.instance.ConfigurationData.UseTriggerToSwitchHands)
+            if (Configuration.Current.UseTriggerToSwitchHands)
             {
                 if (BehaviorCatalog.instance.InputManager.GetLeftTriggerClicked()) { this.useLeftHandForward = true; }
                 if (BehaviorCatalog.instance.InputManager.GetRightTriggerClicked()) { this.useLeftHandForward = false; }
             }
 
             // Get positions and rotations of hands
-            Pose leftPosition = BehaviorCatalog.instance.SaberDeviceManager.GetLeftSaberPose(config.LeftSpearTracker);
-            Pose rightPosition = BehaviorCatalog.instance.SaberDeviceManager.GetRightSaberPose(config.RightSpearTracker);
+            Pose leftPosition = BehaviorCatalog.instance.SaberDeviceManager.GetLeftSaberPose(Configuration.Current.LeftTracker);
+            Pose rightPosition = BehaviorCatalog.instance.SaberDeviceManager.GetRightSaberPose(Configuration.Current.RightTracker);
 
             Pose forwardHand = this.useLeftHandForward ? leftPosition : rightPosition;
             Pose rearHand = this.useLeftHandForward ? rightPosition : leftPosition;
@@ -131,7 +126,7 @@ namespace AlternativePlay
                 saberPosition = rearHand.position + (forward * handleLength);
             }
 
-            if (config.ReverseSpearDirection)
+            if (Configuration.Current.ReverseSpearDirection)
             {
                 forward = -forward;
             }
@@ -148,10 +143,8 @@ namespace AlternativePlay
         /// </summary>
         private Action<Pose> GetSpearPoseAction()
         {
-            var config = Configuration.instance.ConfigurationData;
-
             Action<Pose> result;
-            if (config.UseLeftSpear)
+            if (Configuration.Current.UseLeft)
                 result = BehaviorCatalog.instance.SaberDeviceManager.SetLeftSaberPose;
             else
                 result = BehaviorCatalog.instance.SaberDeviceManager.SetRightSaberPose;
@@ -166,7 +159,7 @@ namespace AlternativePlay
         {
             yield return new WaitForSecondsRealtime(0.1f);
 
-            if (Configuration.instance.ConfigurationData.UseLeftSpear)
+            if (Configuration.Current.UseLeft)
             {
                 BehaviorCatalog.instance.SaberDeviceManager.DisableRightSaberMesh();
             }

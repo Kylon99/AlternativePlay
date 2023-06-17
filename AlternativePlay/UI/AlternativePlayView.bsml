@@ -1,83 +1,60 @@
 ﻿<bg xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd">
-  <vertical>
-    <horizontal preferred-width="120">
-      <vertical>
-        <clickable-image pref-width="30" pref-height="30"
-            source="~BeatSaberIcon"
-            default-color="~BeatSaberColor"
-            on-click="BeatSaberClick"
-            hover-hint="Play regular Beat Saber with dual swords" />
-        <clickable-text
-            text="Beat Saber"
-            align="Center"
-            color="~BeatSaberColor"
-            default-color="~BeatSaberDefaultColor"
-            highlight-color="~BeatSaberHighLightColor"
-            on-click="BeatSaberClick"
-            hover-hint="Play regular Beat Saber with dual swords" />
+  <vertical vertical-fit="PreferredSize">
+    <!-- Header -->
+    <horizontal spacing="40">
+      <vertical pad-top="1">
+        <text text="Select a Configuration to Edit" font-size="4"/>
       </vertical>
-      <vertical>
-        <clickable-image pref-width="30" pref-height="30"
-            source="~DarthMaulIcon"
-            default-color="~DarthMaulColor"
-            on-click="DarthMaulClick"
-            hover-hint="Play with a double bladed staff!" />
-        <clickable-text
-            text="Darth Maul"
-            align="Center"
-            color="~DarthMaulColor"
-            default-color="~DarthMaulDefaultColor"
-            highlight-color="~DarthMaulHightLightColor"
-            on-click="DarthMaulClick"
-            hover-hint="Play with a double bladed staff!" />
-      </vertical>
-      <vertical>
-        <clickable-image pref-width="30" pref-height="30"
-            source="~BeatSaberIcon"
-            default-color="~BeatSpearColor"
-            on-click="BeatSpearClick"
-            hover-hint="Play with a one bladed spear" />
-        <clickable-text
-            text="Beat Spear"
-            align="Center"
-            color="~BeatSpearColor"
-            default-color="~BeatSpearDefaultColor"
-            highlight-color="~BeatSpearHighLightColor"
-            on-click="BeatSpearClick"
-            hover-hint="Play with a one bladed spear" />
-      </vertical>
+      <button text="Add New Configuration" align="Right" on-click="OnAddNewConfiguration" hover-hint="Add a new configuration to the list" />
     </horizontal>
-    <horizontal>
-      <vertical>
-        <clickable-image pref-width="30" pref-height="30"
-            source="~NunchakuIcon"
-            default-color="~NunchakuColor"
-            on-click="NunchakuClick"
-            hover-hint="Play with a two segment Nunchaku" />
-        <clickable-text
-            text="Nunchaku"
-            align="Center"
-            color="~NunchakuColor"
-            default-color="~NunchakuDefaultColor"
-            highlight-color="~NunchakuHighLightColor"
-            on-click="NunchakuClick"
-            hover-hint="Play with a two segment Nunchaku" />
+
+    <!-- Select Pre-Configured PlayMode List -->
+    <vertical pad-top="2" vertical-fit="PreferredSize">
+      <custom-list id="SelectModeList" visible-cells="7" cell-size="8" list-width="110" select-cell="OnModeClicked"
+						 stick-scrolling="true" show-scrollbar="true">
+        <horizontal>
+          <horizontal pref-width="20" child-expand-width="true">
+            <img preserve-aspect="true" pref-width="5" pref-height="5" source="~PlayModeIcon00" />
+            <text text="~Mode" font-size="4" />
+          </horizontal>
+
+          <horizontal pref-width="12" pad-right="2" child-expand-width="true">
+            <img preserve-aspect="true" pref-width="5" pref-height="5" source="~PlayModeIcon01" />
+            <img preserve-aspect="true" pref-width="5" pref-height="5" source="~PlayModeIcon02" />
+            <img preserve-aspect="true" pref-width="5" pref-height="5" source="~PlayModeIcon03" />
+          </horizontal>
+
+          <horizontal pref-width="9" pad-right="2" child-expand-width="true">
+            <img preserve-aspect="true" pref-width="5" pref-height="5" source="~TrackerIcon00" />
+            <img preserve-aspect="true" pref-width="5" pref-height="5" source="~TrackerIcon01" />
+          </horizontal>
+
+          <horizontal pref-width="18" child-expand-width="true">
+            <img preserve-aspect="true" pref-width="5" pref-height="5" source="~GameModifierIcon00" />
+            <img preserve-aspect="true" pref-width="5" pref-height="5" source="~GameModifierIcon01" />
+            <img preserve-aspect="true" pref-width="5" pref-height="5" source="~GameModifierIcon02" />
+            <img preserve-aspect="true" pref-width="5" pref-height="5" source="~GameModifierIcon03" />
+            <img preserve-aspect="true" pref-width="5" pref-height="5" source="~GameModifierIcon04" />
+          </horizontal>
+
+          <button pad-left="3" text="Delete" pref-width="24" pref-height="8" on-click="OnDeleteClicked" hover-hint="Delete this configuration" />
+
+        </horizontal>
+      </custom-list>
+    </vertical>
+
+    <!-- Delete Modal -->
+    <modal id="DeleteModal" size-delta-x="100" size-delta-y="50" click-off-closes="true" >
+      <vertical >
+        <horizontal pad-top="5" horizontal-fit="PreferredSize">
+          <text pref-width="55" text="Are you sure you want to delete this configuration?" align="Center" font-size="5" />
+        </horizontal>
+        <horizontal pad-bottom="5" horizontal-fit="PreferredSize">
+          <button text="OK" pref-width="25" pref-height="10" on-click="OnOKClicked" />
+          <button text="Cancel" pref-width="25" pref-height="10" pad-left="3" on-click="OnCancelClicked" />
+        </horizontal>
       </vertical>
-      <vertical>
-        <clickable-image pref-width="30" pref-height="30"
-            source="~FlailIcon"
-            default-color="~FlailColor"
-            on-click="FlailClick"
-            hover-hint="Play with one or two flails in each hand" />
-        <clickable-text
-            text="Flail"
-            align="Center"
-            color="~FlailColor"
-            default-color="~FlailDefaultColor"
-            highlight-color="~FlailHighLightColor"
-            on-click="FlailClick"
-            hover-hint="Play with one or two flails in each hand" />
-      </vertical>
-    </horizontal>
+    </modal>
+
   </vertical>
 </bg>

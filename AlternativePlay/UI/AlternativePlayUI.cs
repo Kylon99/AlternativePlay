@@ -12,7 +12,7 @@ namespace AlternativePlay.UI
         {
             MenuButton menuButton = new MenuButton(
                 "Alternative Play",
-                "Change to Darth Maul or Beat Spear here!", ShowModFlowCoordinator, true);
+                "Change to Darth Maul or Beat Spear here!", this.ShowModFlowCoordinator, true);
             MenuButtons.instance.RegisterButton(menuButton);
         }
 
@@ -21,9 +21,9 @@ namespace AlternativePlay.UI
             if (this.mainFlowCoordinator == null)
                 this.mainFlowCoordinator = BeatSaberUI.CreateFlowCoordinator<ModMainFlowCoordinator>();
 
-            if (mainFlowCoordinator.IsBusy) return;
+            if (this.mainFlowCoordinator.IsBusy) return;
 
-            BeatSaberUI.MainFlowCoordinator.PresentFlowCoordinator(mainFlowCoordinator);
+            BeatSaberUI.MainFlowCoordinator.PresentFlowCoordinator(this.mainFlowCoordinator);
         }
     }
 }

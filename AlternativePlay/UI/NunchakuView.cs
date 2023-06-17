@@ -1,6 +1,5 @@
 ﻿using AlternativePlay.Models;
 using BeatSaberMarkupLanguage.Attributes;
-using BeatSaberMarkupLanguage.Parser;
 using BeatSaberMarkupLanguage.ViewControllers;
 using System;
 
@@ -10,153 +9,157 @@ namespace AlternativePlay.UI
     public class NunchakuView : BSMLAutomaticViewController
     {
         private ModMainFlowCoordinator mainFlowCoordinator;
-
-        [UIParams]
-#pragma warning disable CS0649 // Field 'parserParams' is never assigned to, and will always have its default value null
-        private BSMLParserParams parserParams;
-#pragma warning restore CS0649 // Field 'parserParams' is never assigned to, and will always have its default value null
+        private PlayModeSettings settings;
 
         public void SetMainFlowCoordinator(ModMainFlowCoordinator mainFlowCoordinator)
         {
             this.mainFlowCoordinator = mainFlowCoordinator;
         }
 
+        public void SetPlayModeSettings(PlayModeSettings Settings)
+        {
+            this.settings = Settings;
+        }
+
         protected override void DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling)
         {
             base.DidActivate(firstActivation, addedToHierarchy, screenSystemEnabling);
-            SetTrackerText();
+            this.UpdateAllValues();
+            this.SetTrackerText();
         }
 
-        [UIValue("NunchakuIcon")]
+        [UIValue(nameof(NunchakuIcon))]
         public string NunchakuIcon => IconNames.Nunchaku;
 
-        [UIValue("ReverseNunchaku")]
-        private bool reverseNunchaku = Configuration.instance.ConfigurationData.ReverseNunchaku;
-        [UIAction("ReverseNunchakuChanged")]
-        private void OnNoArrowsRandomChanged(bool value)
+        [UIValue(nameof(ReverseNunchakuIcon))]
+        public string ReverseNunchakuIcon => IconNames.ReverseNunchaku;
+
+        [UIValue(nameof(ReverseNunchaku))]
+        private bool ReverseNunchaku
         {
-            Configuration.instance.ConfigurationData.ReverseNunchaku = value;
-            Configuration.instance.SaveConfiguration();
+            get => this.settings.ReverseNunchaku;
+            set
+            {
+                this.settings.ReverseNunchaku = value;
+                Configuration.instance.SaveConfiguration();
+            }
         }
 
-        [UIValue("NunchakuLength")]
-        private int nunchakuLength = Configuration.instance.ConfigurationData.NunchakuLength;
-        [UIAction("OnNunchakuLengthChanged")]
-        private void OnNunchakuLengthChanged(int value)
+        [UIValue(nameof(NunchakuLength))]
+        private int NunchakuLength
         {
-            Configuration.instance.ConfigurationData.NunchakuLength = value;
-            Configuration.instance.SaveConfiguration();
+            get => this.settings.NunchakuLength;
+            set
+            {
+                this.settings.NunchakuLength = value;
+                Configuration.instance.SaveConfiguration();
+            }
         }
 
-        [UIValue("NunchakuGravity")]
-        private float nunchakuGravity = Configuration.instance.ConfigurationData.NunchakuGravity;
-        [UIAction("OnNunchakuGravityChanged")]
-        private void OnNunchakuGravityChanged(float value)
+        [UIValue(nameof(Gravity))]
+        private float Gravity
         {
-            Configuration.instance.ConfigurationData.NunchakuGravity = value;
-            Configuration.instance.SaveConfiguration();
+            get => this.settings.Gravity;
+            set
+            {
+                this.settings.Gravity = value;
+                Configuration.instance.SaveConfiguration();
+            }
         }
 
-        [UIAction("OnResetGravity")]
+        [UIAction(nameof(OnResetGravity))]
         private void OnResetGravity()
         {
-            nunchakuGravity = 3.5f;
-            Configuration.instance.ConfigurationData.NunchakuGravity = 3.5f;
+            this.settings.Gravity = 3.5f;
             Configuration.instance.SaveConfiguration();
-            this.parserParams.EmitEvent("RefreshNunchakuGravity");
+            this.NotifyPropertyChanged(nameof(this.Gravity));
         }
 
-        [UIAction("LengthFormatter")]
+        [UIAction(nameof(LengthFormatter))]
         private string LengthFormatter(int value)
         {
             return $"{value} cm";
         }
 
-        #region SelectTracker Modal Members
+        private void UpdateAllValues()
+        {
+            this.NotifyPropertyChanged(nameof(this.ReverseNunchaku));
+            this.NotifyPropertyChanged(nameof(this.NunchakuLength));
+            this.NotifyPropertyChanged(nameof(this.Gravity));
+        }
+
+        #region Tracker Selection Members
 
         // Text Displays for the Main View
-        private string leftNunchakuTrackerSerial;
-        [UIValue("LeftNunchakuTrackerSerial")]
-        public string LeftNunchakuTrackerSerial { get => this.leftNunchakuTrackerSerial; set { this.leftNunchakuTrackerSerial = value; this.NotifyPropertyChanged(nameof(this.LeftNunchakuTrackerSerial)); } }
+        private string leftTrackerSerial;
+        [UIValue(nameof(LeftTrackerSerial))]
+        public string LeftTrackerSerial { get => this.leftTrackerSerial; set { this.leftTrackerSerial = value; this.NotifyPropertyChanged(); } }
 
-        private string leftNunchakuTrackerHoverHint;
-        [UIValue("LeftNunchakuTrackerHoverHint")]
-        public string LeftNunchakuTrackerHoverHint { get => this.leftNunchakuTrackerHoverHint; set { this.leftNunchakuTrackerHoverHint = value; this.NotifyPropertyChanged(nameof(this.LeftNunchakuTrackerHoverHint)); } }
+        private string leftTrackerHoverHint;
+        [UIValue(nameof(LeftTrackerHoverHint))]
+        public string LeftTrackerHoverHint { get => this.leftTrackerHoverHint; set { this.leftTrackerHoverHint = value; this.NotifyPropertyChanged(); } }
 
-        private string rightNunchakuTrackerSerial;
-        [UIValue("RightNunchakuTrackerSerial")]
-        public string RightNunchakuTrackerSerial { get => this.rightNunchakuTrackerSerial; set { this.rightNunchakuTrackerSerial = value; this.NotifyPropertyChanged(nameof(this.RightNunchakuTrackerSerial)); } }
+        private string rightTrackerSerial;
+        [UIValue(nameof(RightTrackerSerial))]
+        public string RightTrackerSerial { get => this.rightTrackerSerial; set { this.rightTrackerSerial = value; this.NotifyPropertyChanged(); } }
 
-        private string rightNunchakuTrackerHoverHint;
-        [UIValue("RightNunchakuTrackerHoverHint")]
-        public string RightNunchakuTrackerHoverHint { get => this.rightNunchakuTrackerHoverHint; set { this.rightNunchakuTrackerHoverHint = value; this.NotifyPropertyChanged(nameof(this.RightNunchakuTrackerHoverHint)); } }
+        private string rightTrackerHoverHint;
+        [UIValue(nameof(RightTrackerHoverHint))]
+        public string RightTrackerHoverHint { get => this.rightTrackerHoverHint; set { this.rightTrackerHoverHint = value; this.NotifyPropertyChanged(); } }
 
         // Text Display for the Current Tracker in the Tracker Select Modal
         private string currentTrackerText;
-        [UIValue("CurrentTrackerText")]
-        public string CurrentTrackerText { get => this.currentTrackerText; set { this.currentTrackerText = value; this.NotifyPropertyChanged(nameof(this.CurrentTrackerText)); } }
+
+        [UIValue(nameof(CurrentTrackerText))]
+        public string CurrentTrackerText { get => this.currentTrackerText; set { this.currentTrackerText = value; this.NotifyPropertyChanged(); } }
 
         // Events
-        [UIAction("OnShowSelectLeftTracker")]
+
+        [UIAction(nameof(OnShowSelectLeftTracker))]
         private void OnShowSelectLeftTracker()
         {
-            this.mainFlowCoordinator.ShowTrackerSelect(Configuration.instance.ConfigurationData.LeftNunchakuTracker);
+            this.mainFlowCoordinator.ShowTrackerSelect(this.settings.LeftTracker);
         }
 
-        [UIAction("OnShowSelectRightTracker")]
+        [UIAction(nameof(OnShowSelectRightTracker))]
         private void OnShowSelectRightTracker()
         {
-            this.mainFlowCoordinator.ShowTrackerSelect(Configuration.instance.ConfigurationData.RightNunchakuTracker);
+            this.mainFlowCoordinator.ShowTrackerSelect(this.settings.RightTracker);
         }
 
-        [UIAction("OnClearLeftTracker")]
+        [UIAction(nameof(OnClearLeftTracker))]
         private void OnClearLeftTracker()
         {
-            Configuration.instance.ConfigurationData.LeftNunchakuTracker = new TrackerConfigData();
+            this.settings.LeftTracker = new TrackerConfigData();
             Configuration.instance.SaveConfiguration();
-            this.LeftNunchakuTrackerSerial = TrackerConfigData.NoTrackerText;
-            this.LeftNunchakuTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
+            this.LeftTrackerSerial = TrackerConfigData.NoTrackerText;
+            this.LeftTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
         }
 
-        [UIAction("OnClearRightTracker")]
+        [UIAction(nameof(OnClearRightTracker))]
         private void OnClearRightTracker()
         {
-            Configuration.instance.ConfigurationData.RightNunchakuTracker = new TrackerConfigData();
+            this.settings.RightTracker = new TrackerConfigData();
             Configuration.instance.SaveConfiguration();
-            this.RightNunchakuTrackerSerial = TrackerConfigData.NoTrackerText;
-            this.RightNunchakuTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
+            this.RightTrackerSerial = TrackerConfigData.NoTrackerText;
+            this.RightTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
         }
 
         /// <summary>
-        /// Initializes the bound variables for the fields on this view
+        /// Initializes the tracker text buttons
         /// </summary>
         private void SetTrackerText()
         {
-            var config = Configuration.instance.ConfigurationData;
-            if (String.IsNullOrWhiteSpace(config.LeftNunchakuTracker.Serial))
-            {
-                this.LeftNunchakuTrackerSerial = TrackerConfigData.NoTrackerText;
-                this.LeftNunchakuTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
-            }
-            else
-            {
-                this.LeftNunchakuTrackerSerial = config.LeftNunchakuTracker.Serial;
-                this.LeftNunchakuTrackerHoverHint = config.LeftNunchakuTracker.FullName;
-            }
+            bool isLeftEmpty = String.IsNullOrWhiteSpace(this.settings.LeftTracker.Serial);
+            bool isRightEmpty = String.IsNullOrWhiteSpace(this.settings.RightTracker.Serial);
 
-            if (String.IsNullOrWhiteSpace(config.RightNunchakuTracker.Serial))
-            {
-                this.RightNunchakuTrackerSerial = TrackerConfigData.NoTrackerText;
-                this.RightNunchakuTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
-            }
-            else
-            {
-                this.RightNunchakuTrackerSerial = config.RightNunchakuTracker.Serial;
-                this.RightNunchakuTrackerHoverHint = config.RightNunchakuTracker.FullName;
-            }
+            this.LeftTrackerSerial = isLeftEmpty ? TrackerConfigData.NoTrackerText : this.settings.LeftTracker.Serial;
+            this.LeftTrackerHoverHint = isLeftEmpty ? TrackerConfigData.NoTrackerHoverHint : this.settings.LeftTracker.FullName;
+
+            this.RightTrackerSerial = isRightEmpty ? TrackerConfigData.NoTrackerText : this.settings.RightTracker.Serial;
+            this.RightTrackerHoverHint = isRightEmpty ? TrackerConfigData.NoTrackerHoverHint : this.settings.RightTracker.FullName;
         }
 
         #endregion
-
     }
 }

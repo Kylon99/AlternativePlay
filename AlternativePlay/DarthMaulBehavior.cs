@@ -12,23 +12,23 @@ namespace AlternativePlay
         public void BeginGameCoreScene()
         {
             // Do nothing if we aren't playing Darth Maul
-            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.DarthMaul) { return; }
+            if (Configuration.Current.PlayMode != PlayMode.DarthMaul) { return; }
 
             TrackedDeviceManager.instance.LoadTrackedDevices();
 
-            Utilities.CheckAndDisableForTrackerTransforms(Configuration.instance.ConfigurationData.LeftMaulTracker);
-            Utilities.CheckAndDisableForTrackerTransforms(Configuration.instance.ConfigurationData.RightMaulTracker);
+            Utilities.CheckAndDisableForTrackerTransforms(Configuration.Current.LeftTracker);
+            Utilities.CheckAndDisableForTrackerTransforms(Configuration.Current.RightTracker);
         }
 
         private void Update()
         {
-            if (Configuration.instance.ConfigurationData.PlayMode != PlayMode.DarthMaul)
+            if (Configuration.Current.PlayMode != PlayMode.DarthMaul)
             {
                 // Do nothing if we aren't playing Darth Maul
                 return;
             }
 
-            if (Configuration.instance.ConfigurationData.UseTriggerToSeparate)
+            if (Configuration.Current.UseTriggerToSeparate)
             {
                 // Check to see if the trigger has been pressed
                 bool leftTriggerPressed = BehaviorCatalog.instance.InputManager.GetLeftTriggerClicked();
@@ -54,7 +54,7 @@ namespace AlternativePlay
                 return;
             }
 
-            switch (Configuration.instance.ConfigurationData.DarthMaulControllerCount)
+            switch (Configuration.Current.ControllerCount)
             {
                 case ControllerCountEnum.One:
                     this.TransformOneControllerMaul();
@@ -75,9 +75,8 @@ namespace AlternativePlay
         /// </summary>
         private void TransformForSplitDarthMaul()
         {
-            var config = Configuration.instance.ConfigurationData;
-            BehaviorCatalog.instance.SaberDeviceManager.SetLeftSaber(config.LeftMaulTracker);
-            BehaviorCatalog.instance.SaberDeviceManager.SetRightSaber(config.RightMaulTracker);
+            BehaviorCatalog.instance.SaberDeviceManager.SetLeftSaber(Configuration.Current.LeftTracker);
+            BehaviorCatalog.instance.SaberDeviceManager.SetRightSaber(Configuration.Current.RightTracker);
         }
 
         /// <summary>
@@ -85,26 +84,25 @@ namespace AlternativePlay
         /// </summary>
         private void TransformOneControllerMaul()
         {
-            var config = Configuration.instance.ConfigurationData;
-            float sep = 1.0f * config.MaulDistance / 100.0f;
+            float sep = 1.0f * Configuration.Current.MaulDistance / 100.0f;
             var saberDevice = BehaviorCatalog.instance.SaberDeviceManager;
 
             // Get the Pose of the base saber and calculate the rotated pose from it
-            Pose basePose = config.UseLeftController
-                ? saberDevice.GetLeftSaberPose(config.LeftMaulTracker)
-                : saberDevice.GetRightSaberPose(config.RightMaulTracker);
+            Pose basePose = Configuration.Current.UseLeft
+                ? saberDevice.GetLeftSaberPose(Configuration.Current.LeftTracker)
+                : saberDevice.GetRightSaberPose(Configuration.Current.RightTracker);
 
             Pose rotatedPose = basePose.Reverse();
             Vector3 separation = new Vector3(0.0f, 0.0f, sep * 2.0f);
             rotatedPose.position += (rotatedPose.rotation * separation);
 
             // Determine which pose belongs to which saber and set them
-            Pose leftSaberPose = config.ReverseMaulDirection ? basePose : rotatedPose;
-            Pose rightSaberPose = config.ReverseMaulDirection ? rotatedPose : basePose;
-            if (config.UseLeftController)
+            Pose leftSaberPose = Configuration.Current.ReverseMaulDirection ? basePose : rotatedPose;
+            Pose rightSaberPose = Configuration.Current.ReverseMaulDirection ? rotatedPose : basePose;
+            if (Configuration.Current.UseLeft)
             {
-                leftSaberPose = config.ReverseMaulDirection ? rotatedPose : basePose;
-                rightSaberPose = config.ReverseMaulDirection ? basePose : rotatedPose;
+                leftSaberPose = Configuration.Current.ReverseMaulDirection ? rotatedPose : basePose;
+                rightSaberPose = Configuration.Current.ReverseMaulDirection ? basePose : rotatedPose;
             }
             saberDevice.SetLeftSaberPose(leftSaberPose);
             saberDevice.SetRightSaberPose(rightSaberPose);
@@ -115,14 +113,13 @@ namespace AlternativePlay
         /// </summary>
         private void TransformTwoControllerMaul()
         {
-            var config = Configuration.instance.ConfigurationData;
-            float sep = 1.0f * config.MaulDistance / 100.0f;
+            float sep = 1.0f * Configuration.Current.MaulDistance / 100.0f;
 
             var saberDevice = BehaviorCatalog.instance.SaberDeviceManager;
 
             // Determine Hand positions
-            Pose leftHand = saberDevice.GetLeftSaberPose(config.LeftMaulTracker);
-            Pose rightHand = saberDevice.GetRightSaberPose(config.RightMaulTracker);
+            Pose leftHand = saberDevice.GetLeftSaberPose(Configuration.Current.LeftTracker);
+            Pose rightHand = saberDevice.GetRightSaberPose(Configuration.Current.RightTracker);
 
             // Determine final saber positions and rotations
             Vector3 middlePos = (rightHand.position + leftHand.position) * 0.5f;
@@ -132,8 +129,8 @@ namespace AlternativePlay
             Pose forwardSaberPose = new Pose(middlePos + (forward * sep), Quaternion.LookRotation(forward, rightHandUp));
             Pose backwardSaberPose = new Pose(middlePos + (-forward * sep), Quaternion.LookRotation(-forward, -rightHandUp));
 
-            Pose leftSaberPose = config.ReverseMaulDirection ? forwardSaberPose : backwardSaberPose;
-            Pose rightSaberPose = config.ReverseMaulDirection ? backwardSaberPose : forwardSaberPose;
+            Pose leftSaberPose = Configuration.Current.ReverseMaulDirection ? forwardSaberPose : backwardSaberPose;
+            Pose rightSaberPose = Configuration.Current.ReverseMaulDirection ? backwardSaberPose : forwardSaberPose;
 
             saberDevice.SetLeftSaberPose(leftSaberPose);
             saberDevice.SetRightSaberPose(rightSaberPose);
