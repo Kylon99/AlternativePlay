@@ -1,5 +1,6 @@
 ﻿using AlternativePlay.Models;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using UnityEngine;
@@ -107,7 +108,7 @@ namespace AlternativePlay
         /// </summary>
         private void TransformNotes(BeatmapData beatmapData, ColorType undesiredNoteType)
         {
-            foreach (NoteData note in beatmapData.GetBeatmapDataItems<NoteData>(0))
+            foreach (NoteData note in CallGetBeatmapDataItems<NoteData>(beatmapData))
             {
                 // Transform for NoArrows or TouchNotes here but do not if NoArrowsRandom was already applied
                 if ((Configuration.Current.NoArrows || Configuration.Current.TouchNotes) && !Configuration.Current.NoArrowsRandom)
@@ -137,11 +138,11 @@ namespace AlternativePlay
             if (Configuration.Current.NoSliders)
             {
                 // Remove all Burst Sliders from list
-                var burstSliders = beatmapData.GetBeatmapDataItems<SliderData>(0).Where(s => s.sliderType == SliderData.Type.Burst).ToList();
+                var burstSliders = CallGetBeatmapDataItems<SliderData>(beatmapData).Where(s => s.sliderType == SliderData.Type.Burst).ToList();
                 burstSliders.ForEach(s => beatmapData.allBeatmapDataItems.Remove(s));
             }
 
-            foreach (SliderData slider in beatmapData.GetBeatmapDataItems<SliderData>(0))
+            foreach (SliderData slider in CallGetBeatmapDataItems<SliderData>(beatmapData))
             {
                 // Transform for One Color if this is the other note type
                 if (Configuration.Current.OneColor && slider.colorType == undesiredNoteType)
@@ -165,6 +166,29 @@ namespace AlternativePlay
         private void SetSliderColor(SliderData sliderData, ColorType color)
         {
             this.sliderDataColorTypeProperty.SetValue(sliderData, color, BindingFlags.NonPublic | BindingFlags.Instance, null, null, null);
+        }
+
+        /// <summary>
+        /// Attempts to call using reflection Main.BeatmapData.GetBeatmapDataItems.  In Beat Saber 1.27 this method
+        /// was changed to accept one parameter which we pass in 0 anyways.  So in order to support everything from
+        /// 1.21 to 1.29.1 we attempt to unify the two calls here.
+        /// </summary>
+        private IEnumerable<T> CallGetBeatmapDataItems<T>(BeatmapData beatmapData)
+        {
+            var method = typeof(BeatmapData).GetMethod(nameof(BeatmapData.GetBeatmapDataItems));
+            var genericMethod = method.MakeGenericMethod(typeof(T));
+
+            var parameterInfo = method.GetParameters();
+            if (parameterInfo.Length == 0)
+            {
+                // Supports Beat Saber 1.21 - 1.26
+                return (IEnumerable<T>)genericMethod.Invoke(beatmapData, null);
+            } 
+            else
+            {
+                // Supports Beat Saber 1.27 - 1.29.1
+                return (IEnumerable<T>)genericMethod.Invoke(beatmapData, new object[] {0});
+            }
         }
     }
 }

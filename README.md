@@ -26,13 +26,13 @@ controller to be the 'front' hand. The spear can hit any notes of any color.
 
 ### ![IMG](AlternativePlay/Public/NunchakuColor64.png) Nunchaku
 
-Swing a simulated two segment nunchaku! Use the trigger to hold the nunchaku in that hand or press
-both triggers to hold both segments in each hand.
+Swing a simulated two segment nunchaku! You only need to use two controllers! Use the trigger to hold 
+the nunchaku in that hand or press both triggers to hold both segments in each hand.
 
 ### ![IMG](AlternativePlay/Public/BeatFlailColor64.png) Beat Flail
 
-Swing the saber around on a chain like a flail! Longer chains are harder to swing and control
-while shorter chains allow for less of a full arm swing.
+You only need two controllers! Swing the saber around on a chain like a flail without hitting yourself! 
+Longer chains are harder to swing and control while shorter chains allow for less of a full arm swing.
 
 ### ![IMG](AlternativePlay/Public/NoArrowsColor64.png) No Arrows
 ### ![IMG](AlternativePlay/Public/OneColorColor64.png) One Color
@@ -44,7 +44,9 @@ This functionality was broken by Beat Saber 1.12.  It may be restored one day.
 
 ## Tracker Selection
 
-You can now choose which trackers to use for Beat Saber, Darth Maul and Beat Spear without the need for OpenVR Input Emulator.  You can also adjust the position and rotation of the saber for when using these trackers.
+You can now choose which trackers to use for Beat Saber, Darth Maul and Beat Spear without the need for 
+OpenVR Input Emulator.  You can also adjust the position and rotation of the saber for when using these 
+trackers.
 
 ## Contributors
 
@@ -53,7 +55,9 @@ You can now choose which trackers to use for Beat Saber, Darth Maul and Beat Spe
 * Special thanks to Nullpon for testing and fixes! https://github.com/nullpon16tera
 
 ## Requirements
-This mod depends on the following mods.  Download them at [BeatMods](https://beatmods.com).
+This mod depends on the following mods.  Download them at [BeatMods](https://beatmods.com) or install them
+with [ModAssistant](https://github.com/Assistant/ModAssistant).  You might already have them if you've 
+installed other mods!
 
 * https://github.com/nike4613/BeatSaber-IPA-Reloaded/
 * https://github.com/Kylemc1413/Beat-Saber-Utils
@@ -64,6 +68,9 @@ This mod depends on the following mods.  Download them at [BeatMods](https://bea
 Drop the AlternativePlay.dll file into your Plugins folder under your BeatSaber folder.
 
 ## Changelog
+
+### 0.7.7
+- United support for Beat Saber 1.21 - 1.26 and 1.27 - 1.29.1
 
 ### 0.7.6
 - Added Updated UI to support multiple play mode settings
