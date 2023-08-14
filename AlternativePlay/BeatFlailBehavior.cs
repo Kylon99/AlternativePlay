@@ -1,4 +1,5 @@
 ﻿using AlternativePlay.Models;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,13 +53,20 @@ namespace AlternativePlay
             // Do nothing if we aren't playing Flail
             if (Configuration.Current.PlayMode != PlayMode.BeatFlail) { return; }
 
-            // Create the GameObjects used for physics calculations
-            this.leftPhysicsFlail = this.CreatePhysicsChain("Left", Configuration.Current.LeftFlailLength / 100.0f);
-            this.rightPhysicsFlail = this.CreatePhysicsChain("Right", Configuration.Current.RightFlailLength / 100.0f);
-            this.leftLinkMeshes = Utilities.CreateLinkMeshes(this.leftPhysicsFlail.Count, Configuration.Current.LeftFlailLength / 100.0f);
-            this.leftHandleMesh = GameObject.Instantiate(BehaviorCatalog.instance.AssetLoaderBehavior.FlailHandlePrefab);
-            this.rightLinkMeshes = Utilities.CreateLinkMeshes(this.rightPhysicsFlail.Count, Configuration.Current.RightFlailLength / 100.0f);
-            this.rightHandleMesh = GameObject.Instantiate(BehaviorCatalog.instance.AssetLoaderBehavior.FlailHandlePrefab);
+            // Create the GameObjects for the flails
+            if (Configuration.Current.LeftFlailMode == BeatFlailMode.Flail) 
+            {
+                this.leftPhysicsFlail = this.CreatePhysicsChain("Left", Configuration.Current.LeftFlailLength / 100.0f);
+                this.leftLinkMeshes = Utilities.CreateLinkMeshes(this.leftPhysicsFlail.Count, Configuration.Current.LeftFlailLength / 100.0f);
+                this.leftHandleMesh = this.CreateFlailHandle("LeftHandle", Configuration.Current.LeftHandleLength / 100.0f);
+            }
+
+            if (Configuration.Current.RightFlailMode == BeatFlailMode.Flail)
+            {
+                this.rightPhysicsFlail = this.CreatePhysicsChain("Right", Configuration.Current.RightFlailLength / 100.0f);
+                this.rightLinkMeshes = Utilities.CreateLinkMeshes(this.rightPhysicsFlail.Count, Configuration.Current.RightFlailLength / 100.0f);
+                this.rightHandleMesh = this.CreateFlailHandle("RightHandle", Configuration.Current.RightHandleLength / 100.0f);
+            }
         }
 
         private void FixedUpdate()
@@ -68,7 +76,7 @@ namespace AlternativePlay
 
             float gravity = Configuration.Current.Gravity * -9.81f;
 
-            switch(Configuration.Current.LeftFlailMode)
+            switch (Configuration.Current.LeftFlailMode)
             {
                 default:
                 case BeatFlailMode.Flail:
@@ -140,7 +148,8 @@ namespace AlternativePlay
                     Vector3 moveHandleUp = leftSaberPose.rotation * new Vector3(0.0f, 0.0f, oneChainDistance); // Move handle forward one chain length
                     this.leftHandleMesh.transform.position = leftSaberPose.position + moveHandleUp;
                     this.leftHandleMesh.transform.rotation = leftSaberPose.rotation;
-                    break;
+
+                   break;
 
                 case BeatFlailMode.Sword:
                     // Do nothing
@@ -243,6 +252,64 @@ namespace AlternativePlay
             {
                 BehaviorCatalog.instance.SaberDeviceManager.DisableRightSaberMesh();
             }
+        }
+
+        /// <summary>
+        /// Create a segmented variable length flail handle
+        /// </summary>
+        /// <param name="name">The name for the parent handle GameObject</param>
+        /// <param name="flailTotalLength">The length of the handle in meters</param>
+        /// <returns>The parent GameObject for the flail handle</returns>
+        private GameObject CreateFlailHandle(string name, float flailTotalLength)
+        {
+            const float flailSegmentLength = 0.10f; // 10 cm or 0.1m
+            const float topCapLength = 0.063f; // 6.3cm
+            const float bottomCapLength = 0.01f; // 1 cm
+
+            int segmentCount = (int)(flailTotalLength / flailSegmentLength);
+
+            var assetLoader = BehaviorCatalog.instance.AssetLoaderBehavior;
+
+            // Instantiate One-Off Game Objects
+            var handle = new GameObject(name);
+            var topCap = GameObject.Instantiate(assetLoader.FlailTopCapPrefab, Vector3.zero, Quaternion.identity, handle.transform);
+            var bottomCapPosition = new Vector3(0.0f, 0.0f, (flailSegmentLength * segmentCount * -1.0f) - topCapLength - bottomCapLength);
+            var bottomCap = GameObject.Instantiate(assetLoader.FlailBottomCapPrefab, bottomCapPosition, Quaternion.identity, handle.transform);
+
+            // Instantiate Handle Segments
+            var segmentList = Enumerable.Range(0, segmentCount).Select(i =>
+            {
+                float zPosition = (flailSegmentLength * i * -1.0f) - topCapLength;
+                var positionRelative = new Vector3(0.0f, 0.0f, zPosition);
+                var gameObject = GameObject.Instantiate(assetLoader.FlailHandleSegmentPrefab, positionRelative, Quaternion.identity, handle.transform);
+
+                return new { GameObject = gameObject, Index = i };
+
+            }).ToList();
+            segmentList.ForEach(segment => this.remapSegmentUV(segment.GameObject, segment.Index));
+
+            return handle;
+        }
+
+        /// <summary>
+        /// Remaps the UV coordinates in the U direction based on the MOD 4 of the index.
+        /// </summary>
+        private void remapSegmentUV(GameObject segment, int index)
+        {
+            const int segmentsPerTexture = 4;
+
+            Mesh mesh = segment.GetComponent<MeshFilter>().mesh;
+            var uvList = new List<Vector2>();
+            mesh.GetUVs(0, uvList);
+
+            var modifiedUV = uvList.Select(uv =>
+            {
+                float correctedX = (uv.x < 0.01f && uv.x > -0.01f) ? 0.0f : 0.25f;
+                float multipleX = 0.25f * (index % segmentsPerTexture);
+                return new Vector2(correctedX + multipleX, uv.y);
+            }).ToList();
+
+            mesh.SetUVs(0, modifiedUV);
         }
     }
 }
