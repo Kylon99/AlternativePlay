@@ -121,6 +121,28 @@ namespace AlternativePlay.UI
             }
         }
 
+        [UIValue(nameof(LeftHandleLength))]
+        private int LeftHandleLength
+        {
+            get => this.settings.LeftHandleLength;
+            set
+            {
+                this.settings.LeftHandleLength = value;
+                Configuration.instance.SaveConfiguration();
+            }
+        }
+
+        [UIValue(nameof(RightHandleLength))]
+        private int RightHandleLength
+        {
+            get => this.settings.RightHandleLength;
+            set
+            {
+                this.settings.RightHandleLength = value;
+                Configuration.instance.SaveConfiguration();
+            }
+        }
+
         [UIValue(nameof(Gravity))]
         private float Gravity
         {

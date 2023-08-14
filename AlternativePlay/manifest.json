@@ -7,7 +7,7 @@
   "icon": "AlternativePlay.Public.DarthMaulColor.png",
   "id": "AlternativePlay",
   "name": "AlternativePlay",
-  "version": "0.7.7",
+  "version": "0.8.0",
   "dependsOn": {
     "BeatSaberMarkupLanguage": "^1.6.3",
     "BS Utils": "^1.12.0",

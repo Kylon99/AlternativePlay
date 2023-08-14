@@ -11,30 +11,34 @@
     </horizontal>
 
     <!-- Main View -->
-    <vertical pref-width="75" pref-height="45" vertical-fit="PreferredSize">
+    <vertical pref-width="75" pref-height="48" vertical-fit="PreferredSize">
       <horizontal>
         <horizontal pad-right="1">
           <img preserve-aspect="true" pref-width="8" pref-height="8" source="~LeftFlailModeIcon" />
         </horizontal>
-        <dropdown-list-setting text="Left Hand" value="LeftFlailMode" choices="LeftFlailModeList" bind-value="true" apply-on-change="true"
-                 hover-hint="Choose the weapon for the left hand"/>
+        <dropdown-list-setting text="Left Hand" value="LeftFlailMode" choices="LeftFlailModeList" bind-value="true" apply-on-change="true" hover-hint="Choose the weapon for the left hand"/>
       </horizontal>
-      
-      <horizontal>
+      <increment-setting text="Left Handle Length" value="LeftHandleLength" bind-value="true" apply-on-change="true" integer-only="true" min="10" max="200" increment="10"
+                         formatter="LengthFormatter" hover-hint="The length of the left flail handle" />
+      <increment-setting text="Left Chain Length" value="LeftFlailLength" bind-value="true" apply-on-change="true" integer-only="true" min="50" max="150" increment="10"
+                         formatter="LengthFormatter" hover-hint="The distance between the handle and the ball on the left" />
+
+      <horizontal pad-top="2">
         <horizontal pad-right="1">
           <img preserve-aspect="true" pref-width="8" pref-height="8" source="~RightFlailModeIcon" />
         </horizontal>
-        <dropdown-list-setting text="Right Hand" value="RightFlailMode" choices="RightFlailModeList" bind-value="true" apply-on-change="true"
-                 hover-hint="Choose the weapon for the right hand"/>
+        <dropdown-list-setting text="Right Hand" value="RightFlailMode" choices="RightFlailModeList" bind-value="true" apply-on-change="true" hover-hint="Choose the weapon for the right hand"/>
       </horizontal>
-      
-      <increment-setting text="Left Flail Length" value="LeftFlailLength" bind-value="true" apply-on-change="true" integer-only="true" min="50" max="150" increment="10"
-						 formatter="LengthFormatter" hover-hint="The distance between the handle and the ball on the left" />
-      <increment-setting text="Right Flail Length" value="RightFlailLength" bind-value="true" apply-on-change="true" integer-only="true" min="50" max="150" increment="10"
-						 formatter="LengthFormatter" hover-hint="The distance between the handle and the ball on the right" />
-      <increment-setting text="Move Notes Back Distance" value="MoveNotesBack" bind-value="true" apply-on-change="true" integer-only="true" min="0" max="150" increment="10"
-						 formatter="LengthFormatter" hover-hint="Move notes back to account for chain length." />
+      <increment-setting text="Right Handle Length" value="RightHandleLength" bind-value="true" apply-on-change="true" integer-only="true" min="10" max="200" increment="10"
+                         formatter="LengthFormatter" hover-hint="The length of the right flail handle" />
+      <increment-setting text="Right Chain Length" value="RightFlailLength" bind-value="true" apply-on-change="true" integer-only="true" min="50" max="150" increment="10"
+                         formatter="LengthFormatter" hover-hint="The distance between the handle and the ball on the right" />
 
+
+      <horizontal pad-top="2">
+        <increment-setting text="Move Notes Back Distance" value="MoveNotesBack" bind-value="true" apply-on-change="true" integer-only="true" min="0" max="150" increment="10"
+                           formatter="LengthFormatter" hover-hint="Move notes back to account for chain length." />
+      </horizontal>
       <horizontal preferred-width="75" horizontal-fit="PreferredSize" pad-bottom="3">
         <slider-setting preferred-width="55" text="Gravity" value="Gravity" bind-value="true" apply-on-change="true" integer-only="false" min="0" max="5" increment="0.1" get-event="RefreshGravity" hover-hint="Amount of G force applied to the Flail (multiple of -9.81 m/s^2)" />
         <button pref-width="18" preferred-height="8" text="Reset" pad-left="2" hover-hint='Reset gravity to 3.5' on-click="OnResetGravity"/>

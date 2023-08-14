@@ -81,6 +81,8 @@ namespace AlternativePlay.Models
         public BeatFlailMode RightFlailMode { get; set; } = BeatFlailMode.Flail;
         public int LeftFlailLength { get; set; } = 80; // in centimetres
         public int RightFlailLength { get; set; } = 80; // in centimetres
+        public int LeftHandleLength { get; set; } = 40; // in centimetres
+        public int RightHandleLength { get; set; } = 40; // in centimetres
         public int MoveNotesBack { get; set; } = 0; // in centimetres
 
         // Gameplay Changes Options
