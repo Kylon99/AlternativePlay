@@ -23,6 +23,7 @@ namespace AlternativePlay.UI
             this.SelectModeList.data.Clear();
             this.SelectModeList.data = list.Cast<object>().ToList();
             this.SelectModeList.tableView.ReloadData();
+            this.SelectModeList.tableView.SelectCellWithIdx(Configuration.instance.ConfigurationData.Selected);
             this.SelectModeList.tableView.ScrollToCellWithIdx(Configuration.SelectedIndex, TableView.ScrollPositionType.Center, false);
         }
 
