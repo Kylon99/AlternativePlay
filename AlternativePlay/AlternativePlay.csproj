@@ -40,6 +40,12 @@
       <HintPath>$(GameDirPath)Beat Saber_Data\Managed\BeatmapCore.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="BGLib.AppFlow">
+      <HintPath>$(GameDirPath)Beat Saber_Data\Managed\BGLib.AppFlow.dll</HintPath>
+    </Reference>
+    <Reference Include="BGLib.UnityExtension">
+      <HintPath>$(GameDirPath)Beat Saber_Data\Managed\BGLib.UnityExtension.dll</HintPath>
+    </Reference>
     <Reference Include="BGNet, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(GameDirPath)Beat Saber_Data\Managed\BGNet.dll</HintPath>
@@ -112,15 +118,22 @@
     <Reference Include="Zenject">
       <HintPath>$(GameDirPath)Beat Saber_Data\Managed\Zenject.dll</HintPath>
     </Reference>
+    <Reference Include="Zenject-usage">
+      <HintPath>$(GameDirPath)Beat Saber_Data\Managed\Zenject-usage.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Installers\AlternativePlayInstaller.cs" />
     <Compile Include="AssetLoaderBehavior.cs" />
     <Compile Include="BeatSpearBehavior.cs" />
     <Compile Include="BeatSaberBehavior.cs" />
+    <Compile Include="Installers\GameSceneBehaviorsInstaller.cs" />
     <Compile Include="BehaviorCatalog.cs" />
     <Compile Include="DarthMaulBehavior.cs" />
     <Compile Include="HarmonyPatches\BeatFlailNoteMoverPatch.cs" />
+    <Compile Include="HarmonyPatches\GameCoreSceneInstallPatch.cs" />
     <Compile Include="HarmonyPatches\GameplaySetupViewControllerPatch.cs" />
+    <Compile Include="HarmonyPatches\AlternativePlayUIInstallerPatch.cs" />
     <Compile Include="HarmonyPatches\NunchakuHapticPatch.cs" />
     <Compile Include="Models\ConfigurationData075.cs" />
     <Compile Include="Models\ConfigurationIconSummary.cs" />
@@ -142,6 +155,7 @@
     <Compile Include="Models\TrackedDeviceManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\AlternativePlayUI.cs" />
+    <Compile Include="Installers\AlternativePlayUIInstaller.cs" />
     <Compile Include="UI\BeatSpearView.cs" />
     <Compile Include="UI\BeatSaberView.cs" />
     <Compile Include="UI\BeatFlailView.cs" />
@@ -153,7 +167,7 @@
     <Compile Include="UI\GameModifiersView.cs" />
     <Compile Include="UI\DarthMaulView.cs" />
     <Compile Include="UI\PlayModeSelectView.cs" />
-    <Compile Include="UI\ModMainFlowCoordinator.cs" />
+    <Compile Include="UI\AlternativePlayMainFlowCoordinator.cs" />
     <Compile Include="UI\TrackerDisplayText.cs" />
     <Compile Include="UI\TrackerPoseView.cs" />
     <Compile Include="UI\TrackerSelectView.cs" />

@@ -7,13 +7,15 @@ namespace AlternativePlay.HarmonyPatches
     [HarmonyPatch(nameof(HapticFeedbackController.PlayHapticFeedback))]
     [HarmonyPatch(typeof(HapticFeedbackController))]
     [HarmonyPriority(Priority.VeryHigh)]
-    internal class DarthMaulHapticPatch
+    public class DarthMaulHapticPatch
     {
+        public static Configuration Configuration { get; set; }
+
+        public static DarthMaulBehavior DarthMaulBehavior { get; set; }
+
         private static void Prefix(HapticFeedbackController __instance, ref XRNode node)
         {
-            if (Configuration.Current.PlayMode != PlayMode.DarthMaul ||
-                BehaviorCatalog.instance.DarthMaulBehavior == null ||
-                BehaviorCatalog.instance.DarthMaulBehavior.Split)
+            if (Configuration.Current.PlayMode != PlayMode.DarthMaul || DarthMaulBehavior == null || DarthMaulBehavior.Split)
             {
                 // Let the original function handle the haptic feedback
                 return;

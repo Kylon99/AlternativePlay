@@ -11,8 +11,10 @@ namespace AlternativePlay.HarmonyPatches
     [HarmonyPatch(nameof(NoteBasicCutInfoHelper.GetBasicCutInfo))]
     [HarmonyPatch(typeof(NoteBasicCutInfoHelper))]
     [HarmonyPriority(Priority.VeryHigh)]
-    internal class OneColorSaberPatch
+    public class OneColorSaberPatch
     {
+        public static Configuration Configuration { get; set; }
+
         private static void Postfix(ref bool saberTypeOK)
         {
             if (Configuration.Current.PlayMode == PlayMode.BeatSpear ||

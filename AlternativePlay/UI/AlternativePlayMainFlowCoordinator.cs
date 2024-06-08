@@ -1,17 +1,17 @@
 ﻿using AlternativePlay.Models;
 using BeatSaberMarkupLanguage;
 using HMUI;
+using Zenject;
 
 namespace AlternativePlay.UI
 {
     /// <summary>
-    /// The flow of the UI will consist of 3 layers:
-    /// 
+    /// The flow consists of three steps:
     /// 1. <see cref="AlternativePlayView"/> - The main view allowing you to select from a list of configurations
     /// 2. <see cref="PlayModeSelectView"/> - For configuring the settings of a play mode (<see cref="BeatSaberView"/>, <see cref="DarthMaulView"/>, etc) and the <see cref="GameModifiersView"/> on the right
     /// 3. <see cref="TrackerSelectView"/> - For setting trackers and options with a <see cref="TrackerPoseView"/> on the right
     /// </summary>
-    public class ModMainFlowCoordinator : FlowCoordinator
+    public class AlternativePlayMainFlowCoordinator : FlowCoordinator
     {
         private const string titleString = "Alternative Play";
         private AlternativePlayView alternativePlayView;
@@ -28,6 +28,22 @@ namespace AlternativePlay.UI
         private TrackerPoseView trackerPoseView;
 
         public bool IsBusy { get; set; }
+
+        public void ResolveViews(DiContainer container)
+        {
+            this.alternativePlayView = container.Resolve<AlternativePlayView>();
+            this.playModeSelectView = container.Resolve<PlayModeSelectView>();
+            this.gameModifiersView = container.Resolve<GameModifiersView>();
+
+            this.beatSaberSettingsView = container.Resolve<BeatSaberView>();
+            this.darthMaulSettingsView = container.Resolve<DarthMaulView>();
+            this.beatSpearSettingsView = container.Resolve<BeatSpearView>();
+            this.nunchakuView = container.Resolve<NunchakuView>();
+            this.beatFlailView = container.Resolve<BeatFlailView>();
+
+            this.trackerSelectView = container.Resolve<TrackerSelectView>();
+            this.trackerPoseView = container.Resolve<TrackerPoseView>();
+        }
 
         public void ShowBeatSaber()
         {
@@ -126,30 +142,6 @@ namespace AlternativePlay.UI
             this.SetLeftScreenViewController(viewToDisplay, ViewController.AnimationType.Out);
             this.SetRightScreenViewController(this.gameModifiersView, ViewController.AnimationType.Out);
             this.IsBusy = false;
-        }
-
-        private void Awake()
-        {
-            this.alternativePlayView = BeatSaberUI.CreateViewController<AlternativePlayView>();
-            this.alternativePlayView.SetMainFlowCoordinator(this);
-            this.playModeSelectView = BeatSaberUI.CreateViewController<PlayModeSelectView>();
-            this.playModeSelectView.SetMainFlowCoordinator(this);
-            this.gameModifiersView = BeatSaberUI.CreateViewController<GameModifiersView>();
-
-            this.beatSaberSettingsView = BeatSaberUI.CreateViewController<BeatSaberView>();
-            this.beatSaberSettingsView.SetMainFlowCoordinator(this);
-            this.darthMaulSettingsView = BeatSaberUI.CreateViewController<DarthMaulView>();
-            this.darthMaulSettingsView.SetMainFlowCoordinator(this);
-            this.beatSpearSettingsView = BeatSaberUI.CreateViewController<BeatSpearView>();
-            this.beatSpearSettingsView.SetMainFlowCoordinator(this);
-            this.nunchakuView = BeatSaberUI.CreateViewController<NunchakuView>();
-            this.nunchakuView.SetMainFlowCoordinator(this);
-            this.beatFlailView = BeatSaberUI.CreateViewController<BeatFlailView>();
-            this.beatFlailView.SetMainFlowCoordinator(this);
-
-            this.trackerSelectView = BeatSaberUI.CreateViewController<TrackerSelectView>();
-            this.trackerSelectView.SetMainFlowCoordinator(this);
-            this.trackerPoseView = BeatSaberUI.CreateViewController<TrackerPoseView>();
         }
 
         protected override void DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling)

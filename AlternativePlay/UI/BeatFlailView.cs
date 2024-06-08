@@ -3,20 +3,14 @@ using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.ViewControllers;
 using System;
 using System.Collections.Generic;
+using Zenject;
 
 namespace AlternativePlay.UI
 {
     [HotReload]
     public class BeatFlailView : BSMLAutomaticViewController
     {
-        private ModMainFlowCoordinator mainFlowCoordinator;
-
         private PlayModeSettings settings;
-
-        public void SetMainFlowCoordinator(ModMainFlowCoordinator mainFlowCoordinator)
-        {
-            this.mainFlowCoordinator = mainFlowCoordinator;
-        }
 
         public void SetPlayModeSettings(PlayModeSettings Settings)
         {
@@ -58,7 +52,7 @@ namespace AlternativePlay.UI
             set
             {
                 this.settings.LeftFlailMode = (BeatFlailMode)Enum.Parse(typeof(BeatFlailMode), value);
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
                 this.NotifyPropertyChanged(nameof(this.LeftFlailModeIcon));
             }
         }
@@ -91,7 +85,7 @@ namespace AlternativePlay.UI
             set
             {
                 this.settings.RightFlailMode = (BeatFlailMode)Enum.Parse(typeof(BeatFlailMode), value);
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
                 this.NotifyPropertyChanged(nameof(this.RightFlailModeIcon));
             }
         }
@@ -106,7 +100,7 @@ namespace AlternativePlay.UI
             set
             {
                 this.settings.LeftFlailLength = value;
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
             }
         }
 
@@ -117,7 +111,7 @@ namespace AlternativePlay.UI
             set
             {
                 this.settings.RightFlailLength = value;
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
             }
         }
 
@@ -128,7 +122,7 @@ namespace AlternativePlay.UI
             set
             {
                 this.settings.LeftHandleLength = value;
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
             }
         }
 
@@ -139,7 +133,7 @@ namespace AlternativePlay.UI
             set
             {
                 this.settings.RightHandleLength = value;
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
             }
         }
 
@@ -150,7 +144,7 @@ namespace AlternativePlay.UI
             set
             {
                 this.settings.Gravity = value;
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
             }
         }
 
@@ -161,7 +155,7 @@ namespace AlternativePlay.UI
             set
             {
                 this.settings.MoveNotesBack = value;
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
             }
         }
 
@@ -169,7 +163,7 @@ namespace AlternativePlay.UI
         private void OnResetGravity()
         {
             this.settings.Gravity = 3.5f;
-            Configuration.instance.SaveConfiguration();
+            this.configuration.SaveConfiguration();
             this.NotifyPropertyChanged(nameof(this.Gravity));
         }
 
@@ -232,7 +226,7 @@ namespace AlternativePlay.UI
         private void OnClearLeftTracker()
         {
             this.settings.LeftTracker = new TrackerConfigData();
-            Configuration.instance.SaveConfiguration();
+            this.configuration.SaveConfiguration();
             this.LeftTrackerSerial = TrackerConfigData.NoTrackerText;
             this.LeftTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
         }
@@ -241,7 +235,7 @@ namespace AlternativePlay.UI
         private void OnClearRightTracker()
         {
             this.settings.RightTracker = new TrackerConfigData();
-            Configuration.instance.SaveConfiguration();
+            this.configuration.SaveConfiguration();
             this.RightTrackerSerial = TrackerConfigData.NoTrackerText;
             this.RightTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
         }
@@ -262,5 +256,12 @@ namespace AlternativePlay.UI
         }
 
         #endregion
+
+#pragma warning disable CS0649
+        [Inject]
+        private Configuration configuration;
+        [Inject]
+        private AlternativePlayMainFlowCoordinator mainFlowCoordinator;
+#pragma warning restore CS0649
     }
 }

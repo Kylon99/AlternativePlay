@@ -1,6 +1,7 @@
 ﻿using AlternativePlay.Models;
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.ViewControllers;
+using Zenject;
 
 namespace AlternativePlay.UI
 {
@@ -30,7 +31,7 @@ namespace AlternativePlay.UI
             set
             {
                 this.settings.NoArrowsRandom = value;
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
             }
         }
 
@@ -44,7 +45,7 @@ namespace AlternativePlay.UI
             set
             {
                 this.settings.OneColor = value;
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
             }
         }
 
@@ -58,7 +59,7 @@ namespace AlternativePlay.UI
             set
             {
                 this.settings.NoSliders = value;
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
             }
         }
 
@@ -72,7 +73,7 @@ namespace AlternativePlay.UI
             set
             {
                 this.settings.NoArrows = value;
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
             }
         }
 
@@ -86,7 +87,7 @@ namespace AlternativePlay.UI
             set
             {
                 this.settings.TouchNotes = value;
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
             }
         }
 
@@ -98,5 +99,12 @@ namespace AlternativePlay.UI
             this.NotifyPropertyChanged(nameof(this.NoArrows));
             this.NotifyPropertyChanged(nameof(this.TouchNotes));
         }
+
+#pragma warning disable CS0649
+        [Inject]
+        private Configuration configuration;
+        [Inject]
+        private AlternativePlayMainFlowCoordinator mainFlowCoordinator;
+#pragma warning restore CS0649
     }
 }

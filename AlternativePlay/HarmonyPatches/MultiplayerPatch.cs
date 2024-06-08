@@ -4,7 +4,7 @@ using UnityEngine;
 namespace AlternativePlay.HarmonyPatches
 {
     [HarmonyPatch(typeof(MultiplayerLobbyConnectionController), "HandleMultiplayerSessionManagerConnected")]
-    internal class MultiplayerPatch
+    public class MultiplayerPatch
     {
         public static MultiplayerLobbyConnectionController.LobbyConnectionType connectionType;
         private static void Postfix(MultiplayerLobbyConnectionController __instance)
@@ -14,7 +14,7 @@ namespace AlternativePlay.HarmonyPatches
     }
 
     [HarmonyPatch(typeof(MultiplayerLocalActivePlayerGameplayManager), "Start")]
-    internal class MultiplayerLocalActivePlayerGameplayManagerPatch
+    public class MultiplayerLocalActivePlayerGameplayManagerPatch
     {
         internal static SaberManager multiplayerSaberManager = null;
         private static void Postfix(MultiplayerLocalActivePlayerGameplayManager __instance, SaberManager ____saberManager)
@@ -33,7 +33,7 @@ namespace AlternativePlay.HarmonyPatches
     }
 
     [HarmonyPatch(typeof(MultiplayerSyncStateManager<NodePoseSyncState, NodePoseSyncState.NodePose, PoseSerializable, NodePoseSyncStateNetSerializable, NodePoseSyncStateDeltaNetSerializable>), "LateUpdate")]
-    internal class MultiplayerSyncStateManagerPatch
+    public class MultiplayerSyncStateManagerPatch
     {
         private static PoseSerializable _leftSaber = new PoseSerializable();
         private static PoseSerializable _rightSaber = new PoseSerializable();

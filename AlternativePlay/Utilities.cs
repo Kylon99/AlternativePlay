@@ -19,8 +19,9 @@ namespace AlternativePlay
             if (trackerConfigData.Position != Vector3.zero)
             {
                 // Disable scoring due to transforms
-                AlternativePlay.Logger.Info($"Position: {trackerConfigData.Position}");
-                AlternativePlay.Logger.Info("Disabling score submission on tracker with non-default position");
+                var logger = AlternativePlay.ProjectContainer.TryResolve<IPA.Logging.Logger>();
+                logger.Info($"Position: {trackerConfigData.Position}");
+                logger.Info("Disabling score submission on tracker with non-default position");
                 BS_Utils.Gameplay.ScoreSubmission.DisableSubmission(AlternativePlay.assemblyName);
             }
         }
@@ -187,6 +188,7 @@ namespace AlternativePlay
         {
             const float linkMeshOverlap = 0.03f;
             const float linkMeshLength = 0.1f;
+            var assetLoader = AlternativePlay.ProjectContainer.TryResolve<GameSceneBehaviorsInstaller>().AssetLoaderBehavior;
 
             if (chainCount < 2) return new List<GameObject>(); // Create no links if there is less than 2 links
             int chainSegments = chainCount - 1;
@@ -198,7 +200,7 @@ namespace AlternativePlay
             var result = new List<GameObject>();
             for (int i = 0; i < count; i++)
             {
-                var link = GameObject.Instantiate(BehaviorCatalog.instance.AssetLoaderBehavior.LinkPrefab);
+                var link = GameObject.Instantiate(assetLoader.LinkPrefab);
                 result.Add(link);
             }
 

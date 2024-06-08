@@ -1,22 +1,15 @@
 ﻿using AlternativePlay.Models;
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.ViewControllers;
+using Zenject;
 
 namespace AlternativePlay.UI
 {
     [HotReload]
     public class PlayModeSelectView : BSMLAutomaticViewController
     {
-        private ModMainFlowCoordinator mainFlowCoordinator;
-
         public int index { get; private set; }
         public PlayModeSettings Settings { get; private set; }
-
-
-        public void SetMainFlowCoordinator(ModMainFlowCoordinator mainFlowCoordinator)
-        {
-            this.mainFlowCoordinator = mainFlowCoordinator;
-        }
 
         public void SetPlayModeSettings(PlayModeSettings Settings, int index)
         {
@@ -97,7 +90,7 @@ namespace AlternativePlay.UI
         private void OnBeatSaberClick()
         {
             this.Settings.PlayMode = PlayMode.BeatSaber;
-            Configuration.instance.SaveConfiguration();
+            this.configuration.SaveConfiguration();
 
             this.SetPlayModeColor(this.Settings.PlayMode);
             this.mainFlowCoordinator.ShowBeatSaber();
@@ -107,7 +100,7 @@ namespace AlternativePlay.UI
         private void OnDarthMaulClick()
         {
             this.Settings.PlayMode = PlayMode.DarthMaul;
-            Configuration.instance.SaveConfiguration();
+            this.configuration.SaveConfiguration();
 
             this.SetPlayModeColor(this.Settings.PlayMode);
             this.mainFlowCoordinator.ShowDarthMaul();
@@ -117,7 +110,7 @@ namespace AlternativePlay.UI
         private void OnBeatSpearClick()
         {
             this.Settings.PlayMode = PlayMode.BeatSpear;
-            Configuration.instance.SaveConfiguration();
+            this.configuration.SaveConfiguration();
 
             this.SetPlayModeColor(this.Settings.PlayMode);
             this.mainFlowCoordinator.ShowBeatSpear();
@@ -127,7 +120,7 @@ namespace AlternativePlay.UI
         private void OnNunchakuClick()
         {
             this.Settings.PlayMode = PlayMode.Nunchaku;
-            Configuration.instance.SaveConfiguration();
+            this.configuration.SaveConfiguration();
 
             this.SetPlayModeColor(this.Settings.PlayMode);
             this.mainFlowCoordinator.ShowNunchaku();
@@ -137,7 +130,7 @@ namespace AlternativePlay.UI
         private void OnFlailClick()
         {
             this.Settings.PlayMode = PlayMode.BeatFlail;
-            Configuration.instance.SaveConfiguration();
+            this.configuration.SaveConfiguration();
 
             this.SetPlayModeColor(this.Settings.PlayMode);
             this.mainFlowCoordinator.ShowBeatFlail();
@@ -151,5 +144,12 @@ namespace AlternativePlay.UI
             this.NunchakuColor = playMode == PlayMode.Nunchaku ? White : Grey;
             this.FlailColor = playMode == PlayMode.BeatFlail ? White : Grey;
         }
+
+#pragma warning disable CS0649
+        [Inject]
+        private Configuration configuration;
+        [Inject]
+        private AlternativePlayMainFlowCoordinator mainFlowCoordinator;
+#pragma warning restore CS0649
     }
 }

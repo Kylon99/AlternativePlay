@@ -5,8 +5,10 @@ namespace AlternativePlay.HarmonyPatches
 {
     [HarmonyPatch(nameof(NoteBasicCutInfoHelper.GetBasicCutInfo))]
     [HarmonyPatch(typeof(NoteBasicCutInfoHelper))]
-    internal class TouchNotesPatch
+    public class TouchNotesPatch
     {
+        public static Configuration Configuration { get; set; }
+
         private static void Prefix(ref float saberBladeSpeed)
         {
             if (Configuration.Current.TouchNotes && BS_Utils.Plugin.LevelData.Mode != BS_Utils.Gameplay.Mode.Multiplayer)

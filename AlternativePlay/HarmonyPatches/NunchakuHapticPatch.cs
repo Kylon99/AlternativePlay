@@ -7,19 +7,21 @@ namespace AlternativePlay.HarmonyPatches
     [HarmonyPatch(nameof(HapticFeedbackController.PlayHapticFeedback))]
     [HarmonyPatch(typeof(HapticFeedbackController))]
     [HarmonyPriority(Priority.VeryHigh)]
-    internal class NunchakuHapticPatch
+    public class NunchakuHapticPatch
     {
+        public static Configuration Configuration { get; set; }
+
+        public static NunchakuBehavior NunchakuBehavior { get; set; }
+
         private static void Prefix(ref XRNode node)
         {
-            if (Configuration.Current.PlayMode != PlayMode.Nunchaku ||
-                BehaviorCatalog.instance.NunchakuBehavior == null ||
-                BehaviorCatalog.instance.NunchakuBehavior.HeldState == NunchakuBehavior.Held.Both)
+            if (Configuration.Current.PlayMode != PlayMode.Nunchaku ||NunchakuBehavior == null || NunchakuBehavior.HeldState == NunchakuBehavior.Held.Both)
             {
                 // Let the original function handle the haptic feedback
                 return;
             }
 
-            switch (BehaviorCatalog.instance.NunchakuBehavior.HeldState)
+            switch (NunchakuBehavior.HeldState)
             {
                 case NunchakuBehavior.Held.Left:
                     node = XRNode.LeftHand;

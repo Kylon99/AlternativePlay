@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Zenject;
 
 namespace AlternativePlay
 {
@@ -14,6 +15,15 @@ namespace AlternativePlay
             Right,
         }
 
+        [Inject]
+        private Configuration configuration;
+        [Inject]
+        private TrackedDeviceManager trackedDeviceManager;
+        [Inject]
+        private SaberDeviceManager saberDeviceManager;
+        [Inject]
+        private InputManager inputManager;
+
         public Held HeldState { get; private set; }
 
         private const float NunchakuMass = 3.0f;
@@ -24,37 +34,28 @@ namespace AlternativePlay
         private List<GameObject> physicsChain;
         private List<GameObject> linkMeshes;
 
-        /// <summary>
-        /// To be invoked every time when starting the GameCore scene.
-        /// </summary>
-        public void BeginGameCoreScene()
+        private void Start()
         {
             // Do nothing if we aren't playing Nunchaku
-            if (Configuration.Current.PlayMode != PlayMode.Nunchaku) { return; }
+            if (this.configuration.Current.PlayMode != PlayMode.Nunchaku) { return; }
 
-            TrackedDeviceManager.instance.LoadTrackedDevices();
+            this.trackedDeviceManager.LoadTrackedDevices();
 
-            Utilities.CheckAndDisableForTrackerTransforms(Configuration.Current.LeftTracker);
-            Utilities.CheckAndDisableForTrackerTransforms(Configuration.Current.RightTracker);
-        }
-
-        private void Awake()
-        {
-            // Do nothing if we aren't playing Nunchaku
-            if (Configuration.Current.PlayMode != PlayMode.Nunchaku) { return; }
+            Utilities.CheckAndDisableForTrackerTransforms(this.configuration.Current.LeftTracker);
+            Utilities.CheckAndDisableForTrackerTransforms(this.configuration.Current.RightTracker);
 
             // Create all Nunchaku GameObjects
             this.physicsChain = this.CreateNunchaku();
-            this.linkMeshes = Utilities.CreateLinkMeshes(this.physicsChain.Count, Configuration.Current.NunchakuLength / 100.0f);
+            this.linkMeshes = Utilities.CreateLinkMeshes(this.physicsChain.Count, this.configuration.Current.NunchakuLength / 100.0f);
         }
 
         private void FixedUpdate()
         {
             // Do nothing if we aren't playing Nunchaku
-            if (Configuration.Current.PlayMode != PlayMode.Nunchaku) { return; }
+            if (this.configuration.Current.PlayMode != PlayMode.Nunchaku) { return; }
 
             // Apply gravity to the handles first
-            float gravity = Configuration.Current.Gravity * -9.81f;
+            float gravity = this.configuration.Current.Gravity * -9.81f;
             foreach (var link in this.physicsChain)
             {
                 var rigidBody = link.GetComponent<Rigidbody>();
@@ -65,8 +66,8 @@ namespace AlternativePlay
             var rightChain = this.physicsChain.First();
             var leftChain = this.physicsChain.Last();
 
-            Pose leftSaberPose = BehaviorCatalog.instance.SaberDeviceManager.GetLeftSaberPose(Configuration.Current.LeftTracker);
-            Pose rightSaberPose = BehaviorCatalog.instance.SaberDeviceManager.GetRightSaberPose(Configuration.Current.RightTracker);
+            Pose leftSaberPose = this.saberDeviceManager.GetLeftSaberPose(this.configuration.Current.LeftTracker);
+            Pose rightSaberPose = this.saberDeviceManager.GetRightSaberPose(this.configuration.Current.RightTracker);
             var leftSaberRigid = leftChain.GetComponent<Rigidbody>();
             var rightSaberRigid = rightChain.GetComponent<Rigidbody>();
             switch (this.HeldState)
@@ -99,18 +100,15 @@ namespace AlternativePlay
                     break;
             }
         }
-
         private void Update()
         {
             // Do nothing if we aren't playing Nunchaku
-            if (Configuration.Current.PlayMode != PlayMode.Nunchaku) { return; }
+            if (this.configuration.Current.PlayMode != PlayMode.Nunchaku) { return; }
 
             // Resolve Trigger button presses
-            var inputManager = BehaviorCatalog.instance.InputManager;
-
-            bool bothTriggerClicked = inputManager.GetBothTriggerClicked();
-            bool leftTriggerClicked = inputManager.GetLeftTriggerClicked();
-            bool rightTriggerClicked = inputManager.GetRightTriggerClicked();
+            bool bothTriggerClicked = this.inputManager.GetBothTriggerClicked();
+            bool leftTriggerClicked = this.inputManager.GetLeftTriggerClicked();
+            bool rightTriggerClicked = this.inputManager.GetRightTriggerClicked();
 
             if (bothTriggerClicked)
             {
@@ -123,11 +121,11 @@ namespace AlternativePlay
             }
 
             // Move the link meshes first
-            Utilities.MoveLinkMeshes(this.linkMeshes, this.physicsChain, Configuration.Current.NunchakuLength / 100.0f);
+            Utilities.MoveLinkMeshes(this.linkMeshes, this.physicsChain, this.configuration.Current.NunchakuLength / 100.0f);
 
             // Move the Sabers into place
-            Pose leftSaberPose = BehaviorCatalog.instance.SaberDeviceManager.GetLeftSaberPose(Configuration.Current.LeftTracker);
-            Pose rightSaberPose = BehaviorCatalog.instance.SaberDeviceManager.GetRightSaberPose(Configuration.Current.RightTracker);
+            Pose leftSaberPose = this.saberDeviceManager.GetLeftSaberPose(this.configuration.Current.LeftTracker);
+            Pose rightSaberPose = this.saberDeviceManager.GetRightSaberPose(this.configuration.Current.RightTracker);
 
             var rightChain = this.physicsChain.First();
             var leftChain = this.physicsChain.Last();
@@ -143,8 +141,8 @@ namespace AlternativePlay
                         rightChain.gameObject.transform.position / 10.0f,
                         rightChain.gameObject.transform.rotation * Quaternion.Euler(0.0f, 90.0f, 0.0f));
 
-                    newLeftSaberPose = Configuration.Current.ReverseNunchaku ? rightChainPose : leftSaberPose.Reverse();
-                    newRightSaberPose = Configuration.Current.ReverseNunchaku ? leftSaberPose.Reverse() : rightChainPose;
+                    newLeftSaberPose = this.configuration.Current.ReverseNunchaku ? rightChainPose : leftSaberPose.Reverse();
+                    newRightSaberPose = this.configuration.Current.ReverseNunchaku ? leftSaberPose.Reverse() : rightChainPose;
                     break;
 
                 case Held.Right:
@@ -153,8 +151,8 @@ namespace AlternativePlay
                         leftChain.gameObject.transform.position / 10.0f,
                         leftChain.gameObject.transform.rotation * Quaternion.Euler(0.0f, -90.0f, 0.0f));
 
-                    newRightSaberPose = Configuration.Current.ReverseNunchaku ? leftChainPose : rightSaberPose.Reverse();
-                    newLeftSaberPose = Configuration.Current.ReverseNunchaku ? rightSaberPose.Reverse() : leftChainPose;
+                    newRightSaberPose = this.configuration.Current.ReverseNunchaku ? leftChainPose : rightSaberPose.Reverse();
+                    newLeftSaberPose = this.configuration.Current.ReverseNunchaku ? rightSaberPose.Reverse() : leftChainPose;
                     break;
 
                 case Held.Both:
@@ -165,7 +163,7 @@ namespace AlternativePlay
                     break;
             }
 
-            var saberDevice = BehaviorCatalog.instance.SaberDeviceManager;
+            var saberDevice = this.saberDeviceManager;
             saberDevice.SetLeftSaberPose(newLeftSaberPose);
             saberDevice.SetRightSaberPose(newRightSaberPose);
         }
@@ -191,7 +189,7 @@ namespace AlternativePlay
             var leftHandle = Utilities.CreateLink("LeftNunchaku", NunchakuMass, AngularDrag);
             chain.Add(leftHandle);
 
-            Utilities.ConnectChain(chain, Configuration.Current.NunchakuLength / 100.0f);
+            Utilities.ConnectChain(chain, this.configuration.Current.NunchakuLength / 100.0f);
             return chain;
         }
     }

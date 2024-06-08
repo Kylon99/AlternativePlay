@@ -28,7 +28,7 @@ namespace AlternativePlay.UI
         public string Mode { get; set; }
 
         [UIValue(nameof(this.SelectedColor))]
-        public string SelectedColor => Configuration.instance.ConfigurationData.Selected == this.Index ? "#FFFFFF" : "#7F7F7F";
+        public string SelectedColor => this.configuration.ConfigurationData.Selected == this.Index ? "#FFFFFF" : "#7F7F7F";
 
         [UIAction(nameof(this.OnDeleteClicked))]
         public void OnDeleteClicked()

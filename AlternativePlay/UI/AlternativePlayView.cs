@@ -4,6 +4,7 @@ using BeatSaberMarkupLanguage.Components;
 using BeatSaberMarkupLanguage.ViewControllers;
 using HMUI;
 using System.Linq;
+using Zenject;
 
 namespace AlternativePlay.UI
 {
@@ -11,12 +12,6 @@ namespace AlternativePlay.UI
     public class AlternativePlayView : BSMLAutomaticViewController
     {
         private int deleteIndex; // Caches the index to be deleted for after the Delete Modal is done
-        private ModMainFlowCoordinator mainFlowCoordinator;
-
-        public void SetMainFlowCoordinator(ModMainFlowCoordinator mainFlowCoordinator)
-        {
-            this.mainFlowCoordinator = mainFlowCoordinator;
-        }
 
         /// <summary>
         /// Reloads the table with the latest configuration data
@@ -24,7 +19,7 @@ namespace AlternativePlay.UI
         /// <param name="index">Optional parameter for the row to scroll the table to.</param>
         public void RefreshConfigurations(int index = -1)
         {
-            var list = Configuration.instance.ConfigurationData.PlayModeSettings
+            var list = this.configuration.ConfigurationData.PlayModeSettings
                 .Select((settings, i) => new PlayModeSelectOption(settings, i, this.ShowDeleteModal))
                 .ToList();
 
@@ -63,7 +58,7 @@ namespace AlternativePlay.UI
         [UIAction(nameof(this.OnModeClicked))]
         public void OnModeClicked(TableView _, PlayModeSelectOption selected)
         {
-            var playModeSettings = Configuration.GetPlayModeSetting(selected.Index);
+            var playModeSettings = this.configuration.GetPlayModeSetting(selected.Index);
             if (playModeSettings == null)
             {
                 // Do nothing as this is an error
@@ -77,9 +72,9 @@ namespace AlternativePlay.UI
         public void OnAddNewConfiguration()
         {
             // Add a new setting to the bottom of the list
-            Configuration.AddPlayModeSetting();
+            this.configuration.AddPlayModeSetting();
 
-            int index = Configuration.instance.ConfigurationData.PlayModeSettings.Count - 1;
+            int index = this.configuration.ConfigurationData.PlayModeSettings.Count - 1;
             this.RefreshConfigurations(index);
         }
 
@@ -90,9 +85,9 @@ namespace AlternativePlay.UI
         public void OnOKClicked()
         {
             // Delete the playmode setting at the saved index
-            Configuration.DeletePlayModeSetting(this.deleteIndex);
-            int scrollToIndex = this.deleteIndex >= Configuration.instance.ConfigurationData.PlayModeSettings.Count 
-                ? Configuration.instance.ConfigurationData.PlayModeSettings.Count - 1 
+            this.configuration.DeletePlayModeSetting(this.deleteIndex);
+            int scrollToIndex = this.deleteIndex >= this.configuration.ConfigurationData.PlayModeSettings.Count 
+                ? this.configuration.ConfigurationData.PlayModeSettings.Count - 1 
                 : this.deleteIndex;
             this.RefreshConfigurations(scrollToIndex);
 
@@ -104,6 +99,13 @@ namespace AlternativePlay.UI
         {
             this.DeleteModal.Hide(true);
         }
+
+#pragma warning disable CS0649
+        [Inject]
+        private Configuration configuration;
+        [Inject]
+        private AlternativePlayMainFlowCoordinator mainFlowCoordinator;
+#pragma warning restore CS0649
     }
 
 }
