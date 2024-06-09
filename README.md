@@ -69,6 +69,9 @@ Drop the AlternativePlay.dll file into your Plugins folder under your BeatSaber 
 
 ## Changelog
 
+### 0.8.1
+- Fixed play mode selection not saving
+
 ### 0.8.0
 - Added options to change flail handle length
 - United support for Beat Saber 1.21 - 1.26 and 1.27 - 1.29.1
