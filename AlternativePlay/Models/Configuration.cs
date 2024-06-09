@@ -23,6 +23,7 @@ namespace AlternativePlay.Models
         {
             Configuration.instance.ConfigurationData.Selected = 
                 index < 0 || index >= Configuration.instance.ConfigurationData.PlayModeSettings.Count ? 0 : index;
+            Configuration.instance.SaveConfiguration();
         }
 
         /// <summary>
