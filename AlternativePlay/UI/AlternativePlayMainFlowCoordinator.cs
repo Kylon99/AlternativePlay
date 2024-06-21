@@ -1,19 +1,20 @@
 ﻿using AlternativePlay.Models;
 using BeatSaberMarkupLanguage;
 using HMUI;
+using Zenject;
 
 namespace AlternativePlay.UI
 {
     /// <summary>
-    /// The flow of the UI will consist of 3 layers:
-    /// 
+    /// The flow consists of three steps:
     /// 1. <see cref="AlternativePlayView"/> - The main view allowing you to select from a list of configurations
     /// 2. <see cref="PlayModeSelectView"/> - For configuring the settings of a play mode (<see cref="BeatSaberView"/>, <see cref="DarthMaulView"/>, etc) and the <see cref="GameModifiersView"/> on the right
     /// 3. <see cref="TrackerSelectView"/> - For setting trackers and options with a <see cref="TrackerPoseView"/> on the right
     /// </summary>
-    public class ModMainFlowCoordinator : FlowCoordinator
+    public class AlternativePlayMainFlowCoordinator : FlowCoordinator
     {
         private const string titleString = "Alternative Play";
+
         private AlternativePlayView alternativePlayView;
         private PlayModeSelectView playModeSelectView;
         private GameModifiersView gameModifiersView;
@@ -130,26 +131,32 @@ namespace AlternativePlay.UI
 
         private void Awake()
         {
+            var configuration = ProjectContext.Instance.Container.Resolve<Configuration>();
+            var trackedDeviceManager = ProjectContext.Instance.Container.Resolve<TrackedDeviceManager>();
+            var showTrackersBehavior = ProjectContext.Instance.Container.Resolve<ShowTrackersBehavior>();
+
             this.alternativePlayView = BeatSaberUI.CreateViewController<AlternativePlayView>();
-            this.alternativePlayView.SetMainFlowCoordinator(this);
+            this.alternativePlayView.Initialize(configuration, this);
             this.playModeSelectView = BeatSaberUI.CreateViewController<PlayModeSelectView>();
-            this.playModeSelectView.SetMainFlowCoordinator(this);
+            this.playModeSelectView.Initialize(configuration, this);
             this.gameModifiersView = BeatSaberUI.CreateViewController<GameModifiersView>();
+            this.gameModifiersView.Initialize(configuration);
 
             this.beatSaberSettingsView = BeatSaberUI.CreateViewController<BeatSaberView>();
-            this.beatSaberSettingsView.SetMainFlowCoordinator(this);
+            this.beatSaberSettingsView.Initialize(configuration, this);
             this.darthMaulSettingsView = BeatSaberUI.CreateViewController<DarthMaulView>();
-            this.darthMaulSettingsView.SetMainFlowCoordinator(this);
+            this.darthMaulSettingsView.Initialize(configuration, this);
             this.beatSpearSettingsView = BeatSaberUI.CreateViewController<BeatSpearView>();
-            this.beatSpearSettingsView.SetMainFlowCoordinator(this);
+            this.beatSpearSettingsView.Initialize(configuration, this);
             this.nunchakuView = BeatSaberUI.CreateViewController<NunchakuView>();
-            this.nunchakuView.SetMainFlowCoordinator(this);
+            this.nunchakuView.Initialize(configuration, this);
             this.beatFlailView = BeatSaberUI.CreateViewController<BeatFlailView>();
-            this.beatFlailView.SetMainFlowCoordinator(this);
+            this.beatFlailView.Initialize(configuration, this);
 
             this.trackerSelectView = BeatSaberUI.CreateViewController<TrackerSelectView>();
-            this.trackerSelectView.SetMainFlowCoordinator(this);
+            this.trackerSelectView.Initialize(configuration, trackedDeviceManager, showTrackersBehavior, this);
             this.trackerPoseView = BeatSaberUI.CreateViewController<TrackerPoseView>();
+            this.trackerPoseView.Initialize(configuration);
         }
 
         protected override void DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling)

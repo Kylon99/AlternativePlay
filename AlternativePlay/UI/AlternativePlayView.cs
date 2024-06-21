@@ -4,18 +4,22 @@ using BeatSaberMarkupLanguage.Components;
 using BeatSaberMarkupLanguage.ViewControllers;
 using HMUI;
 using System.Linq;
+using Zenject;
 
 namespace AlternativePlay.UI
 {
     [HotReload]
     public class AlternativePlayView : BSMLAutomaticViewController
     {
-        private int deleteIndex; // Caches the index to be deleted for after the Delete Modal is done
-        private ModMainFlowCoordinator mainFlowCoordinator;
+        private Configuration configuration;
+        private AlternativePlayMainFlowCoordinator mainFlowCoordinator;
 
-        public void SetMainFlowCoordinator(ModMainFlowCoordinator mainFlowCoordinator)
+        private int deleteIndex; // Caches the index to be deleted for after the Delete Modal is done
+
+        public void Initialize(Configuration config, AlternativePlayMainFlowCoordinator flowCoordinator)
         {
-            this.mainFlowCoordinator = mainFlowCoordinator;
+            this.configuration = config;
+            this.mainFlowCoordinator = flowCoordinator;
         }
 
         /// <summary>
@@ -24,15 +28,15 @@ namespace AlternativePlay.UI
         /// <param name="index">Optional parameter for the row to scroll the table to.</param>
         public void RefreshConfigurations(int index = -1)
         {
-            var list = Configuration.instance.ConfigurationData.PlayModeSettings
-                .Select((settings, i) => new PlayModeSelectOption(settings, i, this.ShowDeleteModal))
+            var list = this.configuration.ConfigurationData.PlayModeSettings
+                .Select((settings, i) => new PlayModeSelectOption(this.configuration.ConfigurationData, i, this.ShowDeleteModal))
                 .ToList();
 
             this.SelectModeList.tableView.ClearSelection();
             this.SelectModeList.data.Clear();
             this.SelectModeList.data = list.Cast<object>().ToList();
             this.SelectModeList.tableView.ReloadData();
-            
+
             if (index != -1)
             {
                 this.SelectModeList.tableView.ScrollToCellWithIdx(index, TableView.ScrollPositionType.End, false);
@@ -63,7 +67,7 @@ namespace AlternativePlay.UI
         [UIAction(nameof(this.OnModeClicked))]
         public void OnModeClicked(TableView _, PlayModeSelectOption selected)
         {
-            var playModeSettings = Configuration.GetPlayModeSetting(selected.Index);
+            var playModeSettings = this.configuration.GetPlayModeSetting(selected.Index);
             if (playModeSettings == null)
             {
                 // Do nothing as this is an error
@@ -77,9 +81,9 @@ namespace AlternativePlay.UI
         public void OnAddNewConfiguration()
         {
             // Add a new setting to the bottom of the list
-            Configuration.AddPlayModeSetting();
+            this.configuration.AddPlayModeSetting();
 
-            int index = Configuration.instance.ConfigurationData.PlayModeSettings.Count - 1;
+            int index = this.configuration.ConfigurationData.PlayModeSettings.Count - 1;
             this.RefreshConfigurations(index);
         }
 
@@ -90,9 +94,9 @@ namespace AlternativePlay.UI
         public void OnOKClicked()
         {
             // Delete the playmode setting at the saved index
-            Configuration.DeletePlayModeSetting(this.deleteIndex);
-            int scrollToIndex = this.deleteIndex >= Configuration.instance.ConfigurationData.PlayModeSettings.Count 
-                ? Configuration.instance.ConfigurationData.PlayModeSettings.Count - 1 
+            this.configuration.DeletePlayModeSetting(this.deleteIndex);
+            int scrollToIndex = this.deleteIndex >= this.configuration.ConfigurationData.PlayModeSettings.Count
+                ? this.configuration.ConfigurationData.PlayModeSettings.Count - 1
                 : this.deleteIndex;
             this.RefreshConfigurations(scrollToIndex);
 

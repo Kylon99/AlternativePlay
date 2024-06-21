@@ -7,23 +7,22 @@ using UnityEngine;
 
 namespace AlternativePlay.Models
 {
-    public class Configuration : PersistentSingleton<Configuration>
+    public class Configuration
     {
         public static readonly string configurationFile = Path.Combine(Application.dataPath, @"..\UserData\AlternativePlayConfiguration.json");
 
         public ConfigurationData ConfigurationData { get; private set; }
 
-        public static int SelectedIndex => instance.ConfigurationData.Selected;
-        public static PlayModeSettings Current => instance.ConfigurationData.PlayModeSettings[instance.ConfigurationData.Selected];
+        public int SelectedIndex => this.ConfigurationData.Selected;
+        public PlayModeSettings Current => this.ConfigurationData.PlayModeSettings[this.ConfigurationData.Selected];
 
         /// <summary>
         /// Sets the current <see cref="PlayModeSettings"/> to use to play to <paramref name="index"/>
         /// </summary>
-        public static void SelectPlayModeSetting(int index)
+        public void SelectPlayModeSetting(int index)
         {
-            Configuration.instance.ConfigurationData.Selected = 
-                index < 0 || index >= Configuration.instance.ConfigurationData.PlayModeSettings.Count ? 0 : index;
-            Configuration.instance.SaveConfiguration();
+            this.ConfigurationData.Selected = index < 0 || index >= this.ConfigurationData.PlayModeSettings.Count ? 0 : index;
+            this.SaveConfiguration();
         }
 
         /// <summary>
@@ -31,44 +30,45 @@ namespace AlternativePlay.Models
         /// If the index is out of range then null is returned.  <see cref="PlayModeSettings"/> 
         /// can be null if they have not been configured yet.
         /// </summary>
-        public static PlayModeSettings GetPlayModeSetting(int index)
+        public PlayModeSettings GetPlayModeSetting(int index)
         {
-            if (index < 0 || index >= Configuration.instance.ConfigurationData.PlayModeSettings.Count) { return null; }
-            return Configuration.instance.ConfigurationData.PlayModeSettings[index];
+            if (index < 0 || index >= this.ConfigurationData.PlayModeSettings.Count) { return null; }
+            return this.ConfigurationData.PlayModeSettings[index];
         }
 
         /// <summary>
         /// Adds a <see cref="PlayModeSettings"/> to the list. If the settings are null then
         /// a new default initialized setting will be created.
         /// </summary>
-        public static void AddPlayModeSetting(PlayModeSettings settings = null)
+        public void AddPlayModeSetting(PlayModeSettings settings = null)
         {
-            var playModeList = Configuration.instance.ConfigurationData.PlayModeSettings;
+            var playModeList = this.ConfigurationData.PlayModeSettings;
             playModeList.Add(settings ?? new PlayModeSettings());
-            Configuration.instance.SaveConfiguration();
+            this.SaveConfiguration();
         }
 
         /// <summary>
         /// Deletes the <see cref="PlayModeSettings"/> at the given <paramref name="index"/>.
         /// </summary>
-        public static void DeletePlayModeSetting(int index)
+        public void DeletePlayModeSetting(int index)
         {
-            var playModeList = Configuration.instance.ConfigurationData.PlayModeSettings;
+            var playModeList = this.ConfigurationData.PlayModeSettings;
             if (index < 0 || index >= playModeList.Count) { return; }
 
             if (playModeList.Count == 1)
             {
                 // Replace the last play mode setting with a new one.  There must always be one
                 playModeList[0] = new PlayModeSettings();
-            } else
+            }
+            else
             {
                 playModeList.RemoveAt(index);
             }
 
             // If selected is now out of bounds reset to 0
-            if (index >= playModeList.Count) { Configuration.SelectPlayModeSetting(0); }
+            if (index >= playModeList.Count) { this.SelectPlayModeSetting(0); }
 
-            Configuration.instance.SaveConfiguration();
+            this.SaveConfiguration();
         }
 
         /// <summary>
@@ -96,9 +96,9 @@ namespace AlternativePlay.Models
                 this.ConfigurationData = this.ConvertOldConfiguration(configurationText);
 
                 // If there is still no configuration then use a new one
-                if (this.ConfigurationData == null || this.ConfigurationData.PlayModeSettings == null || this.ConfigurationData.PlayModeSettings.Count == 0) 
-                { 
-                    this.ConfigurationData = this.NewConfiguration(); 
+                if (this.ConfigurationData == null || this.ConfigurationData.PlayModeSettings == null || this.ConfigurationData.PlayModeSettings.Count == 0)
+                {
+                    this.ConfigurationData = this.NewConfiguration();
                 }
             }
 
@@ -134,7 +134,7 @@ namespace AlternativePlay.Models
         private ConfigurationData ConvertOldConfiguration(string configurationText)
         {
             // Attempt to read the old configuration
-            ConfigurationData075 oldConfiguration = JsonConvert.DeserializeObject<ConfigurationData075>(configurationText);      
+            ConfigurationData075 oldConfiguration = JsonConvert.DeserializeObject<ConfigurationData075>(configurationText);
             if (oldConfiguration == null) { return null; }
 
             // Return a new configuration with the one converted play settings
@@ -156,8 +156,8 @@ namespace AlternativePlay.Models
             }
 
             // Check to see if selected play mode is out of range
-            if (this.ConfigurationData.Selected < 0 || this.ConfigurationData.Selected >= this.ConfigurationData.PlayModeSettings.Count) 
-            { 
+            if (this.ConfigurationData.Selected < 0 || this.ConfigurationData.Selected >= this.ConfigurationData.PlayModeSettings.Count)
+            {
                 this.ConfigurationData.Selected = 0;
             }
 

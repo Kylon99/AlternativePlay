@@ -16,8 +16,12 @@ namespace AlternativePlay.UI
 
         public Action<int> DeleteCallback { get; set; }
 
-        public PlayModeSelectOption(PlayModeSettings settings, int index, Action<int> deleteCallback = null)
+        private ConfigurationData configurationData;
+
+        public PlayModeSelectOption(ConfigurationData configuration, int index, Action<int> deleteCallback = null)
         {
+            this.configurationData = configuration;
+            PlayModeSettings settings = configuration.PlayModeSettings[index];
             this.Mode = PlayModeSettings.PlayModeDescription(settings.PlayMode);
             this.Index = index;
             this.IconSummary = new ConfigurationIconSummary(settings);
@@ -28,7 +32,7 @@ namespace AlternativePlay.UI
         public string Mode { get; set; }
 
         [UIValue(nameof(this.SelectedColor))]
-        public string SelectedColor => Configuration.instance.ConfigurationData.Selected == this.Index ? "#FFFFFF" : "#7F7F7F";
+        public string SelectedColor => this.configurationData.Selected == this.Index ? "#FFFFFF" : "#7F7F7F";
 
         [UIAction(nameof(this.OnDeleteClicked))]
         public void OnDeleteClicked()

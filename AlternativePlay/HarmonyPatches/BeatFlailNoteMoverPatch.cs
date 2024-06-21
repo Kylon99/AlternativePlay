@@ -10,15 +10,16 @@ namespace AlternativePlay.HarmonyPatches
     /// for the length of the Flail chain.
     /// </summary>
     [HarmonyPatch]
-    internal class BeatFlailNoteMoverPatch
+    public class BeatFlailNoteMoverPatch
     {
+        public static Configuration Configuration { get; set; }
+
         [HarmonyPrefix]
         [HarmonyPatch(typeof(NoteMovement), nameof(NoteMovement.Init))]
         [HarmonyPriority(Priority.High)]
         private static void NoteMovementPrefix(ref Vector3 moveStartPos, ref Vector3 moveEndPos, ref Vector3 jumpEndPos)
         {
-            if (Configuration.Current.PlayMode == PlayMode.BeatFlail &&
-                Configuration.Current.MoveNotesBack > 0)
+            if (Configuration.Current.PlayMode == PlayMode.BeatFlail && Configuration.Current.MoveNotesBack > 0)
             {
                 float realMoveNote = Configuration.Current.MoveNotesBack / 100.0f;
                 moveStartPos.z -= realMoveNote;
@@ -32,8 +33,7 @@ namespace AlternativePlay.HarmonyPatches
         [HarmonyPriority(Priority.High)]
         private static void ObstacleControllerPrefix(ref Vector3 startPos, ref Vector3 midPos, ref Vector3 endPos)
         {
-            if (Configuration.Current.PlayMode == PlayMode.BeatFlail &&
-                Configuration.Current.MoveNotesBack > 0)
+            if (Configuration.Current.PlayMode == PlayMode.BeatFlail && Configuration.Current.MoveNotesBack > 0)
             {
                 float realMoveNote = Configuration.Current.MoveNotesBack / 100.0f;
                 startPos.z -= realMoveNote;

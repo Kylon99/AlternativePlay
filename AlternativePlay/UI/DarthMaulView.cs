@@ -3,19 +3,24 @@ using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.ViewControllers;
 using System;
 using System.Collections.Generic;
+using Zenject;
 
 namespace AlternativePlay.UI
 {
     [HotReload]
     public class DarthMaulView : BSMLAutomaticViewController
     {
-        private ModMainFlowCoordinator mainFlowCoordinator;
+        private Configuration configuration;
+        private AlternativePlayMainFlowCoordinator mainFlowCoordinator;
+
         private PlayModeSettings settings;
 
-        public void SetMainFlowCoordinator(ModMainFlowCoordinator mainFlowCoordinator)
+        public void Initialize(Configuration config, AlternativePlayMainFlowCoordinator flowCoordinator)
         {
-            this.mainFlowCoordinator = mainFlowCoordinator;
+            this.configuration = config;
+            this.mainFlowCoordinator = flowCoordinator;
         }
+
         public void SetPlayModeSettings(PlayModeSettings Settings)
         {
             this.settings = Settings;
@@ -41,7 +46,7 @@ namespace AlternativePlay.UI
             set
             {
                 this.settings.ControllerCount = (ControllerCountEnum)Enum.Parse(typeof(ControllerCountEnum), value);
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
                 this.NotifyPropertyChanged(nameof(this.ControllerChoiceIcon));
             }
         }
@@ -59,7 +64,7 @@ namespace AlternativePlay.UI
             set
             {
                 this.settings.UseLeft = value;
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
                 this.NotifyPropertyChanged(nameof(this.UseLeftControllerIcon));
             }
         }
@@ -74,7 +79,7 @@ namespace AlternativePlay.UI
             set
             {
                 this.settings.ReverseMaulDirection = value;
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
             }
         }
 
@@ -85,7 +90,7 @@ namespace AlternativePlay.UI
             set
             {
                 this.settings.UseTriggerToSeparate = value;
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
             }
         }
 
@@ -96,7 +101,7 @@ namespace AlternativePlay.UI
             set
             {
                 this.settings.MaulDistance = value;
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
             }
         }
 
@@ -154,7 +159,7 @@ namespace AlternativePlay.UI
         private void OnClearLeftTracker()
         {
             this.settings.LeftTracker = new TrackerConfigData();
-            Configuration.instance.SaveConfiguration();
+            this.configuration.SaveConfiguration();
             this.LeftTrackerSerial = TrackerConfigData.NoTrackerText;
             this.LeftTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
         }
@@ -163,7 +168,7 @@ namespace AlternativePlay.UI
         private void OnClearRightTracker()
         {
             this.settings.RightTracker = new TrackerConfigData();
-            Configuration.instance.SaveConfiguration();
+            this.configuration.SaveConfiguration();
             this.RightTrackerSerial = TrackerConfigData.NoTrackerText;
             this.RightTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
         }

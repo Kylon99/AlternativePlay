@@ -4,17 +4,23 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.XR;
+using Zenject;
 
 namespace AlternativePlay
 {
     public class ShowTrackersBehavior : MonoBehaviour
     {
+#pragma warning disable CS0649
+        [Inject]
+        private TrackedDeviceManager trackedDeviceManager;
+        [Inject]
+        private AssetLoaderBehavior assetLoaderBehavior;
+#pragma warning restore CS0649
+
         private MainSettingsModelSO mainSettingsModel;
 
         private bool showTrackers;
         private TrackerConfigData selectedTracker;
-
-
         private List<TrackerInstance> trackerInstances;
         private GameObject saberInstance;
 
@@ -25,15 +31,15 @@ namespace AlternativePlay
         {
             this.RemoveAllInstances();
 
-            this.trackerInstances = TrackedDeviceManager.instance.TrackedDevices.Select((t) => new TrackerInstance
+            this.trackerInstances = this.trackedDeviceManager.TrackedDevices.Select((t) => new TrackerInstance
             {
-                Instance = GameObject.Instantiate(BehaviorCatalog.instance.AssetLoaderBehavior.TrackerPrefab),
+                Instance = GameObject.Instantiate(this.assetLoaderBehavior.TrackerPrefab),
                 InputDevice = t,
                 Serial = t.serialNumber,
             }).ToList();
 
             this.trackerInstances.ForEach(t => t.Instance.SetActive(true));
-            this.saberInstance = GameObject.Instantiate(BehaviorCatalog.instance.AssetLoaderBehavior.SaberPrefab);
+            this.saberInstance = GameObject.Instantiate(this.assetLoaderBehavior.SaberPrefab);
             this.showTrackers = true;
             this.enabled = true;
         }
@@ -134,6 +140,5 @@ namespace AlternativePlay
             public string Serial { get; set; }
             public InputDevice InputDevice { get; internal set; }
         }
-
     }
 }

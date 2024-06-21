@@ -3,6 +3,7 @@ using AlternativePlay.Models;
 using System;
 using UnityEngine;
 using UnityEngine.XR;
+using Zenject;
 
 namespace AlternativePlay
 {
@@ -13,6 +14,11 @@ namespace AlternativePlay
     /// </summary>
     public class SaberDeviceManager : MonoBehaviour
     {
+#pragma warning disable CS0649
+        [Inject]
+        private TrackedDeviceManager trackedDeviceManager;
+#pragma warning restore CS0649
+
         private SaberManager saberManager;
         private GameObject playerOrigin;
         private InputDevice leftController;
@@ -24,9 +30,18 @@ namespace AlternativePlay
         private Pose savedRightSaber;
         private bool calibrated;
 
-        public void BeginGameCoreScene()
+        private void Start()
         {
             this.calibrated = false;
+            this.saberManager = MultiplayerLocalActivePlayerGameplayManagerPatch.multiplayerSaberManager ?? FindObjectOfType<SaberManager>();
+            this.playerOrigin = GameObject.Find("LocalPlayerGameCore/Origin");
+            this.leftController = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
+            this.rightController = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
+        }
+
+        private void Update()
+        {
+            if (!this.calibrated) this.CalibrateSaberPositions();
         }
 
         /// <summary>
@@ -38,7 +53,7 @@ namespace AlternativePlay
         {
             Pose? trackerPose;
             if (!String.IsNullOrWhiteSpace(configData?.Serial) &&
-                (trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(configData.Serial)) != null)
+                (trackerPose = this.trackedDeviceManager.GetPoseFromSerial(configData.Serial)) != null)
             {
                 // Return adjusted position from the tracker
                 Pose adjustedPose = this.AdjustForPlayerOrigin(trackerPose.Value);
@@ -64,7 +79,7 @@ namespace AlternativePlay
         {
             Pose? trackerPose;
             if (!String.IsNullOrWhiteSpace(configData?.Serial) &&
-                (trackerPose = TrackedDeviceManager.instance.GetPoseFromSerial(configData.Serial)) != null)
+                (trackerPose = this.trackedDeviceManager.GetPoseFromSerial(configData.Serial)) != null)
             {
                 // Return adjusted position from the tracker
                 Pose adjustedPose = this.AdjustForPlayerOrigin(trackerPose.Value);
@@ -147,19 +162,6 @@ namespace AlternativePlay
         {
             var saberRenderers = this.saberManager.rightSaber.gameObject.GetComponentsInChildren<Renderer>();
             foreach (var r in saberRenderers) { r.enabled = false; }
-        }
-
-        private void Awake()
-        {
-            this.saberManager = MultiplayerLocalActivePlayerGameplayManagerPatch.multiplayerSaberManager ?? FindObjectOfType<SaberManager>();
-            this.playerOrigin = GameObject.Find("LocalPlayerGameCore/Origin");
-            this.leftController = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
-            this.rightController = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
-        }
-
-        private void Update()
-        {
-            if (!this.calibrated) this.CalibrateSaberPositions();
         }
 
         /// <summary>
