@@ -8,7 +8,7 @@ namespace AlternativePlay.Models
     /// <summary>
     /// Manages a list of tracked devices and provides convenient functions to interact with them.
     /// </summary>
-    public class TrackedDeviceManager : PersistentSingleton<TrackedDeviceManager>
+    public class TrackedDeviceManager
     {
         public List<InputDevice> TrackedDevices { get; private set; } = new List<InputDevice>();
 
@@ -114,7 +114,7 @@ namespace AlternativePlay.Models
         public Pose? GetTrackedObjectPoseBySerial(string serial, Pose objectPose, Pose calibratedPose)
         {
             // Get the current tracker position
-            var currentDevicePose = instance.GetPoseFromSerial(serial);
+            var currentDevicePose = this.GetPoseFromSerial(serial);
             if (currentDevicePose == null) { return null; }
 
             return GetTrackedObjectPose(objectPose, calibratedPose, currentDevicePose.Value);

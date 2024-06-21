@@ -2,18 +2,22 @@
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.ViewControllers;
 using System;
+using Zenject;
 
 namespace AlternativePlay.UI
 {
     [HotReload]
     public class NunchakuView : BSMLAutomaticViewController
     {
-        private ModMainFlowCoordinator mainFlowCoordinator;
+        private Configuration configuration;
+        private AlternativePlayMainFlowCoordinator mainFlowCoordinator;
+
         private PlayModeSettings settings;
 
-        public void SetMainFlowCoordinator(ModMainFlowCoordinator mainFlowCoordinator)
+        public void Initialize(Configuration config, AlternativePlayMainFlowCoordinator flowCoordinator)
         {
-            this.mainFlowCoordinator = mainFlowCoordinator;
+            this.configuration = config;
+            this.mainFlowCoordinator = flowCoordinator;
         }
 
         public void SetPlayModeSettings(PlayModeSettings Settings)
@@ -41,7 +45,7 @@ namespace AlternativePlay.UI
             set
             {
                 this.settings.ReverseNunchaku = value;
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
             }
         }
 
@@ -52,7 +56,7 @@ namespace AlternativePlay.UI
             set
             {
                 this.settings.NunchakuLength = value;
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
             }
         }
 
@@ -63,7 +67,7 @@ namespace AlternativePlay.UI
             set
             {
                 this.settings.Gravity = value;
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
             }
         }
 
@@ -71,7 +75,7 @@ namespace AlternativePlay.UI
         private void OnResetGravity()
         {
             this.settings.Gravity = 3.5f;
-            Configuration.instance.SaveConfiguration();
+            this.configuration.SaveConfiguration();
             this.NotifyPropertyChanged(nameof(this.Gravity));
         }
 
@@ -131,7 +135,7 @@ namespace AlternativePlay.UI
         private void OnClearLeftTracker()
         {
             this.settings.LeftTracker = new TrackerConfigData();
-            Configuration.instance.SaveConfiguration();
+            this.configuration.SaveConfiguration();
             this.LeftTrackerSerial = TrackerConfigData.NoTrackerText;
             this.LeftTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
         }
@@ -140,7 +144,7 @@ namespace AlternativePlay.UI
         private void OnClearRightTracker()
         {
             this.settings.RightTracker = new TrackerConfigData();
-            Configuration.instance.SaveConfiguration();
+            this.configuration.SaveConfiguration();
             this.RightTrackerSerial = TrackerConfigData.NoTrackerText;
             this.RightTrackerHoverHint = TrackerConfigData.NoTrackerHoverHint;
         }

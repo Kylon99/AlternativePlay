@@ -1,28 +1,29 @@
-﻿using BeatSaberMarkupLanguage;
+﻿using AlternativePlay.Models;
+using BeatSaberMarkupLanguage;
 using BeatSaberMarkupLanguage.MenuButtons;
 using UnityEngine;
+using Zenject;
 
 namespace AlternativePlay.UI
 {
     public class AlternativePlayUI : MonoBehaviour
     {
-        private ModMainFlowCoordinator mainFlowCoordinator;
+        private AlternativePlayMainFlowCoordinator mainFlowCoordinator;
 
-        private void Awake()
+        private void Start()
         {
             MenuButton menuButton = new MenuButton(
                 "Alternative Play",
-                "Change to Darth Maul or Beat Spear here!", this.ShowModFlowCoordinator, true);
+                "Darth Maul, Beat Spear, Flail, Nunchaku and use tracker as sabers here!", this.ShowModFlowCoordinator, true);
             MenuButtons.instance.RegisterButton(menuButton);
         }
 
         public void ShowModFlowCoordinator()
         {
             if (this.mainFlowCoordinator == null)
-                this.mainFlowCoordinator = BeatSaberUI.CreateFlowCoordinator<ModMainFlowCoordinator>();
+                this.mainFlowCoordinator = BeatSaberUI.CreateFlowCoordinator<AlternativePlayMainFlowCoordinator>();
 
             if (this.mainFlowCoordinator.IsBusy) return;
-
             BeatSaberUI.MainFlowCoordinator.PresentFlowCoordinator(this.mainFlowCoordinator);
         }
     }

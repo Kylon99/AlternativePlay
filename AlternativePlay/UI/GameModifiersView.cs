@@ -1,13 +1,21 @@
 ﻿using AlternativePlay.Models;
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.ViewControllers;
+using Zenject;
 
 namespace AlternativePlay.UI
 {
     [HotReload]
     public class GameModifiersView : BSMLAutomaticViewController
     {
+        private Configuration configuration;
+
         private PlayModeSettings settings;
+
+        public void Initialize(Configuration config)
+        {
+            this.configuration = config;
+        }
 
         public void SetPlayModeSettings(PlayModeSettings Settings)
         {
@@ -30,7 +38,7 @@ namespace AlternativePlay.UI
             set
             {
                 this.settings.NoArrowsRandom = value;
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
             }
         }
 
@@ -44,7 +52,7 @@ namespace AlternativePlay.UI
             set
             {
                 this.settings.OneColor = value;
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
             }
         }
 
@@ -58,7 +66,7 @@ namespace AlternativePlay.UI
             set
             {
                 this.settings.NoSliders = value;
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
             }
         }
 
@@ -72,7 +80,7 @@ namespace AlternativePlay.UI
             set
             {
                 this.settings.NoArrows = value;
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
             }
         }
 
@@ -86,7 +94,7 @@ namespace AlternativePlay.UI
             set
             {
                 this.settings.TouchNotes = value;
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
             }
         }
 

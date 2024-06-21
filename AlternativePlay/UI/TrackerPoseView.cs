@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Zenject;
 
 namespace AlternativePlay.UI
 {
@@ -14,11 +15,17 @@ namespace AlternativePlay.UI
         private const float positionScaling = 1000.0f;
         private const float rotationScaling = 10.0f;
 
+        private Configuration configuration;
         private TrackerConfigData trackerConfigData;
         private Vector3 originalPosition;
         private Vector3 originalEuler;
 
         private PlayModeSettings settings;
+
+        public void Initialize(Configuration config)
+        {
+            this.configuration = config;
+        }
 
         public void SetPlayModeSettings(PlayModeSettings settings)
         {
@@ -45,7 +52,7 @@ namespace AlternativePlay.UI
             set
             {
                 this.settings.PositionIncrement = value;
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
             }
         }
 
@@ -59,7 +66,7 @@ namespace AlternativePlay.UI
             set
             {
                 this.settings.RotationIncrement = value;
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
             }
         }
 
@@ -75,7 +82,7 @@ namespace AlternativePlay.UI
                 int incrementedValue = this.PositionIncrement(Convert.ToInt32(this.trackerConfigData.Position.x * positionScaling), value);
                 this.trackerConfigData.Position = new Vector3(incrementedValue / positionScaling, this.trackerConfigData.Position.y, this.trackerConfigData.Position.z);
 
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
                 this.NotifyPropertyChanged(nameof(this.PositionX));
             }
         }
@@ -89,7 +96,7 @@ namespace AlternativePlay.UI
                 int incrementedValue = this.PositionIncrement(Convert.ToInt32(this.trackerConfigData.Position.y * positionScaling), value);
                 this.trackerConfigData.Position = new Vector3(this.trackerConfigData.Position.x, incrementedValue / positionScaling, this.trackerConfigData.Position.z);
 
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
                 this.NotifyPropertyChanged(nameof(this.PositionY));
             }
         }
@@ -103,7 +110,7 @@ namespace AlternativePlay.UI
                 int incrementedValue = this.PositionIncrement(Convert.ToInt32(this.trackerConfigData.Position.z * positionScaling), value);
                 this.trackerConfigData.Position = new Vector3(this.trackerConfigData.Position.x, this.trackerConfigData.Position.y, incrementedValue / positionScaling);
 
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
                 this.NotifyPropertyChanged(nameof(this.PositionZ));
             }
         }
@@ -117,7 +124,7 @@ namespace AlternativePlay.UI
                 int incrementedValue = this.RotationIncrement(Convert.ToInt32(this.trackerConfigData.EulerAngles.x * rotationScaling), value);
                 this.trackerConfigData.EulerAngles = new Vector3(incrementedValue / rotationScaling, this.trackerConfigData.EulerAngles.y, this.trackerConfigData.EulerAngles.z);
 
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
                 this.NotifyPropertyChanged(nameof(this.RotationX));
             }
         }
@@ -131,7 +138,7 @@ namespace AlternativePlay.UI
                 int incrementedValue = this.RotationIncrement(Convert.ToInt32(this.trackerConfigData.EulerAngles.y * rotationScaling), value);
                 this.trackerConfigData.EulerAngles = new Vector3(this.trackerConfigData.EulerAngles.x, incrementedValue / rotationScaling, this.trackerConfigData.EulerAngles.z);
 
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
                 this.NotifyPropertyChanged(nameof(this.RotationY));
             }
         }
@@ -145,7 +152,7 @@ namespace AlternativePlay.UI
                 int incrementedValue = this.RotationIncrement(Convert.ToInt32(this.trackerConfigData.EulerAngles.z * rotationScaling), value);
                 this.trackerConfigData.EulerAngles = new Vector3(this.trackerConfigData.EulerAngles.x, this.trackerConfigData.EulerAngles.y, incrementedValue / rotationScaling);
 
-                Configuration.instance.SaveConfiguration();
+                this.configuration.SaveConfiguration();
                 this.NotifyPropertyChanged(nameof(this.RotationZ));
             }
         }
@@ -168,7 +175,7 @@ namespace AlternativePlay.UI
         {
             this.trackerConfigData.Position = Vector3.zero;
             this.trackerConfigData.EulerAngles = Vector3.zero;
-            Configuration.instance.SaveConfiguration();
+            this.configuration.SaveConfiguration();
             this.UpdateAllValues();
         }
 
@@ -178,7 +185,7 @@ namespace AlternativePlay.UI
         {
             this.trackerConfigData.Position = this.originalPosition;
             this.trackerConfigData.EulerAngles = this.originalEuler;
-            Configuration.instance.SaveConfiguration();
+            this.configuration.SaveConfiguration();
             this.UpdateAllValues();
         }
 

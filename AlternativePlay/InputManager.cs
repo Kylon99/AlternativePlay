@@ -14,7 +14,33 @@ namespace AlternativePlay
         private bool leftTriggerCanClick;
         private bool rightTriggerCanClick;
         private bool bothTriggerCanClick;
-        private bool isPolling;
+
+        public void Start()
+        {
+            this.leftController = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
+            this.rightController = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
+
+            this.leftTriggerCanClick = true;
+            this.rightTriggerCanClick = true;
+            this.bothTriggerCanClick = true;
+        }
+
+        private void Update()
+        {
+            const float pulled = 0.75f;
+            const float released = 0.2f;
+
+            this.leftController.TryGetFeatureValue(CommonUsages.trigger, out float leftTriggerValue);
+            this.rightController.TryGetFeatureValue(CommonUsages.trigger, out float rightTriggerValue);
+
+            this.LeftTriggerDown = leftTriggerValue > pulled;
+            this.RightTriggerDown = rightTriggerValue > pulled;
+            this.BothTriggerDown = this.LeftTriggerDown && this.RightTriggerDown;
+
+            if (leftTriggerValue < released) { this.leftTriggerCanClick = true; }
+            if (rightTriggerValue < released) { this.rightTriggerCanClick = true; }
+            if (leftTriggerValue < released && rightTriggerValue < released) { this.bothTriggerCanClick = true; }
+        }
 
         #region Button Polling Methods
 
@@ -55,45 +81,6 @@ namespace AlternativePlay
             }
 
             return returnValue;
-        }
-
-        #endregion
-
-        #region MonoBehavior Methods
-
-        public void BeginPolling()
-        {
-            this.leftController = InputDevices.GetDeviceAtXRNode(XRNode.LeftHand);
-            this.rightController = InputDevices.GetDeviceAtXRNode(XRNode.RightHand);
-
-            this.leftTriggerCanClick = true;
-            this.rightTriggerCanClick = true;
-            this.bothTriggerCanClick = true;
-            this.isPolling = true;
-        }
-
-        internal void EndPolling()
-        {
-            this.isPolling = false;
-        }
-
-        private void Update()
-        {
-            const float pulled = 0.75f;
-            const float released = 0.2f;
-
-            if (!this.isPolling) return;
-
-            this.leftController.TryGetFeatureValue(CommonUsages.trigger, out float leftTriggerValue);
-            this.rightController.TryGetFeatureValue(CommonUsages.trigger, out float rightTriggerValue);
-
-            this.LeftTriggerDown = leftTriggerValue > pulled;
-            this.RightTriggerDown = rightTriggerValue > pulled;
-            this.BothTriggerDown = this.LeftTriggerDown && this.RightTriggerDown;
-
-            if (leftTriggerValue < released) { this.leftTriggerCanClick = true; }
-            if (rightTriggerValue < released) { this.rightTriggerCanClick = true; }
-            if (leftTriggerValue < released && rightTriggerValue < released) { this.bothTriggerCanClick = true; }
         }
 
         #endregion

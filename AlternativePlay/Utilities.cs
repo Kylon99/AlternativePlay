@@ -183,7 +183,7 @@ namespace AlternativePlay
         /// Creates the same number of link mesh instances as the number of links
         /// in the chain
         /// </summary>
-        public static List<GameObject> CreateLinkMeshes(int chainCount, float chainLength)
+        public static List<GameObject> CreateLinkMeshes(AssetLoaderBehavior assetLoader, int chainCount, float chainLength)
         {
             const float linkMeshOverlap = 0.03f;
             const float linkMeshLength = 0.1f;
@@ -198,7 +198,7 @@ namespace AlternativePlay
             var result = new List<GameObject>();
             for (int i = 0; i < count; i++)
             {
-                var link = GameObject.Instantiate(BehaviorCatalog.instance.AssetLoaderBehavior.LinkPrefab);
+                var link = GameObject.Instantiate(assetLoader.LinkPrefab);
                 result.Add(link);
             }
 
