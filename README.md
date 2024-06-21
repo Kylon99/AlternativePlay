@@ -69,6 +69,8 @@ Drop the AlternativePlay.dll file into your Plugins folder under your BeatSaber 
 
 ## Changelog
 
+### 0.8.2
+
 ### 0.8.1
 - Fixed play mode selection not saving
 

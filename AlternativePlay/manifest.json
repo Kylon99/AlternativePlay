@@ -3,14 +3,14 @@
   "author": "KevinKylon",
   "description": "Darth Maul, Spear and new game play styles and modifiers for Beat Saber",
   "features": [],
-  "gameVersion": "1.21",
+  "gameVersion": "1.21.0",
   "icon": "AlternativePlay.Public.DarthMaulColor.png",
   "id": "AlternativePlay",
   "name": "AlternativePlay",
-  "version": "0.8.1",
+  "version": "0.8.2",
   "dependsOn": {
-    "BeatSaberMarkupLanguage": "^1.6.3",
-    "BS Utils": "^1.12.0",
+    "BeatSaberMarkupLanguage": "^1.6.10",
+    "BS Utils": "^1.12.2",
     "BSIPA": "^4.2.2"
   },
   "links": {
