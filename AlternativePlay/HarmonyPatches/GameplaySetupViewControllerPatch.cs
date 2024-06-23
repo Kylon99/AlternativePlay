@@ -3,7 +3,7 @@ using HarmonyLib;
 
 namespace AlternativePlay.HarmonyPatches
 {
-    [HarmonyPatch(typeof(GameplaySetupViewController), nameof(GameplaySetupViewController.RefreshContent))]
+    [HarmonyPatch(typeof(GameplaySetupViewController), "RefreshContent")]
     public class GameplaySetupViewControllerPatch
     {
         public static PlayModeSelectTab PlayModeSelectTab { get; set; }

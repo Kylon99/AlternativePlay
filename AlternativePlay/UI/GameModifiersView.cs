@@ -8,14 +8,12 @@ namespace AlternativePlay.UI
     [HotReload]
     public class GameModifiersView : BSMLAutomaticViewController
     {
+#pragma warning disable CS0649
+        [Inject]
         private Configuration configuration;
+#pragma warning restore CS0649
 
         private PlayModeSettings settings;
-
-        public void Initialize(Configuration config)
-        {
-            this.configuration = config;
-        }
 
         public void SetPlayModeSettings(PlayModeSettings Settings)
         {

@@ -30,6 +30,22 @@ namespace AlternativePlay.UI
 
         public bool IsBusy { get; set; }
 
+        public void ResolveViews(DiContainer container)
+        {
+            this.alternativePlayView = container.Resolve<AlternativePlayView>();
+            this.playModeSelectView = container.Resolve<PlayModeSelectView>();
+            this.gameModifiersView = container.Resolve<GameModifiersView>();
+
+            this.beatSaberSettingsView = container.Resolve<BeatSaberView>();
+            this.darthMaulSettingsView = container.Resolve<DarthMaulView>();
+            this.beatSpearSettingsView = container.Resolve<BeatSpearView>();
+            this.nunchakuView = container.Resolve<NunchakuView>();
+            this.beatFlailView = container.Resolve<BeatFlailView>();
+
+            this.trackerSelectView = container.Resolve<TrackerSelectView>();
+            this.trackerPoseView = container.Resolve<TrackerPoseView>();
+        }
+
         public void ShowBeatSaber()
         {
             this.IsBusy = true;
@@ -127,36 +143,6 @@ namespace AlternativePlay.UI
             this.SetLeftScreenViewController(viewToDisplay, ViewController.AnimationType.Out);
             this.SetRightScreenViewController(this.gameModifiersView, ViewController.AnimationType.Out);
             this.IsBusy = false;
-        }
-
-        private void Awake()
-        {
-            var configuration = ProjectContext.Instance.Container.Resolve<Configuration>();
-            var trackedDeviceManager = ProjectContext.Instance.Container.Resolve<TrackedDeviceManager>();
-            var showTrackersBehavior = ProjectContext.Instance.Container.Resolve<ShowTrackersBehavior>();
-
-            this.alternativePlayView = BeatSaberUI.CreateViewController<AlternativePlayView>();
-            this.alternativePlayView.Initialize(configuration, this);
-            this.playModeSelectView = BeatSaberUI.CreateViewController<PlayModeSelectView>();
-            this.playModeSelectView.Initialize(configuration, this);
-            this.gameModifiersView = BeatSaberUI.CreateViewController<GameModifiersView>();
-            this.gameModifiersView.Initialize(configuration);
-
-            this.beatSaberSettingsView = BeatSaberUI.CreateViewController<BeatSaberView>();
-            this.beatSaberSettingsView.Initialize(configuration, this);
-            this.darthMaulSettingsView = BeatSaberUI.CreateViewController<DarthMaulView>();
-            this.darthMaulSettingsView.Initialize(configuration, this);
-            this.beatSpearSettingsView = BeatSaberUI.CreateViewController<BeatSpearView>();
-            this.beatSpearSettingsView.Initialize(configuration, this);
-            this.nunchakuView = BeatSaberUI.CreateViewController<NunchakuView>();
-            this.nunchakuView.Initialize(configuration, this);
-            this.beatFlailView = BeatSaberUI.CreateViewController<BeatFlailView>();
-            this.beatFlailView.Initialize(configuration, this);
-
-            this.trackerSelectView = BeatSaberUI.CreateViewController<TrackerSelectView>();
-            this.trackerSelectView.Initialize(configuration, trackedDeviceManager, showTrackersBehavior, this);
-            this.trackerPoseView = BeatSaberUI.CreateViewController<TrackerPoseView>();
-            this.trackerPoseView.Initialize(configuration);
         }
 
         protected override void DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling)

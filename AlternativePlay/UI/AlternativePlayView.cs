@@ -11,16 +11,15 @@ namespace AlternativePlay.UI
     [HotReload]
     public class AlternativePlayView : BSMLAutomaticViewController
     {
+#pragma warning disable CS0649
+        [Inject]
         private Configuration configuration;
+        [Inject]
         private AlternativePlayMainFlowCoordinator mainFlowCoordinator;
+#pragma warning restore CS0649
 
         private int deleteIndex; // Caches the index to be deleted for after the Delete Modal is done
 
-        public void Initialize(Configuration config, AlternativePlayMainFlowCoordinator flowCoordinator)
-        {
-            this.configuration = config;
-            this.mainFlowCoordinator = flowCoordinator;
-        }
 
         /// <summary>
         /// Reloads the table with the latest configuration data

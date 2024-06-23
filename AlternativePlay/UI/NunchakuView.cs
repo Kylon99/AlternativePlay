@@ -9,16 +9,14 @@ namespace AlternativePlay.UI
     [HotReload]
     public class NunchakuView : BSMLAutomaticViewController
     {
+#pragma warning disable CS0649
+        [Inject]
         private Configuration configuration;
+        [Inject]
         private AlternativePlayMainFlowCoordinator mainFlowCoordinator;
+#pragma warning restore CS0649
 
         private PlayModeSettings settings;
-
-        public void Initialize(Configuration config, AlternativePlayMainFlowCoordinator flowCoordinator)
-        {
-            this.configuration = config;
-            this.mainFlowCoordinator = flowCoordinator;
-        }
 
         public void SetPlayModeSettings(PlayModeSettings Settings)
         {

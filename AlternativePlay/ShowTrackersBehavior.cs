@@ -15,9 +15,9 @@ namespace AlternativePlay
         private TrackedDeviceManager trackedDeviceManager;
         [Inject]
         private AssetLoaderBehavior assetLoaderBehavior;
-#pragma warning restore CS0649
-
+        [Inject]
         private MainSettingsModelSO mainSettingsModel;
+#pragma warning restore CS0649
 
         private bool showTrackers;
         private TrackerConfigData selectedTracker;
@@ -64,12 +64,6 @@ namespace AlternativePlay
         public void SetSelectedSerial(TrackerConfigData tracker)
         {
             this.selectedTracker = tracker;
-        }
-
-        private void Awake()
-        {
-            this.mainSettingsModel = Resources.FindObjectsOfTypeAll<MainSettingsModelSO>().FirstOrDefault();
-
         }
 
         private void Update()
