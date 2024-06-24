@@ -12,10 +12,11 @@ namespace AlternativePlay
 #pragma warning disable CS0649
         [Inject]
         private Configuration configuration;
+        [Inject]
+        private BeatmapCallbacksController beatmapCallbacksController;
 #pragma warning restore CS0649
 
         private IDifficultyBeatmap currentBeatmap;
-        private BeatmapCallbacksController beatmapCallbacksController;
 
         private PropertyInfo noteDataColorTypeProperty;
         private PropertyInfo sliderDataColorTypeProperty;
@@ -33,10 +34,6 @@ namespace AlternativePlay
             // Get the map metadata
             GameplayCoreSceneSetupData data = BS_Utils.Plugin.LevelData?.GameplayCoreSceneSetupData;
             this.currentBeatmap = data.difficultyBeatmap;
-
-            // Get the DIContainer from the singular GamesScenesManager to get its BeatmapCallbacksController
-            var gameScenesManager = FindObjectOfType<GameScenesManager>();
-            this.beatmapCallbacksController = gameScenesManager.currentScenesContainer.Resolve<BeatmapCallbacksController>();
 
             if (this.IsTransformNecessary() || this.configuration.Current.TouchNotes)
             {

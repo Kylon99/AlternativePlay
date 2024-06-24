@@ -124,7 +124,7 @@
     <Compile Include="Installers\GameSceneBehaviorsInstaller.cs" />
     <Compile Include="DarthMaulBehavior.cs" />
     <Compile Include="HarmonyPatches\BeatFlailNoteMoverPatch.cs" />
-    <Compile Include="HarmonyPatches\GameCoreSceneInstallPatch.cs" />
+    <Compile Include="HarmonyPatches\GameplayCoreInstallerPatch.cs" />
     <Compile Include="HarmonyPatches\GameplaySetupViewControllerPatch.cs" />
     <Compile Include="HarmonyPatches\AlternativePlayUIInstallerPatch.cs" />
     <Compile Include="HarmonyPatches\NunchakuHapticPatch.cs" />
