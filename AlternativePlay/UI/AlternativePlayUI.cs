@@ -8,7 +8,9 @@ namespace AlternativePlay.UI
 {
     public class AlternativePlayUI : MonoBehaviour
     {
+#pragma warning disable CS0649
         private AlternativePlayMainFlowCoordinator mainFlowCoordinator;
+#pragma warning restore CS0649
 
         private void Start()
         {
