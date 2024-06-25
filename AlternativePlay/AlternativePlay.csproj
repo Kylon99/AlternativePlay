@@ -35,6 +35,9 @@
       <HintPath>$(GameDirPath)Libs\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="BGLib.UnityExtension">
+      <HintPath>$(GameDirPath)Beat Saber_Data\Managed\BGLib.UnityExtension.dll</HintPath>
+    </Reference>
     <Reference Include="BeatmapCore, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(GameDirPath)Beat Saber_Data\Managed\BeatmapCore.dll</HintPath>
@@ -78,6 +81,9 @@
     <Reference Include="Main">
       <HintPath>$(GameDirPath)Beat Saber_Data\Managed\Main.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="Networking">
+      <HintPath>$(GameDirPath)Beat Saber_Data\Managed\Networking.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

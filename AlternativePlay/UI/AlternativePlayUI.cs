@@ -1,5 +1,4 @@
-﻿using AlternativePlay.Models;
-using BeatSaberMarkupLanguage;
+﻿using BeatSaberMarkupLanguage;
 using BeatSaberMarkupLanguage.MenuButtons;
 using UnityEngine;
 using Zenject;

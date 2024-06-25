@@ -27,6 +27,9 @@ namespace AlternativePlay.Installers
             this.Container.Bind<NunchakuView>().FromInstance(BeatSaberUI.CreateViewController<NunchakuView>()).AsSingle();
             this.Container.Bind<BeatFlailView>().FromInstance(BeatSaberUI.CreateViewController<BeatFlailView>()).AsSingle();
 
+            var showTrackersBehavior = this.Container.InstantiateComponentOnNewGameObject<ShowTrackersBehavior>();
+            this.Container.Bind<ShowTrackersBehavior>().FromInstance(showTrackersBehavior).AsSingle();
+
             this.Container.Bind<TrackerSelectView>().FromInstance(BeatSaberUI.CreateViewController<TrackerSelectView>()).AsSingle();
             this.Container.Bind<TrackerPoseView>().FromInstance(BeatSaberUI.CreateViewController<TrackerPoseView>()).AsSingle();
 

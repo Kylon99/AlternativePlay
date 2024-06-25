@@ -13,8 +13,6 @@ namespace AlternativePlay.Installers
             this.Container.Bind<TrackedDeviceManager>().AsSingle().NonLazy();
             var assetLoaderBehavior = this.Container.InstantiateComponentOnNewGameObject<AssetLoaderBehavior>();
             this.Container.Bind<AssetLoaderBehavior>().FromInstance(assetLoaderBehavior).AsSingle();
-            var showTrackersBehavior = this.Container.InstantiateComponentOnNewGameObject<ShowTrackersBehavior>();
-            this.Container.Bind<ShowTrackersBehavior>().FromInstance(showTrackersBehavior).AsSingle();
 
             // Manually Inject Harmony Patches
             BeatFlailNoteMoverPatch.Configuration = configuration;
