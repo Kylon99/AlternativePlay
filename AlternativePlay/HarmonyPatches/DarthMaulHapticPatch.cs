@@ -4,8 +4,8 @@ using UnityEngine.XR;
 
 namespace AlternativePlay.HarmonyPatches
 {
-    [HarmonyPatch(nameof(HapticFeedbackController.PlayHapticFeedback))]
-    [HarmonyPatch(typeof(HapticFeedbackController))]
+    [HarmonyPatch(nameof(HapticFeedbackManager.PlayHapticFeedback))]
+    [HarmonyPatch(typeof(HapticFeedbackManager))]
     [HarmonyPriority(Priority.VeryHigh)]
     public class DarthMaulHapticPatch
     {
@@ -13,7 +13,7 @@ namespace AlternativePlay.HarmonyPatches
 
         public static DarthMaulBehavior DarthMaulBehavior { get; set; }
 
-        private static void Prefix(HapticFeedbackController __instance, ref XRNode node)
+        private static void Prefix(HapticFeedbackManager __instance, ref XRNode node)
         {
             if (Configuration.Current.PlayMode != PlayMode.DarthMaul || DarthMaulBehavior == null || DarthMaulBehavior.Split)
             {

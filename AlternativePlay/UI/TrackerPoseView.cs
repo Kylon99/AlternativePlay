@@ -15,17 +15,16 @@ namespace AlternativePlay.UI
         private const float positionScaling = 1000.0f;
         private const float rotationScaling = 10.0f;
 
+#pragma warning disable CS0649
+        [Inject]
         private Configuration configuration;
+#pragma warning restore CS0649
+
         private TrackerConfigData trackerConfigData;
         private Vector3 originalPosition;
         private Vector3 originalEuler;
 
         private PlayModeSettings settings;
-
-        public void Initialize(Configuration config)
-        {
-            this.configuration = config;
-        }
 
         public void SetPlayModeSettings(PlayModeSettings settings)
         {

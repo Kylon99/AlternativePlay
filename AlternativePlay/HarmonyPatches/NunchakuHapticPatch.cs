@@ -4,8 +4,8 @@ using UnityEngine.XR;
 
 namespace AlternativePlay.HarmonyPatches
 {
-    [HarmonyPatch(nameof(HapticFeedbackController.PlayHapticFeedback))]
-    [HarmonyPatch(typeof(HapticFeedbackController))]
+    [HarmonyPatch(nameof(HapticFeedbackManager.PlayHapticFeedback))]
+    [HarmonyPatch(typeof(HapticFeedbackManager))]
     [HarmonyPriority(Priority.VeryHigh)]
     public class NunchakuHapticPatch
     {

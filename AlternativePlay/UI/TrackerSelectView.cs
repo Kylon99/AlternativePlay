@@ -13,23 +13,21 @@ namespace AlternativePlay.UI
     [HotReload]
     public class TrackerSelectView : BSMLAutomaticViewController
     {
+#pragma warning disable CS0649
+        [Inject]
         private Configuration configuration;
+        [Inject]
         private TrackedDeviceManager trackedDeviceManager;
+        [Inject]
         private ShowTrackersBehavior showTrackersBehavior;
+        [Inject]
         private AlternativePlayMainFlowCoordinator mainFlowCoordinator;
+#pragma warning restore CS0649
 
         // Internal tracker selection members
         private List<TrackerDisplayText> LoadedTrackers;
         private TrackerConfigData trackerConfigData;
         private TrackerConfigData originalTrackerData;
-
-        public void Initialize(Configuration config, TrackedDeviceManager trackedDeviceManager, ShowTrackersBehavior showTrackersBehavior, AlternativePlayMainFlowCoordinator flowCoordinator)
-        {
-            this.configuration = config;
-            this.trackedDeviceManager = trackedDeviceManager;
-            this.showTrackersBehavior = showTrackersBehavior;
-            this.mainFlowCoordinator = flowCoordinator;
-        }
 
         public void SetSelectingTracker(TrackerConfigData trackerConfigData)
         {

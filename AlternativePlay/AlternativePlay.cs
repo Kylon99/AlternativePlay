@@ -1,7 +1,5 @@
-﻿using AlternativePlay.HarmonyPatches;
-using AlternativePlay.Installers;
+﻿using AlternativePlay.Installers;
 using AlternativePlay.Models;
-using BS_Utils.Utilities;
 using HarmonyLib;
 using IPA;
 using System.Reflection;

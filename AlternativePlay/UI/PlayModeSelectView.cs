@@ -8,17 +8,15 @@ namespace AlternativePlay.UI
     [HotReload]
     public class PlayModeSelectView : BSMLAutomaticViewController
     {
+#pragma warning disable CS0649
+        [Inject]
         private Configuration configuration;
+        [Inject]
         private AlternativePlayMainFlowCoordinator mainFlowCoordinator;
+#pragma warning restore CS0649
 
         public int index { get; private set; }
         public PlayModeSettings Settings { get; private set; }
-
-        public void Initialize(Configuration config, AlternativePlayMainFlowCoordinator flowCoordinator)
-        {
-            this.configuration = config;
-            this.mainFlowCoordinator = flowCoordinator;
-        }
 
         public void SetPlayModeSettings(PlayModeSettings Settings, int index)
         {

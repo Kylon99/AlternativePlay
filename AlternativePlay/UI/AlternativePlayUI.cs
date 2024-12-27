@@ -1,5 +1,4 @@
-﻿using AlternativePlay.Models;
-using BeatSaberMarkupLanguage;
+﻿using BeatSaberMarkupLanguage;
 using BeatSaberMarkupLanguage.MenuButtons;
 using UnityEngine;
 using Zenject;
@@ -9,6 +8,7 @@ namespace AlternativePlay.UI
     public class AlternativePlayUI : MonoBehaviour
     {
 #pragma warning disable CS0649
+        [Inject]
         private AlternativePlayMainFlowCoordinator mainFlowCoordinator;
 #pragma warning restore CS0649
 
@@ -22,9 +22,6 @@ namespace AlternativePlay.UI
 
         public void ShowModFlowCoordinator()
         {
-            if (this.mainFlowCoordinator == null)
-                this.mainFlowCoordinator = BeatSaberUI.CreateFlowCoordinator<AlternativePlayMainFlowCoordinator>();
-
             if (this.mainFlowCoordinator.IsBusy) return;
             BeatSaberUI.MainFlowCoordinator.PresentFlowCoordinator(this.mainFlowCoordinator);
         }
