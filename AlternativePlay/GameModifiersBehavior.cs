@@ -16,8 +16,8 @@ namespace AlternativePlay
         private BeatmapCallbacksController beatmapCallbacksController;
 #pragma warning restore CS0649
 
-        private IDifficultyBeatmap currentBeatmap;
-
+        private BeatmapKey beatmapKey;
+        private BeatmapLevel beatmapLevel;
         private PropertyInfo noteDataColorTypeProperty;
         private PropertyInfo sliderDataColorTypeProperty;
         private FieldInfo beatmapDataField;
@@ -33,7 +33,8 @@ namespace AlternativePlay
 
             // Get the map metadata
             GameplayCoreSceneSetupData data = BS_Utils.Plugin.LevelData?.GameplayCoreSceneSetupData;
-            this.currentBeatmap = data.difficultyBeatmap;
+            this.beatmapKey = data.beatmapKey;
+            this.beatmapLevel = data.beatmapLevel;
 
             if (this.IsTransformNecessary() || this.configuration.Current.TouchNotes)
             {
@@ -62,17 +63,17 @@ namespace AlternativePlay
             bool AreOnlyNoArrowsOptionsSelected() { return (this.configuration.Current.NoArrows || this.configuration.Current.NoArrowsRandom) && !this.configuration.Current.OneColor; }
 
             // Check for map modes that already reproduce our game mode
-            string serializedName = this.currentBeatmap.parentDifficultyBeatmapSet.beatmapCharacteristic.serializedName;
+            string serializedName = this.beatmapKey.beatmapCharacteristic.serializedName;
 
             if (serializedName == OneSaberModeName && IsOnlyOneColorSelected())
             {
-                AlternativePlay.Logger.Info($"No need to transform: {this.currentBeatmap.level.songName} for One Color as it is already a One Saber map");
+                AlternativePlay.Logger.Info($"No need to transform: {this.beatmapLevel.songName} for One Color as it is already a One Saber map");
                 return false;
             }
 
             if (serializedName == NoArrowsModeName && AreOnlyNoArrowsOptionsSelected())
             {
-                AlternativePlay.Logger.Info($"No need to transform: {this.currentBeatmap.level.songName} to No Arrows as it's already a No Arrows map");
+                AlternativePlay.Logger.Info($"No need to transform: {this.beatmapLevel.songName} to No Arrows as it's already a No Arrows map");
                 return false;
             }
 

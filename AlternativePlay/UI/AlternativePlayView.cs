@@ -31,14 +31,14 @@ namespace AlternativePlay.UI
                 .Select((settings, i) => new PlayModeSelectOption(this.configuration.ConfigurationData, i, this.ShowDeleteModal))
                 .ToList();
 
-            this.SelectModeList.tableView.ClearSelection();
-            this.SelectModeList.data.Clear();
-            this.SelectModeList.data = list.Cast<object>().ToList();
-            this.SelectModeList.tableView.ReloadData();
+            this.SelectModeList.TableView.ClearSelection();
+            this.SelectModeList.Data.Clear();
+            this.SelectModeList.Data = list.Cast<object>().ToList();
+            this.SelectModeList.TableView.ReloadData();
 
             if (index != -1)
             {
-                this.SelectModeList.tableView.ScrollToCellWithIdx(index, TableView.ScrollPositionType.End, false);
+                this.SelectModeList.TableView.ScrollToCellWithIdx(index, TableView.ScrollPositionType.End, false);
             }
         }
 

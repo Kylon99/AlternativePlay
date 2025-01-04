@@ -35,6 +35,15 @@
       <HintPath>$(GameDirPath)Libs\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="BeatSaber.Settings">
+      <HintPath>$(GameDirPath)Beat Saber_Data\Managed\BeatSaber.Settings.dll</HintPath>
+    </Reference>
+    <Reference Include="BeatSaber.ViewSystem">
+      <HintPath>$(GameDirPath)Beat Saber_Data\Managed\BeatSaber.ViewSystem.dll</HintPath>
+    </Reference>
+    <Reference Include="BGLib.AppFlow">
+      <HintPath>$(GameDirPath)Beat Saber_Data\Managed\BGLib.AppFlow.dll</HintPath>
+    </Reference>
     <Reference Include="BGLib.UnityExtension">
       <HintPath>$(GameDirPath)Beat Saber_Data\Managed\BGLib.UnityExtension.dll</HintPath>
     </Reference>
@@ -43,10 +52,8 @@
       <HintPath>$(GameDirPath)Beat Saber_Data\Managed\BeatmapCore.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="BGNet, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>$(GameDirPath)Beat Saber_Data\Managed\BGNet.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="BGNetCore">
+      <HintPath>$(GameDirPath)Beat Saber_Data\Managed\BGNetCore.dll</HintPath>
     </Reference>
     <Reference Include="BSML">
       <HintPath>$(GameDirPath)Plugins\BSML.dll</HintPath>
@@ -55,6 +62,9 @@
     <Reference Include="BS_Utils">
       <HintPath>$(GameDirPath)Plugins\BS_Utils.dll</HintPath>
       <Private>False</Private>
+    </Reference>
+    <Reference Include="DataModels">
+      <HintPath>$(GameDirPath)Beat Saber_Data\Managed\DataModels.dll</HintPath>
     </Reference>
     <Reference Include="GameplayCore, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -98,6 +108,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="Unity.Mathematics">
+      <HintPath>$(GameDirPath)Beat Saber_Data\Managed\Unity.Mathematics.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.AssetBundleModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(GameDirPath)Beat Saber_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>

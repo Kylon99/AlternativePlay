@@ -94,8 +94,8 @@ namespace AlternativePlay.UI
         /// <param name="selectingLeft">Whether to initialize for the Left or the Right tracker</param>
         private void InitializeTrackerList()
         {
-            this.SelectTrackerList.tableView.ClearSelection();
-            this.SelectTrackerList.data.Clear();
+            this.SelectTrackerList.TableView.ClearSelection();
+            this.SelectTrackerList.Data.Clear();
 
             // Set the currently used tracker text
             this.CurrentTrackerText = String.IsNullOrWhiteSpace(this.trackerConfigData.FullName) ? TrackerConfigData.NoTrackerHoverHint : this.trackerConfigData.FullName;
@@ -105,7 +105,7 @@ namespace AlternativePlay.UI
             this.trackedDeviceManager.TrackedDevices.ForEach(t =>
             {
                 var customCellInfo = new CustomListTableData.CustomCellInfo(TrackerConfigData.FormatTrackerHoverHint(t));
-                this.SelectTrackerList.data.Add(customCellInfo);
+                this.SelectTrackerList.Data.Add(customCellInfo);
             });
 
             // Save the list of serials for later reference
@@ -117,7 +117,7 @@ namespace AlternativePlay.UI
                 }).ToList();
 
             // Reload all the data for display
-            this.SelectTrackerList.tableView.ReloadData();
+            this.SelectTrackerList.TableView.ReloadData();
 
             // Find the cell to select
             int index = 0;
@@ -126,9 +126,9 @@ namespace AlternativePlay.UI
                 index = this.LoadedTrackers.FindIndex(t => t.Serial == this.trackerConfigData.Serial);
             }
 
-            if (index != -1 && this.SelectTrackerList.data.Count > 0)
+            if (index != -1 && this.SelectTrackerList.Data.Count > 0)
             {
-                this.SelectTrackerList.tableView.SelectCellWithIdx(index);
+                this.SelectTrackerList.TableView.SelectCellWithIdx(index);
             }
 
             // Set the Tracker Renderer to show trackers

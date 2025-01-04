@@ -17,7 +17,7 @@ namespace AlternativePlay.UI
             MenuButton menuButton = new MenuButton(
                 "Alternative Play",
                 "Darth Maul, Beat Spear, Flail, Nunchaku and use tracker as sabers here!", this.ShowModFlowCoordinator, true);
-            MenuButtons.instance.RegisterButton(menuButton);
+            MenuButtons.Instance.RegisterButton(menuButton);
         }
 
         public void ShowModFlowCoordinator()
