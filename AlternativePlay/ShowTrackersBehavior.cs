@@ -1,4 +1,5 @@
 ﻿using AlternativePlay.Models;
+using BeatSaber.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,7 +17,7 @@ namespace AlternativePlay
         [Inject]
         private AssetLoaderBehavior assetLoaderBehavior;
         [Inject]
-        private MainSettingsModelSO mainSettingsModel;
+        private SettingsManager settingsManager;
 #pragma warning restore CS0649
 
         private bool showTrackers;
@@ -106,12 +107,12 @@ namespace AlternativePlay
         /// </summary>
         private Pose AdjustForRoomRotation(Pose pose)
         {
-            var roomCenter = this.mainSettingsModel.roomCenter;
-            var roomRotation = Quaternion.Euler(0, this.mainSettingsModel.roomRotation, 0);
+            var roomCenter = this.settingsManager.settings.room.center;
+            var roomRotation = Quaternion.Euler(0, this.settingsManager.settings.room.rotation, 0);
 
             Pose result = pose;
             result.position = roomRotation * pose.position;
-            result.position += roomCenter;
+            result.position += new Vector3(roomCenter.x, roomCenter.y, roomCenter.z);
             result.rotation = roomRotation * pose.rotation;
             return result;
         }

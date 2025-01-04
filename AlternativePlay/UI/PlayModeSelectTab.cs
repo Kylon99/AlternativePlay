@@ -21,7 +21,7 @@ namespace AlternativePlay.UI
 
         private void Start()
         {
-            GameplaySetup.instance.AddTab("Alternative Play", "AlternativePlay.UI.PlayModeSelectTab.bsml", this, MenuType.All);
+            GameplaySetup.Instance.AddTab("Alternative Play", "AlternativePlay.UI.PlayModeSelectTab.bsml", this, MenuType.All);
         }
 
         public void UpdatePlayModeSelectList()
@@ -30,12 +30,12 @@ namespace AlternativePlay.UI
                     .Select((settings, i) => new PlayModeSelectOption(this.configuration.ConfigurationData, i))
                     .ToList();
 
-            this.SelectModeList.tableView.ClearSelection();
-            this.SelectModeList.data.Clear();
-            this.SelectModeList.data = list.Cast<object>().ToList();
-            this.SelectModeList.tableView.ReloadData();
-            this.SelectModeList.tableView.SelectCellWithIdx(this.configuration.ConfigurationData.Selected);
-            this.SelectModeList.tableView.ScrollToCellWithIdx(this.configuration.SelectedIndex, TableView.ScrollPositionType.Center, false);
+            this.SelectModeList.TableView.ClearSelection();
+            this.SelectModeList.Data.Clear();
+            this.SelectModeList.Data = list.Cast<object>().ToList();
+            this.SelectModeList.TableView.ReloadData();
+            this.SelectModeList.TableView.SelectCellWithIdx(this.configuration.ConfigurationData.Selected);
+            this.SelectModeList.TableView.ScrollToCellWithIdx(this.configuration.SelectedIndex, TableView.ScrollPositionType.Center, false);
         }
 
         [UIAction(nameof(OnModeClicked))]
