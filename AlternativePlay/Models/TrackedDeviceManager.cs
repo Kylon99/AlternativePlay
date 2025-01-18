@@ -1,49 +1,105 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using UnityEngine;
-using UnityEngine.XR;
+using Valve.VR;
+using Zenject;
+using static Valve.VR.IVRSystem;
 
 namespace AlternativePlay.Models
 {
+    public class OpenVRDeviceInfo
+    {
+        public int Index { get; set; }
+        public Pose Pose { get; set; }
+        public ETrackedDeviceClass DeviceClass { get; set; }
+        public string Name { get; set; }
+        public string Serial { get; set; }
+        public string Manufacturer { get; set; }
+    }
+
+    public class OpenVRDevicePose
+    {
+        public int Index { get; set; }
+        public ETrackedDeviceClass DeviceClass { get; set; }
+        public string Serial { get; set; }
+
+    }
+
     /// <summary>
     /// Manages a list of tracked devices and provides convenient functions to interact with them.
     /// </summary>
     public class TrackedDeviceManager
     {
-        public List<InputDevice> TrackedDevices { get; private set; } = new List<InputDevice>();
+#pragma warning disable CS0649
+        [Inject]
+        private OpenVRManager openVRManager;
+#pragma warning restore CS0649
+
+        public List<OpenVRDeviceInfo> TrackedDevices { get; private set; } = new List<OpenVRDeviceInfo>();
 
         /// <summary>
-        /// Updates the internal list of all tracked devices
+        /// Updates the list of valid tracked devices and their properties only.  Use <see cref="PollTrackedDevices"/> to get the
+        /// poses of the devices instead.
         /// </summary>
-        public void LoadTrackedDevices()
+        public void LoadTrackedDeviceProperties()
         {
-            var desiredCharacteristics = InputDeviceCharacteristics.TrackedDevice;
-            InputDevices.GetDevicesWithCharacteristics(desiredCharacteristics, this.TrackedDevices);
+            // Get a list of all valid tracked devices up to OpenVR's maximum
+            this.TrackedDevices = Enumerable.Range(0, (int)OpenVR.k_unMaxTrackedDeviceCount).Select(i =>
+                new OpenVRDeviceInfo
+                {
+                    Index = i,
+                    DeviceClass = this.openVRManager.System.GetTrackedDeviceClass((uint)i),
+                })
+                .Where(di => di.DeviceClass != ETrackedDeviceClass.Invalid)
+                .ToList();
+
+            // Populate the extra data that we need for display purposes
+            this.TrackedDevices.ForEach(di =>
+            {
+                var nameBuilder = new StringBuilder(120);
+                var nameError = new ETrackedPropertyError();
+                this.openVRManager.System.GetStringTrackedDeviceProperty((uint)di.Index, ETrackedDeviceProperty.Prop_ModelNumber_String, nameBuilder, 120, ref nameError);
+
+                var serialBuilder = new StringBuilder(120);
+                var serialError = new ETrackedPropertyError();
+                this.openVRManager.System.GetStringTrackedDeviceProperty((uint)di.Index, ETrackedDeviceProperty.Prop_SerialNumber_String, serialBuilder, 120, ref serialError);
+
+                var manufacturerBuilder = new StringBuilder(120);
+                var manufacturerError = new ETrackedPropertyError();
+                this.openVRManager.System.GetStringTrackedDeviceProperty((uint)di.Index, ETrackedDeviceProperty.Prop_ManufacturerName_String, manufacturerBuilder, 120, ref manufacturerError);
+
+                di.Name = nameBuilder.ToString();
+                di.Serial = serialBuilder.ToString();
+                di.Manufacturer = manufacturerBuilder.ToString();
+            });
         }
 
         /// <summary>
-        /// Allows you to get one device based on the XRNode, usually the XRNode.LeftHand or the
-        /// XRNode.RightHand and will return the Pose of the device.  It will return null if the
-        /// device could not be found or the tracked position and rotation cannot be obtained.
+        /// Poll the current positions of all of the tracked devices. Meant to be called once per frame (Update).
+        /// The OpenVR API polls all of them at once so it's more efficient to just call this even if you want one device.
         /// </summary>
-        /// <param name="node">The XRNode of the device to find</param>
-        /// <returns>The position and rotation in a Pose of the device.  Null if it cannot be found
-        /// or tracked.</returns>
-        public Pose? GetDevicePose(XRNode node)
+        /// <remarks>
+        /// Ensure that <see cref="LoadTrackedDeviceProperties"/> has been called recently to ensure the list is up to date!
+        /// </remarks>
+        public void PollTrackedDevices()
         {
-            var device = InputDevices.GetDeviceAtXRNode(node);
-            if (!device.isValid) return null;
+            // Get all tracked device poses from OpenVR API
+            var pTrackedDevicePoseArray = new TrackedDevicePose_t[OpenVR.k_unMaxTrackedDeviceCount];
+            this.openVRManager.System.GetDeviceToAbsoluteTrackingPose(ETrackingUniverseOrigin.TrackingUniverseStanding, 0.0f, pTrackedDevicePoseArray);
 
-            bool positionSuccess = device.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position);
-            bool rotationSuccess = device.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion rotation);
-            if (positionSuccess && rotationSuccess)
+            int i = 0;
+            this.TrackedDevices.ForEach(device =>
             {
-                return new Pose { position = position, rotation = rotation };
-            }
-            else
-            {
-                return null;
-            }
+                TrackedDevicePose_t? polledDevice = pTrackedDevicePoseArray.ElementAtOrDefault(i);
+                if (polledDevice != null)
+                {
+                    Vector3 position = polledDevice.Value.mDeviceToAbsoluteTracking.GetPosition();
+                    Quaternion rotation = polledDevice.Value.mDeviceToAbsoluteTracking.GetRotation();
+                    device.Pose = new Pose(position, rotation);
+                }
+                i++;
+            });
         }
 
         /// <summary>
@@ -51,31 +107,9 @@ namespace AlternativePlay.Models
         /// </summary>
         /// <param name="serial">The serial number of the tracked device</param>
         /// <returns>A <see cref="InputDevice"/> if found or otherwise null</returns>
-        public InputDevice GetInputDeviceFromSerial(string serial)
+        public OpenVRDeviceInfo GetInputDeviceFromSerial(string serial)
         {
-            return this.TrackedDevices.FirstOrDefault(i => i.serialNumber == serial);
-        }
-
-        /// <summary>
-        /// Gets the position in a <see cref="Vector3"/> of a tracked device given the serial string
-        /// </summary>
-        /// <param name="serial">The serial number of the tracked device</param>
-        /// <returns>A <see cref="Vector3"/> containing the position the tracked device</returns>
-        public Vector3? GetPositionFromSerial(string serial)
-        {
-            var device = this.TrackedDevices.FirstOrDefault(i => i.serialNumber == serial);
-            if (device == null) { return null; }
-
-            bool positionSuccess = device.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position);
-
-            if (positionSuccess)
-            {
-                return position;
-            }
-            else
-            {
-                return null;
-            }
+            return this.TrackedDevices.FirstOrDefault(i => i.Serial == serial);
         }
 
         /// <summary>
@@ -85,20 +119,30 @@ namespace AlternativePlay.Models
         /// <returns>A pose containing the position and rotation of the tracked device</returns>
         public Pose? GetPoseFromSerial(string serial)
         {
-            var device = this.TrackedDevices.FirstOrDefault(i => i.serialNumber == serial);
+            var device = this.TrackedDevices.FirstOrDefault(i => i.Serial == serial);
             if (device == null) { return null; }
 
-            bool positionSuccess = device.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position);
-            bool rotationSuccess = device.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion rotation);
+            return device.Pose;
+        }
 
-            if (positionSuccess && rotationSuccess)
-            {
-                return new Pose { position = position, rotation = rotation };
-            }
-            else
-            {
-                return null;
-            }
+        public Pose? GetPoseFromLeftController()
+        {
+            uint index = this.openVRManager.System.GetTrackedDeviceIndexForControllerRole(ETrackedControllerRole.LeftHand);
+            var device = this.TrackedDevices.ElementAtOrDefault((int)index);
+
+            if (device == null) { return null; }
+
+            return device.Pose;
+        }
+
+        public Pose? GetPoseFromRightController()
+        {
+            uint index = this.openVRManager.System.GetTrackedDeviceIndexForControllerRole(ETrackedControllerRole.RightHand);
+            var device = this.TrackedDevices.ElementAtOrDefault((int)index);
+
+            if (device == null) { return null; }
+
+            return device.Pose;
         }
 
         /// <summary>
@@ -118,24 +162,6 @@ namespace AlternativePlay.Models
             if (currentDevicePose == null) { return null; }
 
             return GetTrackedObjectPose(objectPose, calibratedPose, currentDevicePose.Value);
-        }
-
-
-        /// <summary>
-        /// A convenience function to automatically poll the devices position and rotation into a Pose.
-        /// If either or both cannot be polled, null will be returned.
-        /// </summary>
-        /// <param name="device">The device to poll</param>
-        /// <returns>Returns a Pose containing the position and rotation.  Returns null if either or both
-        /// cannot be read.</returns>
-        public static Pose? GetDevicePose(InputDevice device)
-        {
-            bool getPositionSuccess = device.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 devicePosition);
-            bool getRotationSuccess = device.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion deviceRotation);
-
-            if (!getPositionSuccess || !getRotationSuccess) return null;
-
-            return new Pose(devicePosition, deviceRotation);
         }
 
         /// <summary>

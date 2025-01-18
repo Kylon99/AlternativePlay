@@ -93,6 +93,10 @@ namespace AlternativePlay.UI
         #region Tracker Selection Members
 
         // Text Displays for the Main View
+        private string leftTrackerIcon;
+        [UIValue(nameof(LeftTrackerIcon))]
+        public string LeftTrackerIcon { get => this.leftTrackerIcon; set { this.leftTrackerIcon = value; this.NotifyPropertyChanged(nameof(this.LeftTrackerIcon)); } }
+
         private string leftTrackerSerial;
         [UIValue(nameof(LeftTrackerSerial))]
         public string LeftTrackerSerial { get => this.leftTrackerSerial; set { this.leftTrackerSerial = value; this.NotifyPropertyChanged(); } }
@@ -100,6 +104,10 @@ namespace AlternativePlay.UI
         private string leftTrackerHoverHint;
         [UIValue(nameof(LeftTrackerHoverHint))]
         public string LeftTrackerHoverHint { get => this.leftTrackerHoverHint; set { this.leftTrackerHoverHint = value; this.NotifyPropertyChanged(); } }
+
+        private string rightTrackerIcon;
+        [UIValue(nameof(RightTrackerIcon))]
+        public string RightTrackerIcon { get => this.rightTrackerIcon; set { this.rightTrackerIcon = value; this.NotifyPropertyChanged(nameof(this.RightTrackerIcon)); } }
 
         private string rightTrackerSerial;
         [UIValue(nameof(RightTrackerSerial))]
@@ -155,9 +163,11 @@ namespace AlternativePlay.UI
             bool isLeftEmpty = String.IsNullOrWhiteSpace(this.settings.LeftTracker.Serial);
             bool isRightEmpty = String.IsNullOrWhiteSpace(this.settings.RightTracker.Serial);
 
+            this.LeftTrackerIcon = isLeftEmpty ? IconNames.BeatSaber : this.settings.LeftTracker.Icon;
             this.LeftTrackerSerial = isLeftEmpty ? TrackerConfigData.NoTrackerText : this.settings.LeftTracker.Serial;
             this.LeftTrackerHoverHint = isLeftEmpty ? TrackerConfigData.NoTrackerHoverHint : this.settings.LeftTracker.FullName;
 
+            this.RightTrackerIcon = isRightEmpty ? IconNames.BeatSaber : this.settings.RightTracker.Icon;
             this.RightTrackerSerial = isRightEmpty ? TrackerConfigData.NoTrackerText : this.settings.RightTracker.Serial;
             this.RightTrackerHoverHint = isRightEmpty ? TrackerConfigData.NoTrackerHoverHint : this.settings.RightTracker.FullName;
         }

@@ -35,13 +35,23 @@
     <!--Tracker Selection-->
     <vertical pref-width="80" vertical-fit="PreferredSize">
       <horizontal>
-        <clickable-text text="Left Hand" italics="true" font-size="4" highlight-color="#FFFFFF" align="MidlineLeft" hover-hint="Choose a tracker for the left hand instead of the default controller"/>
-        <button preferred-width="50" preferred-height="8" text="~LeftTrackerSerial" hover-hint="~LeftTrackerHoverHint" on-click="OnShowSelectLeftTracker"/>
+        <clickable-text text="Left Hand" italics="true" font-size="4" highlight-color="#FFFFFF" align="MidlineLeft" hover-hint="Choose a tracker to attach the left saber to"/>
+        <button preferred-width="50" preferred-height="8" hover-hint="~LeftTrackerHoverHint" text="" on-click="OnShowSelectLeftTracker">
+          <horizontal horizontal-fit="PreferredSize" child-expand-width="false" spacing="1">
+            <img preserve-aspect="true" pref-width="4" pref-height="4" source="~LeftTrackerIcon" />
+            <text text="~LeftTrackerSerial" italics="true" align="MidlineLeft" font-size="4"/>
+          </horizontal>
+        </button>
         <button pref-width="10" preferred-height="8" text="x" on-click="OnClearLeftTracker"/>
       </horizontal>
       <horizontal>
-        <clickable-text text="Right Hand" italics="true" font-size="4" highlight-color="#FFFFFF" align="MidlineLeft" hover-hint="Choose a tracker for the right hand instead of the default controller"/>
-        <button pref-width="50" preferred-height="8" text="~RightTrackerSerial" hover-hint="~RightTrackerHoverHint" on-click="OnShowSelectRightTracker"/>
+        <clickable-text text="Right Hand" italics="true" font-size="4" highlight-color="#FFFFFF" align="MidlineLeft" hover-hint="Choose a tracker to attach the right saber to"/>
+        <button pref-width="50" preferred-height="8" hover-hint="~RightTrackerHoverHint" text="" on-click="OnShowSelectRightTracker">
+          <horizontal horizontal-fit="PreferredSize" child-expand-width="false" spacing="1">
+            <img preserve-aspect="true" pref-width="4" pref-height="4" source="~RightTrackerIcon" />
+            <text text="~RightTrackerSerial" italics="true" align="MidlineLeft" font-size="4"/>
+          </horizontal>
+        </button>
         <button pref-width="10" preferred-height="8" text="x" on-click="OnClearRightTracker"/>
       </horizontal>
     </vertical>

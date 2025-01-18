@@ -45,5 +45,10 @@
         // Nunchaku Options
         public static string ReverseNunchaku = "AlternativePlay.Resources.ReverseBoth.png";
 
+        // Tracker Device Types
+        public static string HMD = "AlternativePlay.Resources.HMD.png";
+        public static string Controller = "AlternativePlay.Resources.OneController.png";
+        public static string Tracker = "AlternativePlay.Resources.ViveTracker.png";
+        public static string TrackingReference = "AlternativePlay.Resources.TrackingReference.png";
     }
 }

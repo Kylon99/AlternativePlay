@@ -21,8 +21,6 @@ namespace AlternativePlay
         [Inject]
         private Configuration configuration;
         [Inject]
-        private TrackedDeviceManager trackedDeviceManager;
-        [Inject]
         private SaberDeviceManager saberDeviceManager;
         [Inject]
         private AssetLoaderBehavior assetLoaderBehavior;
@@ -55,8 +53,6 @@ namespace AlternativePlay
                 this.rightLinkMeshes = Utilities.CreateLinkMeshes(this.assetLoaderBehavior, this.rightPhysicsFlail.Count, this.configuration.Current.RightFlailLength / 100.0f);
                 this.rightHandleMesh = this.CreateFlailHandle("RightHandle", this.configuration.Current.RightHandleLength / 100.0f);
             }
-
-            this.trackedDeviceManager.LoadTrackedDevices();
 
             if (this.configuration.Current.LeftFlailMode != BeatFlailMode.None)
             {
