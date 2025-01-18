@@ -65,11 +65,19 @@ installed other mods!
 
 ## Installation
 
-Drop the AlternativePlay.dll file into your Plugins folder under your BeatSaber folder.
+Drop the Plugins\AlternativePlay.dll file into your Plugins folder under your BeatSaber folder.
+Drop the Libs\OpenVR folder into the Libs folder under your BeatSaber folder.
 
 ## Changelog
+### 0.9.0
+- Updated tracking to use OpenVR api
+- Updated Tracker Selection UI
+- Updated 3D Models for Single Pass Rendering
+- Updated Zenject code to support Beat Saber 1.33 
+- Updated to support Beat Saber 1.39.1
 
 ### 0.8.2
+- Updated to use Zenject for Beat Saber 1.29.1
 
 ### 0.8.1
 - Fixed play mode selection not saving
@@ -194,9 +202,17 @@ Drop the AlternativePlay.dll file into your Plugins folder under your BeatSaber 
 ### 0.1.0
 * Initial build. 
 
-
 ## License
 This project is licensed under the GPLv3 License as of version 0.6.2 - see the [LICENSE](LICENSE) file for details.
+
+### OpenVR Redistribution
+* OpenVR_api.dll_
+* Unity.XR.OpenVR.dll
+
+Copyright (c) 2015, Valve Corporation
+All rights reserved.
+
+Used with permission.  See OpenVR\LICENSE
 
 ## Local Build
 In order to build this project, please add a `AlternativePlay.csproj.user` file in the project directory and specify where your game is located on your disk:
