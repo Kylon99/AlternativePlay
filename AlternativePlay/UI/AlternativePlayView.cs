@@ -20,13 +20,13 @@ namespace AlternativePlay.UI
 
         private int deleteIndex; // Caches the index to be deleted for after the Delete Modal is done
 
-
         /// <summary>
         /// Reloads the table with the latest configuration data
         /// </summary>
         /// <param name="index">Optional parameter for the row to scroll the table to.</param>
         public void RefreshConfigurations(int index = -1)
         {
+            // Convert configuration settings to the class used for the list
             var list = this.configuration.ConfigurationData.PlayModeSettings
                 .Select((settings, i) => new PlayModeSelectOption(this.configuration.ConfigurationData, i, this.ShowDeleteModal))
                 .ToList();

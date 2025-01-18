@@ -14,8 +14,6 @@ namespace AlternativePlay
         [Inject]
         private Configuration configuration;
         [Inject]
-        private TrackedDeviceManager trackedDeviceManager;
-        [Inject]
         private SaberDeviceManager saberDeviceManager;
         [Inject]
         private InputManager inputManager;
@@ -29,7 +27,6 @@ namespace AlternativePlay
             if (this.configuration.Current.PlayMode != PlayMode.BeatSpear) { return; }
 
             this.useLeftHandForward = !this.configuration.Current.UseLeft;
-            this.trackedDeviceManager.LoadTrackedDevices();
 
             if (this.configuration.Current.ControllerCount == ControllerCountEnum.Two)
             {

@@ -10,8 +10,6 @@ namespace AlternativePlay
         [Inject]
         private Configuration configuration;
         [Inject]
-        private TrackedDeviceManager trackedDeviceManager;
-        [Inject]
         private SaberDeviceManager saberDeviceManager;
         [Inject]
         private InputManager inputManager;
@@ -23,8 +21,6 @@ namespace AlternativePlay
         {
             // Do nothing if we aren't playing Darth Maul
             if (this.configuration.Current.PlayMode != PlayMode.DarthMaul) { return; }
-
-            this.trackedDeviceManager.LoadTrackedDevices();
 
             Utilities.CheckAndDisableForTrackerTransforms(this.configuration.Current.LeftTracker);
             Utilities.CheckAndDisableForTrackerTransforms(this.configuration.Current.RightTracker);

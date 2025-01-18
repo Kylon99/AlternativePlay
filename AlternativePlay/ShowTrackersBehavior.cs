@@ -1,10 +1,8 @@
 ﻿using AlternativePlay.Models;
-using BeatSaber.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.XR;
 using Zenject;
 
 namespace AlternativePlay
@@ -32,11 +30,11 @@ namespace AlternativePlay
         {
             this.RemoveAllInstances();
 
+            this.trackedDeviceManager.LoadTrackedDeviceProperties();
             this.trackerInstances = this.trackedDeviceManager.TrackedDevices.Select((t) => new TrackerInstance
             {
                 Instance = GameObject.Instantiate(this.assetLoaderBehavior.TrackerPrefab),
-                InputDevice = t,
-                Serial = t.serialNumber,
+                Serial = t.Serial,
             }).ToList();
 
             this.trackerInstances.ForEach(t => t.Instance.SetActive(true));
@@ -71,10 +69,12 @@ namespace AlternativePlay
         {
             if (!this.showTrackers || this.trackerInstances == null || this.trackerInstances.Count == 0) return;
 
+            this.trackedDeviceManager.PollTrackedDevices();
+
+            // Update all the tracker game objects based on tracked device poses
             foreach (var tracker in this.trackerInstances)
             {
-                // Update all the tracker poses
-                Pose trackerPose = TrackedDeviceManager.GetDevicePose(tracker.InputDevice) ?? new Pose();
+                Pose trackerPose = this.trackedDeviceManager.GetPoseFromSerial(tracker.Serial) ?? new Pose();
                 trackerPose = this.AdjustForRoomRotation(trackerPose);
 
                 tracker.Instance.transform.position = trackerPose.position;
@@ -127,13 +127,14 @@ namespace AlternativePlay
             this.saberInstance = null;
         }
 
-
+        /// <summary>
+        /// Represents device information paired with a GameObject to display its location
+        /// </summary>
         private class TrackerInstance
         {
             public GameObject Instance { get; set; }
             public bool Selected { get; set; }
             public string Serial { get; set; }
-            public InputDevice InputDevice { get; internal set; }
         }
     }
 }

@@ -111,6 +111,9 @@
     <Reference Include="Unity.Mathematics">
       <HintPath>$(GameDirPath)Beat Saber_Data\Managed\Unity.Mathematics.dll</HintPath>
     </Reference>
+    <Reference Include="Unity.XR.OpenVR">
+      <HintPath>$(GameDirPath)Libs\OpenVR\Unity.XR.OpenVR.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.AssetBundleModule, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>$(GameDirPath)Beat Saber_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
@@ -149,6 +152,7 @@
     <Compile Include="HarmonyPatches\NunchakuHapticPatch.cs" />
     <Compile Include="Models\ConfigurationData075.cs" />
     <Compile Include="Models\ConfigurationIconSummary.cs" />
+    <Compile Include="Models\OpenVRManager.cs" />
     <Compile Include="NunchakuBehavior.cs" />
     <Compile Include="BeatFlailBehavior.cs" />
     <Compile Include="HarmonyPatches\MultiplayerPatch.cs" />
@@ -180,7 +184,6 @@
     <Compile Include="UI\DarthMaulView.cs" />
     <Compile Include="UI\PlayModeSelectView.cs" />
     <Compile Include="UI\AlternativePlayMainFlowCoordinator.cs" />
-    <Compile Include="UI\TrackerDisplayText.cs" />
     <Compile Include="UI\TrackerPoseView.cs" />
     <Compile Include="UI\TrackerSelectView.cs" />
     <Compile Include="Utilities.cs" />
@@ -189,6 +192,8 @@
     <EmbeddedResource Include="manifest.json" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\TrackingReference.png" />
+    <EmbeddedResource Include="Resources\HMD.png" />
     <EmbeddedResource Include="Resources\LeftFlail.png" />
     <EmbeddedResource Include="Resources\RightFlail.png" />
     <EmbeddedResource Include="Resources\LeftController.png" />

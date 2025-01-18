@@ -10,6 +10,7 @@ namespace AlternativePlay.Installers
         {
             var configuration = new Configuration();
             this.Container.Bind<Configuration>().FromInstance(configuration);
+            this.Container.Bind<OpenVRManager>().AsSingle().NonLazy();
             this.Container.Bind<TrackedDeviceManager>().AsSingle().NonLazy();
             var assetLoaderBehavior = this.Container.InstantiateComponentOnNewGameObject<AssetLoaderBehavior>();
             this.Container.Bind<AssetLoaderBehavior>().FromInstance(assetLoaderBehavior).AsSingle();

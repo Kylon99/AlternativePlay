@@ -1,23 +1,32 @@
 ﻿<bg xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd">
   <vertical>
     <!-- Current Tracker -->
-    <horizontal pref-height="5">
-      <img preserve-aspect="true" pref-width="6" pref-height="6" source="AlternativePlay.Resources.ViveTracker.png" />
-      <text font-size="4" text="Current" />
-      <text font-size="4" text="~CurrentTrackerText" />
+    <horizontal horizontal-fit="Unconstrained" preferred-width="110" child-expand-width="false">
+      <horizontal child-expand-width="false">
+        <text font-size="4" align="MidlineLeft" text="Current" />
+      </horizontal>
+      <horizontal pad-left="3" spacing="2" horizontal-fit="Unconstrained" child-expand-width="false">
+        <img preserve-aspect="true" pref-width="5" pref-height="5" source="~CurrentIcon" />
+        <text font-size="4" align="MidlineLeft" text="~CurrentSerial" />
+        <text font-size="4" align="MidlineLeft" text="~CurrentFullName" />
+      </horizontal>
     </horizontal>
 
     <!-- Select Tracker List -->
-    <vertical preferred-width="110" preferred-height="50" pad-top="2">
-      <list id="SelectTrackerList" list-style="Simple" expand-cell="true" visible-cells="8" cell-size="6"
-            stick-scrolling="true" show-scrollbar="true" select-cell="OnTrackerListCellSelected"
-            hover-hint="Due to Unity's broken XRNode System only 9 tracked devices can be seen, including HMD, Controllers and Base Stations"/>
+    <vertical preferred-width="110" preferred-height="70" pad-top="2" pad-left="3" pad-right="10">
+      <custom-list id="SelectTrackerList" visible-cells="6" cell-size="7" select-cell="OnTrackerListCellSelected"
+            stick-scrolling="true" show-scrollbar="true">
+        <horizontal pad-left="3" bg="round-rect-panel" spacing="2" horizontal-fit="Unconstrained" child-expand-width="false">
+          <img preserve-aspect="true" pref-width="5" pref-height="5" source="~Icon"/>
+          <text text="~Serial" align="MidlineLeft" font-size="4" />
+          <text text="~FullName" align="MidlineLeft" font-size="4" />
+        </horizontal>
+      </custom-list>
     </vertical>
 
     <!-- Bottom Buttons -->
     <horizontal pref-height="25">
-      <button pref-width="30" preferred-height="8" text="Select" on-click="OnSelected" face-color="#00AFFF"
-              hover-hint="Unityの壊れましたXRNodeシステムの所為で、HMD、コントローラー、ベースステーションを含む9個のデバイスしか見えません"/>
+      <button pref-width="30" preferred-height="8" text="Select" on-click="OnSelected" face-color="#00AFFF" />
       <button pref-width="30" preferred-height="8" text="Cancel" on-click="OnCancelled" />
     </horizontal>
   </vertical>

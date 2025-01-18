@@ -4,8 +4,8 @@ using BeatSaberMarkupLanguage.Components;
 using BeatSaberMarkupLanguage.ViewControllers;
 using HMUI;
 using System;
-using System.Collections.Generic;
 using System.Linq;
+using Valve.VR;
 using Zenject;
 
 namespace AlternativePlay.UI
@@ -25,7 +25,6 @@ namespace AlternativePlay.UI
 #pragma warning restore CS0649
 
         // Internal tracker selection members
-        private List<TrackerDisplayText> LoadedTrackers;
         private TrackerConfigData trackerConfigData;
         private TrackerConfigData originalTrackerData;
 
@@ -56,19 +55,31 @@ namespace AlternativePlay.UI
 
         // Components
         [UIComponent(nameof(SelectTrackerList))]
-        public CustomListTableData SelectTrackerList;
+        public CustomCellListTableData SelectTrackerList;
 
-        private string currentTrackerText;
-        [UIValue(nameof(CurrentTrackerText))]
-        public string CurrentTrackerText { get => this.currentTrackerText; set { this.currentTrackerText = value; this.NotifyPropertyChanged(nameof(this.CurrentTrackerText)); } }
+        private string currentIcon;
+        [UIValue(nameof(CurrentIcon))]
+        public string CurrentIcon { get => this.currentIcon; set { this.currentIcon = value; this.NotifyPropertyChanged(nameof(this.CurrentIcon)); } }
+
+        private string currentSerial;
+        [UIValue(nameof(CurrentSerial))]
+        public string CurrentSerial { get => this.currentSerial; set { this.currentSerial = value; this.NotifyPropertyChanged(nameof(this.CurrentSerial)); } }
+
+        private string currentFullName;
+        [UIValue(nameof(CurrentFullName))]
+        public string CurrentFullName { get => this.currentFullName; set { this.currentFullName = value; this.NotifyPropertyChanged(nameof(this.CurrentFullName)); } }
 
         // Events
         [UIAction(nameof(OnTrackerListCellSelected))]
-        private void OnTrackerListCellSelected(TableView _, int row)
+        private void OnTrackerListCellSelected(TableView _, TrackerSelectItem tracker)
         {
-            var tracker = this.LoadedTrackers[row];
+            this.trackerConfigData.Icon = tracker.Icon;
             this.trackerConfigData.Serial = tracker.Serial;
-            this.trackerConfigData.FullName = tracker.HoverHint;
+            this.trackerConfigData.FullName = tracker.FullName;
+
+            this.CurrentIcon = tracker.Icon;
+            this.CurrentSerial = tracker.Serial;
+            this.CurrentFullName = tracker.FullName;
 
             this.showTrackersBehavior.SetSelectedSerial(this.trackerConfigData);
         }
@@ -94,36 +105,29 @@ namespace AlternativePlay.UI
         /// <param name="selectingLeft">Whether to initialize for the Left or the Right tracker</param>
         private void InitializeTrackerList()
         {
-            this.SelectTrackerList.TableView.ClearSelection();
-            this.SelectTrackerList.Data.Clear();
-
             // Set the currently used tracker text
-            this.CurrentTrackerText = String.IsNullOrWhiteSpace(this.trackerConfigData.FullName) ? TrackerConfigData.NoTrackerHoverHint : this.trackerConfigData.FullName;
+            this.CurrentIcon = String.IsNullOrWhiteSpace(this.trackerConfigData.Icon) ? String.Empty : this.trackerConfigData.Icon;
+            this.CurrentFullName = String.IsNullOrWhiteSpace(this.trackerConfigData.FullName) ? TrackerConfigData.NoTrackerHoverHint : this.trackerConfigData.FullName;
 
             // Load the currently found trackers
-            this.trackedDeviceManager.LoadTrackedDevices();
-            this.trackedDeviceManager.TrackedDevices.ForEach(t =>
+            this.trackedDeviceManager.LoadTrackedDeviceProperties();
+            var list = this.trackedDeviceManager.TrackedDevices.Select(device => new TrackerSelectItem
             {
-                var customCellInfo = new CustomListTableData.CustomCellInfo(TrackerConfigData.FormatTrackerHoverHint(t));
-                this.SelectTrackerList.Data.Add(customCellInfo);
-            });
+                Icon = this.MapDeviceTypeToIcon(device.DeviceClass),
+                Serial = device.Serial,
+                FullName = $"{device.Manufacturer} {device.Name}"
+            }).ToList();
 
-            // Save the list of serials for later reference
-            this.LoadedTrackers = this.trackedDeviceManager.TrackedDevices
-                .Select(t => new TrackerDisplayText
-                {
-                    Serial = t.serialNumber,
-                    HoverHint = TrackerConfigData.FormatTrackerHoverHint(t),
-                }).ToList();
-
-            // Reload all the data for display
+            this.SelectTrackerList.TableView.ClearSelection();
+            this.SelectTrackerList.Data.Clear();
+            this.SelectTrackerList.Data = list.Cast<object>().ToList();
             this.SelectTrackerList.TableView.ReloadData();
 
             // Find the cell to select
             int index = 0;
             if (!String.IsNullOrWhiteSpace(this.trackerConfigData.Serial))
             {
-                index = this.LoadedTrackers.FindIndex(t => t.Serial == this.trackerConfigData.Serial);
+                index = this.trackedDeviceManager.TrackedDevices.FindIndex(t => t.Serial == this.trackerConfigData.Serial);
             }
 
             if (index != -1 && this.SelectTrackerList.Data.Count > 0)
@@ -134,5 +138,41 @@ namespace AlternativePlay.UI
             // Set the Tracker Renderer to show trackers
             this.showTrackersBehavior.SetSelectedSerial(this.trackerConfigData);
         }
+
+        private string MapDeviceTypeToIcon(ETrackedDeviceClass deviceType)
+        {
+            switch (deviceType)
+            {
+                case ETrackedDeviceClass.HMD:
+                    return IconNames.HMD;
+
+                case ETrackedDeviceClass.Controller:
+                    return IconNames.Controller;
+
+                case ETrackedDeviceClass.GenericTracker:
+                    return IconNames.Tracker;
+
+                case ETrackedDeviceClass.TrackingReference:
+                    return IconNames.TrackingReference;
+
+                case ETrackedDeviceClass.Invalid:
+                case ETrackedDeviceClass.DisplayRedirect:
+                case ETrackedDeviceClass.Max:
+                default:
+                    return IconNames.Empty;
+            }
+        }
+    }
+
+    public class TrackerSelectItem
+    {
+        [UIValue(nameof(this.Icon))]
+        public string Icon { get; set; }
+
+        [UIValue(nameof(this.Serial))]
+        public string Serial { get; set; }
+
+        [UIValue(nameof(this.FullName))]
+        public string FullName { get; set; }
     }
 }

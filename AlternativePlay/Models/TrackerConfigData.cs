@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using UnityEngine;
-using UnityEngine.XR;
+using Valve.VR;
 
 namespace AlternativePlay.Models
 {
@@ -15,6 +15,7 @@ namespace AlternativePlay.Models
         public const string NoTrackerHoverHint = "Not using any tracked devices";
 
         public string Serial { get; set; }
+        public string Icon { get; set; }
         public string FullName { get; set; }
         [JsonConverter(typeof(Vector3Converter))]
         public Vector3 Position { get; set; }
@@ -31,6 +32,7 @@ namespace AlternativePlay.Models
             return new TrackerConfigData
             {
                 Serial = tracker.Serial,
+                Icon = tracker.Icon,
                 FullName = tracker.FullName,
                 Position = tracker.Position,
                 EulerAngles = tracker.EulerAngles,
@@ -46,19 +48,10 @@ namespace AlternativePlay.Models
         public static void Copy(TrackerConfigData source, TrackerConfigData target)
         {
             target.Serial = source.Serial;
+            target.Icon = source.Icon;
             target.FullName = source.FullName;
             target.Position = source.Position;
             target.EulerAngles = source.EulerAngles;
-        }
-
-        /// <summary>
-        /// Standardizes the formatting of the tracker information
-        /// </summary>
-        /// <param name="tracker">The</param>
-        /// <returns></returns>
-        public static string FormatTrackerHoverHint(InputDevice tracker)
-        {
-            return $"{tracker.serialNumber} - {tracker.manufacturer} {tracker.name}";
         }
     }
 }
