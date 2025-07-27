@@ -22,16 +22,11 @@ namespace AlternativePlay.HarmonyPatches
             if (Configuration.Current.PlayMode == PlayMode.BeatFlail && Configuration.Current.MoveNotesBack > 0)
             {
                 float realMoveNote = Configuration.Current.MoveNotesBack / 100.0f;
-                noteSpawnData = new NoteSpawnData(noteSpawnData.moveStartOffset with
-                {
-                    z = noteSpawnData.moveStartOffset.z - realMoveNote
-                }, noteSpawnData.moveEndOffset with
-                {
-                    z = noteSpawnData.moveEndOffset.z - realMoveNote
-                }, noteSpawnData.jumpEndOffset with
-                {
-                    z = noteSpawnData.jumpEndOffset.z - realMoveNote
-                }, noteSpawnData.gravityBase);
+                noteSpawnData = new NoteSpawnData(
+                    noteSpawnData.moveStartOffset with { z = noteSpawnData.moveStartOffset.z - realMoveNote}, 
+                    noteSpawnData.moveEndOffset with { z = noteSpawnData.moveEndOffset.z - realMoveNote }, 
+                    noteSpawnData.jumpEndOffset with { z = noteSpawnData.jumpEndOffset.z - realMoveNote}, 
+                    noteSpawnData.gravityBase);
             }
         }
 
@@ -43,10 +38,10 @@ namespace AlternativePlay.HarmonyPatches
             if (Configuration.Current.PlayMode == PlayMode.BeatFlail && Configuration.Current.MoveNotesBack > 0)
             {
                 float realMoveNote = Configuration.Current.MoveNotesBack / 100.0f;
-                obstacleSpawnData = new ObstacleSpawnData(obstacleSpawnData.moveOffset with
-                {
-                    z = obstacleSpawnData.moveOffset.z - realMoveNote
-                }, obstacleSpawnData.obstacleWidth, obstacleSpawnData.obstacleHeight);
+                obstacleSpawnData = new ObstacleSpawnData(
+                    obstacleSpawnData.moveOffset with { z = obstacleSpawnData.moveOffset.z - realMoveNote}, 
+                    obstacleSpawnData.obstacleWidth, 
+                    obstacleSpawnData.obstacleHeight);
             }
         }
     }
