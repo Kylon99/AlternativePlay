@@ -17,28 +17,31 @@ namespace AlternativePlay.HarmonyPatches
         [HarmonyPrefix]
         [HarmonyPatch(typeof(NoteMovement), nameof(NoteMovement.Init))]
         [HarmonyPriority(Priority.High)]
-        private static void NoteMovementPrefix(ref Vector3 moveStartPos, ref Vector3 moveEndPos, ref Vector3 jumpEndPos)
+        private static void NoteMovementPrefix(ref NoteSpawnData noteSpawnData)
         {
             if (Configuration.Current.PlayMode == PlayMode.BeatFlail && Configuration.Current.MoveNotesBack > 0)
             {
                 float realMoveNote = Configuration.Current.MoveNotesBack / 100.0f;
-                moveStartPos.z -= realMoveNote;
-                moveEndPos.z -= realMoveNote;
-                jumpEndPos.z -= realMoveNote;
+                noteSpawnData = new NoteSpawnData(
+                    noteSpawnData.moveStartOffset with { z = noteSpawnData.moveStartOffset.z - realMoveNote}, 
+                    noteSpawnData.moveEndOffset with { z = noteSpawnData.moveEndOffset.z - realMoveNote }, 
+                    noteSpawnData.jumpEndOffset with { z = noteSpawnData.jumpEndOffset.z - realMoveNote}, 
+                    noteSpawnData.gravityBase);
             }
         }
 
         [HarmonyPrefix]
         [HarmonyPatch(typeof(ObstacleController), nameof(ObstacleController.Init))]
         [HarmonyPriority(Priority.High)]
-        private static void ObstacleControllerPrefix(ref Vector3 startPos, ref Vector3 midPos, ref Vector3 endPos)
+        private static void ObstacleControllerPrefix(ref ObstacleSpawnData obstacleSpawnData)
         {
             if (Configuration.Current.PlayMode == PlayMode.BeatFlail && Configuration.Current.MoveNotesBack > 0)
             {
                 float realMoveNote = Configuration.Current.MoveNotesBack / 100.0f;
-                startPos.z -= realMoveNote;
-                midPos.z -= realMoveNote;
-                endPos.z -= realMoveNote;
+                obstacleSpawnData = new ObstacleSpawnData(
+                    obstacleSpawnData.moveOffset with { z = obstacleSpawnData.moveOffset.z - realMoveNote}, 
+                    obstacleSpawnData.obstacleWidth, 
+                    obstacleSpawnData.obstacleHeight);
             }
         }
     }

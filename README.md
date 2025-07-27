@@ -53,6 +53,7 @@ trackers.
 * https://github.com/Kylon99
 * https://github.com/Snow1226
 * Special thanks to Nullpon for testing and fixes! https://github.com/nullpon16tera
+* Thanks to zender for the update to 1.40.4 https://github.com/aCzenderCa
 
 ## Requirements
 This mod depends on the following mods.  Download them at [BeatMods](https://beatmods.com) or install them
@@ -65,10 +66,15 @@ installed other mods!
 
 ## Installation
 
-Drop the Plugins\AlternativePlay.dll file into your Plugins folder under your BeatSaber folder.
-Drop the Libs\OpenVR folder into the Libs folder under your BeatSaber folder.
+* Drop the Plugins\AlternativePlay.dll file into your Plugins folder under your BeatSaber folder.
+* Drop the Libs\OpenVR folder into the Libs folder under your BeatSaber folder.
 
 ## Changelog
+
+### 0.9.1
+- Updated to support Beat Saber 1.40.4 - 1.40.7
+- Updated to C# 13.0
+
 ### 0.9.0
 - Updated tracking to use OpenVR api
 - Updated Tracker Selection UI
