@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Text;
 using UnityEngine;
+using UnityEngine.XR;
 using Valve.VR;
 using Zenject;
 using static Valve.VR.IVRSystem;
@@ -84,7 +85,9 @@ namespace AlternativePlay.Models
         /// </remarks>
         public void PollTrackedDevices()
         {
-            const float predictionBiasSeconds = 0.0255f;
+            const float minPredictionSeconds = 0.0f;
+            const float maxPredictionSeconds = 0.1f;
+            const float predictionBiasSeconds = 0.0225f;
 
             // Calculate time to predict into the future
             float secondsSinceLastVsync = 0.0f;
@@ -98,6 +101,9 @@ namespace AlternativePlay.Models
 
             float predictedSecondsFromNow = frameDuration - secondsSinceLastVsync + fVsyncToPhotons;
             predictedSecondsFromNow += predictionBiasSeconds;
+
+            if (predictedSecondsFromNow < minPredictionSeconds) { predictedSecondsFromNow = minPredictionSeconds; }
+            if (predictedSecondsFromNow > maxPredictionSeconds) { predictedSecondsFromNow = maxPredictionSeconds; }
 
             // Get all tracked device poses from OpenVR API
             TrackedDevicePose_t[] trackedDevicePoseArray = new TrackedDevicePose_t[OpenVR.k_unMaxTrackedDeviceCount];
@@ -137,6 +143,11 @@ namespace AlternativePlay.Models
 
         public Pose? GetPoseFromLeftController()
         {
+            if (TryGetOpenXrControllerPose(InputDeviceCharacteristics.HeldInHand | InputDeviceCharacteristics.Controller | InputDeviceCharacteristics.Left, out Pose openXrPose))
+            {
+                return openXrPose;
+            }
+
             uint index = this.openVRManager.System.GetTrackedDeviceIndexForControllerRole(ETrackedControllerRole.LeftHand);
             var device = this.TrackedDevices.ElementAtOrDefault((int)index);
 
@@ -147,12 +158,37 @@ namespace AlternativePlay.Models
 
         public Pose? GetPoseFromRightController()
         {
+            if (TryGetOpenXrControllerPose(InputDeviceCharacteristics.HeldInHand | InputDeviceCharacteristics.Controller | InputDeviceCharacteristics.Right, out Pose openXrPose))
+            {
+                return openXrPose;
+            }
+
             uint index = this.openVRManager.System.GetTrackedDeviceIndexForControllerRole(ETrackedControllerRole.RightHand);
-            var device = this.TrackedDevices.ElementAtOrDefault((int)index);
+            var device = this.TrackedDevices.FirstOrDefault(d => d.Index == (int)index);
 
             if (device == null) { return null; }
 
             return device.Pose;
+        }
+
+        private static bool TryGetOpenXrControllerPose(InputDeviceCharacteristics characteristics, out Pose pose)
+        {
+            var devices = new List<InputDevice>();
+            InputDevices.GetDevicesWithCharacteristics(characteristics, devices);
+
+            foreach (var device in devices)
+            {
+                bool hasPosition = device.TryGetFeatureValue(CommonUsages.devicePosition, out Vector3 position);
+                bool hasRotation = device.TryGetFeatureValue(CommonUsages.deviceRotation, out Quaternion rotation);
+                if (hasPosition && hasRotation)
+                {
+                    pose = new Pose(position, rotation);
+                    return true;
+                }
+            }
+
+            pose = default;
+            return false;
         }
 
         /// <summary>
