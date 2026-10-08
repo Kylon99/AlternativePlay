@@ -190,6 +190,7 @@
     <Compile Include="UI\AlternativePlayMainFlowCoordinator.cs" />
     <Compile Include="UI\TrackerPoseView.cs" />
     <Compile Include="UI\TrackerSelectView.cs" />
+    <Compile Include="UI\BaseModeSelectView.cs" />
     <Compile Include="Utilities.cs" />
   </ItemGroup>
   <ItemGroup>

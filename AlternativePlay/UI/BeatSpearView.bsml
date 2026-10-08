@@ -32,7 +32,7 @@
       </horizontal>
     </vertical>
 
-    <!--Tracker Selection-->
+    <!--Tracker Summary-->
     <vertical pref-width="80" vertical-fit="PreferredSize">
       <horizontal>
         <clickable-text text="Left Hand" italics="true" font-size="4" highlight-color="#FFFFFF" align="MidlineLeft" hover-hint="Choose a tracker to attach the left saber to"/>
