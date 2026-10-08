@@ -196,6 +196,8 @@
     <EmbeddedResource Include="manifest.json" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\fontawesome\pencil-solid-full.png" />
+    <EmbeddedResource Include="Resources\fontawesome\x-solid-full.png" />
     <EmbeddedResource Include="Resources\TrackingReference.png" />
     <EmbeddedResource Include="Resources\HMD.png" />
     <EmbeddedResource Include="Resources\LeftFlail.png" />
@@ -291,6 +293,7 @@
   <ItemGroup>
     <EmbeddedResource Include="UI\BeatFlailView.bsml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy "$(TargetFileName)" "$(GameDirPath)\Plugins"</PostBuildEvent>

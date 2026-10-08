@@ -43,7 +43,7 @@
             <text text="~LeftTrackerSerial" italics="true" align="MidlineLeft" font-size="4"/>
           </horizontal>
         </button>
-        <button pref-width="10" preferred-height="8" text="x" on-click="OnClearLeftTracker"/>
+        <button-with-icon pref-width="10" preferred-height="8" icon="AlternativePlay.Resources.fontawesome.x-solid-full.png" on-click="OnClearLeftTracker"/>
       </horizontal>
       <horizontal>
         <clickable-text text="Right Hand" italics="true" font-size="4" highlight-color="#FFFFFF" align="MidlineLeft" hover-hint="Choose a tracker to attach the right saber to"/>
@@ -53,7 +53,7 @@
             <text text="~RightTrackerSerial" italics="true" align="MidlineLeft" font-size="4"/>
           </horizontal>
         </button>
-        <button pref-width="10" preferred-height="8" text="x" on-click="OnClearRightTracker"/>
+        <button-with-icon pref-width="10" preferred-height="8" icon="AlternativePlay.Resources.fontawesome.x-solid-full.png" on-click="OnClearRightTracker"/>
       </horizontal>
     </vertical>
 
