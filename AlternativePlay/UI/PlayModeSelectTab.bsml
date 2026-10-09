@@ -1,43 +1,39 @@
 ﻿<bg xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd">
-	<vertical preferred-width="80">
+	<vertical preferred-width="100">
 		<!-- Header -->
 		<horizontal>
 			<text text="Select a Configuration to Play" font-size="4"/>
 		</horizontal>
 
 		<!-- Select Pre-Configured PlayMode List -->
-    <vertical pad-top="2" vertical-fit="PreferredSize">
-      <custom-list id="SelectModeList" visible-cells="7" cell-size="7" list-width="80" select-cell="OnModeClicked"
-             stick-scrolling="true" show-scrollbar="true">
-        <horizontal>
-
-          <horizontal pref-width="20" child-expand-width="true">
-            <img preserve-aspect="true" pref-width="5" pref-height="5" img-color="~SelectedColor" source="~PlayModeIcon00" />
-            <text text="~Mode" color="~SelectedColor" font-size="4" />
-          </horizontal>
-
-          <horizontal pref-width="12" pad-right="2" child-expand-width="true">
-            <img preserve-aspect="true" pref-width="5" pref-height="5" img-color="~SelectedColor" source="~PlayModeIcon01" />
-            <img preserve-aspect="true" pref-width="5" pref-height="5" img-color="~SelectedColor" source="~PlayModeIcon02" />
-            <img preserve-aspect="true" pref-width="5" pref-height="5" img-color="~SelectedColor" source="~PlayModeIcon03" />
-          </horizontal>
-
-          <horizontal pref-width="9" pad-right="2" child-expand-width="true">
-            <img preserve-aspect="true" pref-width="5" pref-height="5" img-color="~SelectedColor" source="~TrackerIcon00" />
-            <img preserve-aspect="true" pref-width="5" pref-height="5" img-color="~SelectedColor" source="~TrackerIcon01" />
-          </horizontal>
-
-          <horizontal pref-width="18" child-expand-width="true">
-            <img preserve-aspect="true" pref-width="5" pref-height="5" img-color="~SelectedColor" source="~GameModifierIcon00" />
-            <img preserve-aspect="true" pref-width="5" pref-height="5" img-color="~SelectedColor" source="~GameModifierIcon01" />
-            <img preserve-aspect="true" pref-width="5" pref-height="5" img-color="~SelectedColor" source="~GameModifierIcon02" />
-            <img preserve-aspect="true" pref-width="5" pref-height="5" img-color="~SelectedColor" source="~GameModifierIcon03" />
-            <img preserve-aspect="true" pref-width="5" pref-height="5" img-color="~SelectedColor" source="~GameModifierIcon04" />
-          </horizontal>
-
+    <custom-list id="SelectModeList" visible-cells="7" cell-size="7" list-width="100" select-cell="OnModeClicked" stick-scrolling="true" show-scrollbar="true">
+      <horizontal pref-width="100" child-expand-width="false">
+        <horizontal pad-right="1" child-expand-width="false">
+          <img preserve-aspect="true" pref-width="5" pref-height="5" img-color="~SelectedColor" hover-hint="~PlayModeHint00" source="~PlayModeIcon00" />
         </horizontal>
-      </custom-list>
-    </vertical>
-		
+        <horizontal pad-right="1" child-expand-width="true">
+          <text text="~Mode" hover-hint="~Mode" color="~SelectedColor" overflow-mode="Ellipsis" align="MidlineLeft" font-size="4" />
+        </horizontal>
+
+        <horizontal pref-height="6" pad-left="1" pad-right="1" child-expand-width="false" bg="round-rect-panel">
+          <img preserve-aspect="true" pref-width="5" pref-height="5" img-color="~SelectedColor" hover-hint="~PlayModeHint01" source="~PlayModeIcon01" />
+          <img preserve-aspect="true" pref-width="5" pref-height="5" img-color="~SelectedColor" hover-hint="~PlayModeHint02" source="~PlayModeIcon02" />
+          <img preserve-aspect="true" pref-width="5" pref-height="5" img-color="~SelectedColor" hover-hint="~PlayModeHint03" source="~PlayModeIcon03" />
+        </horizontal>
+
+        <horizontal pref-height="6" pad-left="1" pad-right="1" child-expand-width="false" bg="round-rect-panel">
+          <img preserve-aspect="true" pref-width="5" pref-height="5" img-color="~SelectedColor" source="~TrackerIcon00" />
+          <img preserve-aspect="true" pref-width="5" pref-height="5" img-color="~SelectedColor" source="~TrackerIcon01" />
+        </horizontal>
+
+        <horizontal pref-height="6" pad-left="1" pad-right="1" child-expand-width="false" bg="round-rect-panel">
+          <img preserve-aspect="true" pref-width="5" pref-height="5" img-color="~SelectedColor" hover-hint="~GameModifierHint00" source="~GameModifierIcon00" />
+          <img preserve-aspect="true" pref-width="5" pref-height="5" img-color="~SelectedColor" hover-hint="~GameModifierHint01" source="~GameModifierIcon01" />
+          <img preserve-aspect="true" pref-width="5" pref-height="5" img-color="~SelectedColor" hover-hint="~GameModifierHint02" source="~GameModifierIcon02" />
+          <img preserve-aspect="true" pref-width="5" pref-height="5" img-color="~SelectedColor" hover-hint="~GameModifierHint03" source="~GameModifierIcon03" />
+          <img preserve-aspect="true" pref-width="5" pref-height="5" img-color="~SelectedColor" hover-hint="~GameModifierHint04" source="~GameModifierIcon04" />
+        </horizontal>
+      </horizontal>
+    </custom-list>
 	</vertical>
 </bg>

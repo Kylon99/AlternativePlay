@@ -1,47 +1,52 @@
 ﻿<bg xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd">
   <vertical vertical-fit="PreferredSize">
     <!-- Header -->
-    <horizontal spacing="40">
+    <horizontal spacing="60">
       <vertical pad-top="1">
-        <text text="Select a Configuration to Edit" font-size="4"/>
+        <text text="Select a Configuration to Edit" />
       </vertical>
-      <button text="Add New Configuration" align="Right" on-click="OnAddNewConfiguration" hover-hint="Add a new configuration to the list" />
+      <button text="" pref-width="18" pref-height="9" on-click="OnAddNewConfiguration" hover-hint="Add a new configuration to the list">
+        <horizontal>
+          <img preserve-aspect="true" pref-width="5" pref-height="5"  source="AlternativePlay.Resources.fontawesome.plus-solid-full.png" />
+          <text text="Add" font-size="4"/>
+        </horizontal>
+      </button>
     </horizontal>
 
     <!-- Select Pre-Configured PlayMode List -->
-    <vertical pad-top="2" vertical-fit="PreferredSize">
-      <custom-list id="SelectModeList" visible-cells="7" cell-size="8" list-width="110" select-cell="OnModeClicked"
-						 stick-scrolling="true" show-scrollbar="true">
-        <horizontal>
-          <horizontal pref-width="20" child-expand-width="true">
-            <img preserve-aspect="true" pref-width="5" pref-height="5" source="~PlayModeIcon00" />
-            <text text="~Mode" font-size="4" />
-          </horizontal>
-
-          <horizontal pref-width="12" pad-right="2" child-expand-width="true">
-            <img preserve-aspect="true" pref-width="5" pref-height="5" source="~PlayModeIcon01" />
-            <img preserve-aspect="true" pref-width="5" pref-height="5" source="~PlayModeIcon02" />
-            <img preserve-aspect="true" pref-width="5" pref-height="5" source="~PlayModeIcon03" />
-          </horizontal>
-
-          <horizontal pref-width="9" pad-right="2" child-expand-width="true">
-            <img preserve-aspect="true" pref-width="5" pref-height="5" source="~TrackerIcon00" />
-            <img preserve-aspect="true" pref-width="5" pref-height="5" source="~TrackerIcon01" />
-          </horizontal>
-
-          <horizontal pref-width="18" child-expand-width="true">
-            <img preserve-aspect="true" pref-width="5" pref-height="5" source="~GameModifierIcon00" />
-            <img preserve-aspect="true" pref-width="5" pref-height="5" source="~GameModifierIcon01" />
-            <img preserve-aspect="true" pref-width="5" pref-height="5" source="~GameModifierIcon02" />
-            <img preserve-aspect="true" pref-width="5" pref-height="5" source="~GameModifierIcon03" />
-            <img preserve-aspect="true" pref-width="5" pref-height="5" source="~GameModifierIcon04" />
-          </horizontal>
-
-          <button pad-left="3" text="Delete" pref-width="24" pref-height="8" on-click="OnDeleteClicked" hover-hint="Delete this configuration" />
-
+    <custom-list id="SelectModeList" visible-cells="7" cell-size="8" list-width="110" select-cell="OnModeClicked" stick-scrolling="true" show-scrollbar="true">
+      <horizontal pref-width="120" child-expand-width="false">
+        <horizontal pad-right="1" child-expand-width="false">
+          <img preserve-aspect="true" pref-width="5" pref-height="5" hover-hint="~PlayModeHint00" source="~PlayModeIcon00" />
         </horizontal>
-      </custom-list>
-    </vertical>
+        <horizontal pad-right="1" child-expand-width="true">
+          <text text="~Mode" hover-hint="~Mode" overflow-mode="Ellipsis" align="MidlineLeft" font-size="4" />
+        </horizontal>
+
+        <horizontal pref-height="6" pad-left="1" pad-right="1" child-expand-width="false" bg="round-rect-panel">
+          <img preserve-aspect="true" pref-width="5" pref-height="5" hover-hint="~PlayModeHint01" source="~PlayModeIcon01" />
+          <img preserve-aspect="true" pref-width="5" pref-height="5" hover-hint="~PlayModeHint02" source="~PlayModeIcon02" />
+          <img preserve-aspect="true" pref-width="5" pref-height="5" hover-hint="~PlayModeHint03" source="~PlayModeIcon03" />
+        </horizontal>
+
+        <horizontal pref-height="6" pad-left="1" pad-right="1" child-expand-width="false" bg="round-rect-panel">
+          <img preserve-aspect="true" pref-width="5" pref-height="5" source="~TrackerIcon00" />
+          <img preserve-aspect="true" pref-width="5" pref-height="5" source="~TrackerIcon01" />
+        </horizontal>
+
+        <horizontal pref-height="6" pad-left="1" pad-right="1" child-expand-width="false" bg="round-rect-panel">
+          <img preserve-aspect="true" pref-width="5" pref-height="5" hover-hint="~GameModifierHint00" source="~GameModifierIcon00" />
+          <img preserve-aspect="true" pref-width="5" pref-height="5" hover-hint="~GameModifierHint01" source="~GameModifierIcon01" />
+          <img preserve-aspect="true" pref-width="5" pref-height="5" hover-hint="~GameModifierHint02" source="~GameModifierIcon02" />
+          <img preserve-aspect="true" pref-width="5" pref-height="5" hover-hint="~GameModifierHint03" source="~GameModifierIcon03" />
+          <img preserve-aspect="true" pref-width="5" pref-height="5" hover-hint="~GameModifierHint04" source="~GameModifierIcon04" />
+        </horizontal>
+        <horizontal spacing="0" child-expand-width="false">
+          <button-with-icon pref-width="9" pref-height="8" icon="AlternativePlay.Resources.fontawesome.pencil-solid-full.png" on-click="OnEditClicked" hover-hint="Edit this configuration" />
+          <button-with-icon pref-width="9" pref-height="8" icon="AlternativePlay.Resources.fontawesome.trash-can-regular-full.png" on-click="OnDeleteClicked" hover-hint="Delete this configuration" />
+        </horizontal>
+      </horizontal>
+    </custom-list>
 
     <!-- Delete Modal -->
     <modal id="DeleteModal" size-delta-x="100" size-delta-y="50" click-off-closes="true" >
