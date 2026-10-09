@@ -197,6 +197,10 @@
     <EmbeddedResource Include="manifest.json" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\fontawesome\LICENSE.txt" />
+    <EmbeddedResource Include="Resources\fontawesome\plus-solid-full.png" />
+    <EmbeddedResource Include="Resources\fontawesome\keyboard-regular-full.png" />
+    <EmbeddedResource Include="Resources\fontawesome\trash-can-regular-full.png" />
     <EmbeddedResource Include="Resources\fontawesome\pencil-solid-full.png" />
     <EmbeddedResource Include="Resources\fontawesome\x-solid-full.png" />
     <EmbeddedResource Include="Resources\TrackingReference.png" />

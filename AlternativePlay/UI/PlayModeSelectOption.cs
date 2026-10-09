@@ -14,17 +14,19 @@ namespace AlternativePlay.UI
 
         public ConfigurationIconSummary IconSummary { get; private set; }
 
+        public Action<int> EditCallback { get; set; }
         public Action<int> DeleteCallback { get; set; }
 
         private ConfigurationData configurationData;
 
-        public PlayModeSelectOption(ConfigurationData configuration, int index, Action<int> deleteCallback = null)
+        public PlayModeSelectOption(ConfigurationData configuration, int index, Action<int> editCallback = null, Action<int> deleteCallback = null)
         {
             this.configurationData = configuration;
             PlayModeSettings settings = configuration.PlayModeSettings[index];
             this.Mode = PlayModeSettings.PlayModeDescription(settings.PlayMode);
             this.Index = index;
             this.IconSummary = new ConfigurationIconSummary(settings);
+            this.EditCallback = editCallback;
             this.DeleteCallback = deleteCallback;
         }
 
@@ -33,6 +35,12 @@ namespace AlternativePlay.UI
 
         [UIValue(nameof(SelectedColor))]
         public string SelectedColor => this.configurationData.Selected == this.Index ? "#FFFFFF" : "#7F7F7F";
+
+        [UIAction(nameof(OnEditClicked))]
+        public void OnEditClicked()
+        {
+            if (this.EditCallback != null) this.EditCallback(this.Index);
+        }
 
         [UIAction(nameof(OnDeleteClicked))]
         public void OnDeleteClicked()
@@ -46,6 +54,12 @@ namespace AlternativePlay.UI
             return this.IconSummary.PlayModeIcons[index];
         }
 
+        private string GetPlayModeHint(int index)
+        {
+            if (this.IconSummary == null || index >= this.IconSummary.PlayModeHints.Count) return "";
+            return this.IconSummary.PlayModeHints[index];
+        }
+
         private string GetTrackerIcon(int index)
         {
             if (this.IconSummary == null || index >= this.IconSummary.TrackerIcons.Count) return IconNames.Empty;
@@ -57,6 +71,13 @@ namespace AlternativePlay.UI
             if (this.IconSummary == null || index >= this.IconSummary.GameModifierIcons.Count) return IconNames.Empty;
             return this.IconSummary.GameModifierIcons[index];
         }
+
+        private string GetGameModifierHint(int index)
+        {
+            if (this.IconSummary == null || index >= this.IconSummary.GameModifierHints.Count) return "";
+            return this.IconSummary.GameModifierHints[index];
+        }
+
 
         [UIValue(nameof(PlayModeIcon00))]
         public string PlayModeIcon00 => this.GetPlayModeIcon(0);
@@ -82,6 +103,26 @@ namespace AlternativePlay.UI
         public string GameModifierIcon03 => this.GetGameModifierIcon(3);
         [UIValue(nameof(GameModifierIcon04))]
         public string GameModifierIcon04 => this.GetGameModifierIcon(4);
+
+        [UIValue(nameof(PlayModeHint00))]
+        public string PlayModeHint00 => this.GetPlayModeHint(0);
+        [UIValue(nameof(PlayModeHint01))]
+        public string PlayModeHint01 => this.GetPlayModeHint(1);
+        [UIValue(nameof(PlayModeHint02))]
+        public string PlayModeHint02 => this.GetPlayModeHint(2);
+        [UIValue(nameof(PlayModeHint03))]
+        public string PlayModeHint03 => this.GetPlayModeHint(3);
+
+        [UIValue(nameof(GameModifierHint00))]
+        public string GameModifierHint00 => this.GetGameModifierHint(0);
+        [UIValue(nameof(GameModifierHint01))]
+        public string GameModifierHint01 => this.GetGameModifierHint(1);
+        [UIValue(nameof(GameModifierHint02))]
+        public string GameModifierHint02 => this.GetGameModifierHint(2);
+        [UIValue(nameof(GameModifierHint03))]
+        public string GameModifierHint03 => this.GetGameModifierHint(3);
+        [UIValue(nameof(GameModifierHint04))]
+        public string GameModifierHint04 => this.GetGameModifierHint(4);
 
     }
 

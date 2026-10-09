@@ -28,7 +28,7 @@ namespace AlternativePlay.UI
         {
             // Convert configuration settings to the class used for the list
             var list = this.configuration.ConfigurationData.PlayModeSettings
-                .Select((settings, i) => new PlayModeSelectOption(this.configuration.ConfigurationData, i, this.ShowDeleteModal))
+                .Select((settings, i) => new PlayModeSelectOption(this.configuration.ConfigurationData, i, this.OnEditClicked, this.ShowDeleteModal))
                 .ToList();
 
             this.SelectModeList.TableView.ClearSelection();
@@ -49,6 +49,21 @@ namespace AlternativePlay.UI
             {
                 this.RefreshConfigurations();
             }
+        }
+
+        /// <summary>
+        /// Answers the edit click coming from the <see cref="PlayModeSelectOption"/> class.
+        /// </summary>
+        private void OnEditClicked(int index)
+        {
+            var playModeSettings = this.configuration.GetPlayModeSetting(index);
+            if (playModeSettings == null)
+            {
+                // Do nothing as this is an error
+                return;
+            }
+
+            this.mainFlowCoordinator.ShowPlayModeSelect(playModeSettings, index);
         }
 
         /// <summary>
