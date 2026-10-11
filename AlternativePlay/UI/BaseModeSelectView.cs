@@ -39,6 +39,18 @@ namespace AlternativePlay.UI
 
         protected abstract void UpdateAllValues();
 
+        [UIValue(nameof(Name))]
+        public string Name
+        {
+            get => this.settings.Name;
+            set
+            {
+                this.settings.Name = value;
+                this.configuration.SaveConfiguration();
+                this.NotifyPropertyChanged(nameof(this.Name));
+            }
+        }
+
         // Text Displays for the Main View
         protected string leftTrackerIcon;
         [UIValue(nameof(LeftTrackerIcon))]

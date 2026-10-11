@@ -23,15 +23,15 @@ namespace AlternativePlay.UI
         {
             this.configurationData = configuration;
             PlayModeSettings settings = configuration.PlayModeSettings[index];
-            this.Mode = PlayModeSettings.PlayModeDescription(settings.PlayMode);
+            this.Name = !String.IsNullOrWhiteSpace(settings.Name) ? settings.Name : PlayModeSettings.PlayModeDescription(settings.PlayMode);
             this.Index = index;
             this.IconSummary = new ConfigurationIconSummary(settings);
             this.EditCallback = editCallback;
             this.DeleteCallback = deleteCallback;
         }
 
-        [UIValue(nameof(Mode))]
-        public string Mode { get; set; }
+        [UIValue(nameof(Name))]
+        public string Name { get; set; }
 
         [UIValue(nameof(SelectedColor))]
         public string SelectedColor => this.configurationData.Selected == this.Index ? "#FFFFFF" : "#7F7F7F";
