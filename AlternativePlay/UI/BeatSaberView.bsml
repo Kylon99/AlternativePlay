@@ -2,16 +2,25 @@
   <vertical child-control-height="false">
 
     <!-- View Header -->
-    <horizontal pad-left="10" pad-right="10" bg="panel-top" pref-height="11">
+    <horizontal bg="panel-top" pref-height="10" child-expand-width="false">
       <img preserve-aspect="true" pref-width="8" source="~BeatSaberIcon" />
-      <vertical pad-left="1" pad-top="1" pad-bottom="3" pref-height="12" vertical-fit="PreferredSize">
-        <text text="Beat Saber" font-size="5"/>
-        <text text="Play dual sabers from the original game" font-size="4" />
+      <vertical pad-left="1">
+        <horizontal preferred-width="5">
+          <text text="~Name" overflow-mode="Ellipsis" align="MidlineLeft" font-size="5" hover-hint="~Name"/>
+        </horizontal>
+        <horizontal pad-right="10">
+          <text text="Play dual sabers from the original game" font-size="4" />
+        </horizontal>
       </vertical>
+      <horizontal child-expand-width="false" pad-right="1">
+        <button-with-icon pref-width="8" pref-height="8" icon="AlternativePlay.Resources.fontawesome.pencil-solid-full.png" click-event="ShowNameKeyboard" hover-hint="Rename this configuration" />
+        <button-with-icon pref-width="8" pref-height="8" icon="AlternativePlay.Resources.fontawesome.rotate-left-solid-full.png" on-click="OnResetNameClicked"  hover-hint="Reset to default name for this mode" />
+      </horizontal>
+      <modal-keyboard value="Name" show-event="ShowNameKeyboard" close-off-closes="true"/>
     </horizontal>
 
     <!-- Main View -->
-    <vertical pref-width="70" vertical-fit="PreferredSize">
+    <vertical pref-width="80" vertical-fit="PreferredSize">
       <horizontal>
         <horizontal pad-right="1">
           <img preserve-aspect="true" pref-width="8" pref-height="8" source="~ReverseLeftSaberIcon" />
@@ -34,7 +43,7 @@
     </vertical>
 
     <!--Tracker Summary-->
-    <vertical pref-width="80" vertical-fit="PreferredSize">
+    <vertical pref-width="85" vertical-fit="PreferredSize">
       <horizontal>
         <clickable-text text="Left Hand" italics="true" font-size="4" highlight-color="#FFFFFF" align="MidlineLeft" hover-hint="Choose a tracker to attach the left saber to"/>
         <button preferred-width="50" preferred-height="8" hover-hint="~LeftTrackerHoverHint" text="" on-click="OnShowSelectLeftTracker">
