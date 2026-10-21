@@ -1,6 +1,7 @@
 ﻿using AlternativePlay.Models;
 using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.ViewControllers;
+using IPA.Config.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +34,7 @@ namespace AlternativePlay.UI
         protected override void DidActivate(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling)
         {
             base.DidActivate(firstActivation, addedToHierarchy, screenSystemEnabling);
+            this.NotifyPropertyChanged(nameof(this.Name));
             this.UpdateAllValues();
             this.SetTrackerText();
         }
@@ -42,13 +44,26 @@ namespace AlternativePlay.UI
         [UIValue(nameof(Name))]
         public string Name
         {
-            get => this.settings.Name;
+            get
+            {
+                return !String.IsNullOrWhiteSpace(this.settings.Name) 
+                    ? this.settings.Name 
+                    : PlayModeSettings.PlayModeDescription(this.settings.PlayMode);
+            }
             set
             {
                 this.settings.Name = value;
                 this.configuration.SaveConfiguration();
                 this.NotifyPropertyChanged(nameof(this.Name));
             }
+        }
+
+        [UIAction(nameof(OnResetNameClicked))]
+        public void OnResetNameClicked()
+        {
+            this.settings.Name = String.Empty;
+            this.configuration.SaveConfiguration();
+            this.NotifyPropertyChanged(nameof(this.Name));
         }
 
         // Text Displays for the Main View

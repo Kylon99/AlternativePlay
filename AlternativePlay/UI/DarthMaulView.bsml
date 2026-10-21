@@ -1,47 +1,56 @@
 ﻿<bg xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd">
-	<vertical child-control-height="false">
+  <vertical child-control-height="false">
 
-		<!-- View Header -->
-		<horizontal pad-left="10" pad-right="10" bg="panel-top" pref-height="11">
-			<img preserve-aspect="true" pref-width="8" source="~DarthMaulIcon" />
-			<vertical pad-left="1" pad-top="1" pad-bottom="3" pref-height="12" vertical-fit="PreferredSize">
-				<text text="Darth Maul" font-size="5"/>
-				<text text="Double bladed staff for one or two hands" font-size="4" />
-			</vertical>
-		</horizontal>
+    <!-- View Header -->
+    <horizontal bg="panel-top" pref-height="10" child-expand-width="false">
+      <img preserve-aspect="true" pref-width="8" source="~DarthMaulIcon" />
+      <vertical pad-left="1">
+        <horizontal preferred-width="5">
+          <text text="~Name" overflow-mode="Ellipsis" align="MidlineLeft" font-size="5" hover-hint="~Name"/>
+        </horizontal>
+        <horizontal pad-right="8">
+          <text text="Double bladed staff for one or two hands" font-size="4" />
+        </horizontal>
+      </vertical>
+      <horizontal child-expand-width="false" pad-right="1">
+        <button-with-icon pref-width="8" pref-height="8" icon="AlternativePlay.Resources.fontawesome.pencil-solid-full.png" click-event="ShowNameKeyboard" hover-hint="Rename this configuration" />
+        <button-with-icon pref-width="8" pref-height="8" icon="AlternativePlay.Resources.fontawesome.rotate-left-solid-full.png" on-click="OnResetNameClicked"  hover-hint="Reset to default name for this mode" />
+      </horizontal>
+      <modal-keyboard value="Name" show-event="ShowNameKeyboard" close-off-closes="true"/>
+    </horizontal>
 
-		<!-- Main View -->
-		<vertical pref-width="75" vertical-fit="PreferredSize">
-			<horizontal>
-				<horizontal pad-right="1">
-					<img preserve-aspect="true" pref-width="8" pref-height="8" source="~ControllerChoiceIcon" />
-				</horizontal>
-				<dropdown-list-setting text="Controllers" value="ControllerChoice" choices="ControllerChoiceList" bind-value="true" apply-on-change="true" hover-hint="Two controllers or trackers for Darth Maul versus one controller or tracker"/>
-			</horizontal>
-			<horizontal>
-				<horizontal pad-right="1">
-					<img preserve-aspect="true" pref-width="8" pref-height="8" source="~UseLeftControllerIcon" />
-				</horizontal>
-				<checkbox-setting text="Use Left Controller" value="UseLeftController" bind-value="true" apply-on-change="true" hover-hint="Move the sabers to the left controller for one controller mode only" />
-			</horizontal>
-			<horizontal>
-				<horizontal pad-right="1">
-					<img preserve-aspect="true" pref-width="8" pref-height="8" source="~ReverseDarthMaulIcon" />
-				</horizontal>
-				<checkbox-setting text="Reverse Maul Direction" value="ReverseDarthMaul" bind-value="true" apply-on-change="true" hover-hint="Invert the saber directions, useful for one controller mode" />
-			</horizontal>
-			<checkbox-setting text="Use Trigger to Separate" value="UseTriggerToSeparate" bind-value="true" apply-on-change="true" hover-hint="Press any trigger to separate split the sabers" />
-			<increment-setting text="Separation Amount" value="SeparationAmount" bind-value="true" apply-on-change="true" integer-only="true" min="0" max="50" increment="1" hover-hint="The distance between sabers" />
-		</vertical>
+    <!-- Main View -->
+    <vertical pref-width="80" vertical-fit="PreferredSize">
+      <horizontal>
+        <horizontal pad-right="1">
+          <img preserve-aspect="true" pref-width="8" pref-height="8" source="~ControllerChoiceIcon" />
+        </horizontal>
+        <dropdown-list-setting text="Controllers" value="ControllerChoice" choices="ControllerChoiceList" bind-value="true" apply-on-change="true" hover-hint="Two controllers or trackers for Darth Maul versus one controller or tracker"/>
+      </horizontal>
+      <horizontal>
+        <horizontal pad-right="1">
+          <img preserve-aspect="true" pref-width="8" pref-height="8" source="~UseLeftControllerIcon" />
+        </horizontal>
+        <checkbox-setting text="Use Left Controller" value="UseLeftController" bind-value="true" apply-on-change="true" hover-hint="Move the sabers to the left controller for one controller mode only" />
+      </horizontal>
+      <horizontal>
+        <horizontal pad-right="1">
+          <img preserve-aspect="true" pref-width="8" pref-height="8" source="~ReverseDarthMaulIcon" />
+        </horizontal>
+        <checkbox-setting text="Reverse Maul Direction" value="ReverseDarthMaul" bind-value="true" apply-on-change="true" hover-hint="Invert the saber directions, useful for one controller mode" />
+      </horizontal>
+      <checkbox-setting text="Use Trigger to Separate" value="UseTriggerToSeparate" bind-value="true" apply-on-change="true" hover-hint="Press any trigger to separate split the sabers" />
+      <increment-setting text="Separation Amount" value="SeparationAmount" bind-value="true" apply-on-change="true" integer-only="true" min="0" max="50" increment="1" hover-hint="The distance between sabers" />
+    </vertical>
 
     <!--Tracker Summary-->
-    <vertical pref-width="80" vertical-fit="PreferredSize">
+    <vertical pref-width="85" vertical-fit="PreferredSize">
       <horizontal>
         <clickable-text text="Left Hand" italics="true" font-size="4" highlight-color="#FFFFFF" align="MidlineLeft" hover-hint="Choose a tracker to attach the left saber to"/>
         <button preferred-width="50" preferred-height="8" hover-hint="~LeftTrackerHoverHint" text="" on-click="OnShowSelectLeftTracker">
           <horizontal horizontal-fit="PreferredSize" child-expand-width="false" spacing="1">
-						<img preserve-aspect="true" pref-width="4" pref-height="4" source="~LeftTrackerIcon" />
-						<text text="~LeftTrackerSerial" italics="true" align="MidlineLeft" font-size="4"/>
+            <img preserve-aspect="true" pref-width="4" pref-height="4" source="~LeftTrackerIcon" />
+            <text text="~LeftTrackerSerial" italics="true" align="MidlineLeft" font-size="4"/>
           </horizontal>
         </button>
         <button-with-icon pref-width="10" preferred-height="8" icon="AlternativePlay.Resources.fontawesome.x-solid-full.png" on-click="OnClearLeftTracker"/>
@@ -57,6 +66,6 @@
         <button-with-icon pref-width="10" preferred-height="8" icon="AlternativePlay.Resources.fontawesome.x-solid-full.png" on-click="OnClearRightTracker"/>
       </horizontal>
     </vertical>
-    
-	</vertical>
+
+  </vertical>
 </bg>

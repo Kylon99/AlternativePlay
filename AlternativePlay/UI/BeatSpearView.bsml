@@ -1,16 +1,26 @@
 ﻿<bg xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd">
   <vertical child-control-height="false">
+
     <!-- View Header -->
-    <horizontal pad-left="12" pad-right="12" bg="panel-top" pref-height="11">
+    <horizontal bg="panel-top" pref-height="10" child-expand-width="false">
       <img preserve-aspect="true" pref-width="8" source="~BeatSpearIcon" />
-      <vertical pad-left="1" pad-top="1" pad-bottom="3" pref-height="12" vertical-fit="PreferredSize">
-        <text text="Beat Spear" font-size="5"/>
-        <text text="Play with a one bladed long spear" font-size="4" />
+      <vertical pad-left="1">
+        <horizontal preferred-width="5">
+          <text text="~Name" overflow-mode="Ellipsis" align="MidlineLeft" font-size="5" hover-hint="~Name"/>
+        </horizontal>
+        <horizontal pad-right="15">
+          <text text="Play with a one bladed long spear" font-size="4" />
+        </horizontal>
       </vertical>
+      <horizontal child-expand-width="false" pad-right="1">
+        <button-with-icon pref-width="8" pref-height="8" icon="AlternativePlay.Resources.fontawesome.pencil-solid-full.png" click-event="ShowNameKeyboard" hover-hint="Rename this configuration" />
+        <button-with-icon pref-width="8" pref-height="8" icon="AlternativePlay.Resources.fontawesome.rotate-left-solid-full.png" on-click="OnResetNameClicked"  hover-hint="Reset to default name for this mode" />
+      </horizontal>
+      <modal-keyboard value="Name" show-event="ShowNameKeyboard" close-off-closes="true"/>
     </horizontal>
 
-    <!-- Main Settings -->
-    <vertical preferred-width="75" vertical-fit="PreferredSize">
+    <!-- Main View -->
+    <vertical pref-width="80" vertical-fit="PreferredSize">
       <horizontal>
         <horizontal pad-right="1">
           <img preserve-aspect="true" pref-width="8" pref-height="8" source="~ControllerChoiceIcon" />
@@ -33,7 +43,7 @@
     </vertical>
 
     <!--Tracker Summary-->
-    <vertical pref-width="80" vertical-fit="PreferredSize">
+    <vertical pref-width="85" vertical-fit="PreferredSize">
       <horizontal>
         <clickable-text text="Left Hand" italics="true" font-size="4" highlight-color="#FFFFFF" align="MidlineLeft" hover-hint="Choose a tracker to attach the left saber to"/>
         <button preferred-width="50" preferred-height="8" hover-hint="~LeftTrackerHoverHint" text="" on-click="OnShowSelectLeftTracker">
@@ -55,6 +65,6 @@
         <button-with-icon pref-width="10" preferred-height="8" icon="AlternativePlay.Resources.fontawesome.x-solid-full.png" on-click="OnClearRightTracker"/>
       </horizontal>
     </vertical>
-    
+
   </vertical>
 </bg>
