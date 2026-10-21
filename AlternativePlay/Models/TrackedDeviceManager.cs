@@ -44,6 +44,8 @@ namespace AlternativePlay.Models
         /// </summary>
         public void LoadTrackedDeviceProperties()
         {
+            if (this.openVRManager.System == null) { this.TrackedDevices = new List<OpenVRDeviceInfo>(); return; }
+
             // Get a list of all valid tracked devices up to OpenVR's maximum
             this.TrackedDevices = Enumerable.Range(0, (int)OpenVR.k_unMaxTrackedDeviceCount).Select(i =>
                 new OpenVRDeviceInfo
